@@ -27,7 +27,7 @@ public class Application extends Controller {
         return ok(index.render(list));
     }
 
-    public static Result section() {
+    public static Result section(Integer id) {
         return ok(sectionEdit.render());
     }
 }

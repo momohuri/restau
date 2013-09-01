@@ -5,7 +5,7 @@
 # Home page
 GET        /                controllers.Application.index()
 
-GET         /section/:id    controllers.Application.section()
+GET         /section/:id    controllers.Application.section(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /*file        controllers.Assets.at(path="/public", file)

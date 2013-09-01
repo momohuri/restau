@@ -1,0 +1,461 @@
+* { margin: 0; padding: 0; outline: 0; }
+
+/* HTML5 tags */
+header, section, footer,
+aside, nav, article, figure 
+{
+    display: block;
+}
+
+
+
+body {
+    margin:auto;
+ }
+ 
+#allcontent
+{
+    width: 1280px;
+    max-height: 800px;
+    margin:auto;
+ }
+
+ h2{
+     color:black;
+     font-size:65px;
+     padding-left:100px;
+ }
+h2 span.sub { font-size: 48px; float: left; color: #4b4b4b; }
+
+h2.entree { background: url(images/entrees.png) no-repeat 20px; height: 138px; background-position:left; }
+h2.plat { background: url(images/plats.png) no-repeat 20px; height: 138px; background-position:left;}
+h2.dessert { background: url(images/desserts.png) no-repeat 20px; height: 138px;background-position:left;}
+h2.boisson { background: url(images/boissons.png) no-repeat 20px; height: 138px;background-position:left; }
+
+a { color: #000; text-decoration: none; padding-bottom: 2px; }
+
+p { font-size: 24px; margin-bottom: 15px; line-height: 36px; color: #000;}
+
+#menuContainer { 
+    padding: 5px 0; 
+    width: 250px;
+    margin-bottom: 25px; 
+    z-index: 10; 
+    height: 400px;
+    color:white;
+    position: fixed;
+    top:0px;
+    left:0px;
+    background-color: transparent;
+}
+#contentcontainer {  margin-left: 200px; position: relative; float: none; padding-top: 0px;}
+
+nav { width: auto;
+     }
+nav ul { 
+    display: block;
+}
+
+.btValider{
+   background-image: url('images/btValider.png');
+   height:50px;
+   width: 150px;
+   background-color: transparent;
+   border: medium none;
+   color: white;
+   cursor: pointer;
+   font-family: inherit;
+   font-size: 24px;
+}
+
+.btRetour{
+   background-image: url('images/btRetour.png');
+   height:50px;
+   width: 150px;
+   background-color: transparent;
+   border: medium none;
+   color: white;
+   cursor: pointer;
+   font-family: inherit;
+   font-size: 24px;
+}
+
+
+
+
+.btMenu:active {
+    background-image: url('images/btnClientHover.png');   
+}
+
+li{
+    list-style: none;
+    
+}
+
+.btMenu a { 
+    font-size: 24px; border-bottom: none; width:150px; height: 50px;color: white;
+}
+
+.btMenuGreen { 
+display: block; 
+margin-left: 50px; 
+background-image: url('images/btValider.png');
+background-repeat: no-repeat;
+width: 150px;
+height: 40px;
+text-align: center;
+padding-top: 10px;
+margin: 10px; 
+font-size: 22px;
+color: white;
+padding-top: 15px;
+}
+
+.btMenuGreen:active {
+background-image: url('images/btValiderHover.png');   
+}
+
+.btMenuGreen a { 
+    font-size: 24px; border-bottom: none; width:150px; height: 50px;color: white;
+}
+
+section
+{
+    padding-top: 20px;
+    float: left; 
+    width: 80%; 
+}
+
+#dessert
+{
+    margin-top:20%;
+}
+
+#plat{
+    margin-top:20%;
+}
+
+#boisson
+{
+    margin-top:20%;
+    height: 800px;
+}
+
+
+#entree h2 a { padding-bottom: 0px; }
+#entree a.featured { padding-bottom: 0px; border-bottom: none; }
+#entree a img { border: 5px solid rgba(122, 192, 0, 0.15); -webkit-border-radius: 5px; margin-top: 40px; margin-bottom: 5px; }
+#entree a img:active, #portfolio .work a img:active { -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+
+#plat ul.plat a { border-bottom: none; }
+#plat ul.plat a img { border: 5px solid rgba(122, 192, 0, 0.15); -webkit-border-radius: 5px; }
+#plat ul.plat { float: left; margin-left: -15px; width: 975px;  }
+#plat ul.plat li { list-style: none; float: left; margin-left: 15px; margin-bottom: 15px; }
+
+#boisson { margin-bottom: 0px; }
+label { color: white; }
+
+input[type="number"] { 
+
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    color: black;
+    font-size: 24px;
+    height: 40px;
+    width: 50px;
+    margin-bottom: 15px;
+}
+
+input[type="submit"]{
+    border: none;
+    background-color: transparent;
+    font-size:24px;
+    font-family:inherit;
+    color: white;
+    cursor: pointer;
+    height: 50px;
+    width: 150px;
+}
+
+#inputLi
+{
+    background-image: url('images/btValider.png');
+    margin-top: 50px;
+    
+}
+
+.woodmenu
+{
+    
+    width: 100%;
+    height: 500px;
+    vertical-align: middle;
+    margin: auto;
+    border-radius:5px;
+    box-shadow: 0px 2px 6px  black;
+    padding:10px;
+    background-image: url('images/texture.jpg');
+    background-repeat: repeat;
+}
+
+.woodmenu table
+{
+    width: 80%;
+    text-align: center;
+    margin:auto;
+}
+
+.woodmenu th
+{
+    background-image: url(images/btnClient.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 50px;
+    min-width: 150px;
+    vertical-align: middle;
+    font-size:23px;
+}
+
+.woodmenu tr
+{
+    height: 80px;
+    border-radius:5px;
+    border-spacing:10px;
+    vertical-align: middle;
+}
+
+
+
+Header img
+{
+    float: right;
+}
+
+#logoMenu
+{
+    background: none;
+    margin-bottom:20px;
+}
+
+#tableChoice fieldset
+{
+    width: 350px;
+    height: auto;
+    vertical-align: middle;
+    margin: auto;
+    border:1px solid black;
+    border-radius:5px;
+    box-shadow: 0px 2px 6px  black;
+    padding:10px;
+    background-image: url('images/texture.jpg');
+    background-repeat: repeat;
+    margin-top:30px;
+    padding-top:25px;
+}
+
+#tableChoice legend{
+    margin : 5px;
+    font-weight: bold;
+    color:white;
+    font-size: 25px;
+}
+
+
+#tableChoice label
+{
+    margin-right: 30px;
+}
+
+#tableChoice input[type="submit"]
+{
+    float:right;
+    margin-top:15px;
+}
+
+/* Page Order */
+
+.colOrder{
+    width: 300px;
+    
+}
+
+#Orderfloatleft
+{
+    position:absolute;
+    left:0;
+    width: 50%;
+    color:black;
+    height: 500px;
+    margin-top: 15%;
+     
+}
+
+#Orderfloatleft h1, #paimentpannel h1
+{
+    margin-top:20px;
+    font-size:33px;
+    text-align: center;
+    margin-bottom:50px;
+    color:white;
+}
+
+#bill
+{   padding:10px;
+    width: 300px;
+    height: auto;
+    border-radius:5px;
+    background: transparent url('images/stripe.png') repeat;
+    box-shadow: 0px 2px 6px  black;
+    margin:auto;
+    color:black;
+    padding:20px;
+}
+
+
+
+#logoOrder
+{
+    width: 200px;
+    height: 55px;
+    border-top: black solid 1px;
+    border-bottom: black solid 1px;
+    margin:auto;
+    background-image: url('images/logoResto200.png');
+    
+}
+
+#tableorder
+{
+    color:black;
+    margin-top: 12px;
+    width: 250px;
+    margin:auto;
+}
+
+#tableorder tfoot td
+{
+    font-size:22px;
+    color:black;
+    height: 50px;
+    vertical-align: middle;
+}
+
+#tableorder tfoot
+{
+    border-top:black solid 1px;
+}
+
+#tableorder th
+{
+    padding-top:10px;
+    text-align: left;
+    font-size:20px;
+}
+
+#tableorder td
+{
+    padding-left:15px;
+}
+
+#paiementOrder
+{
+    width: 100%;
+    height: 300px;
+    margin:auto;
+    text-align: center;
+    margin-top:100px;
+}
+
+#paimentpannel{
+    position:absolute;
+    right: 0;
+    width: 50%;
+    margin-top:15%;
+}
+
+#cash
+{
+    width: 150px;
+    height: 400px;
+    background-image:url('images/cash.png');
+    background-position: top;
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-top:170px;
+    font-size: 22px;
+    
+}
+
+#check
+{
+    width:180px;
+    height: 200px;
+    background-image:url('images/cheque.png');
+    background-position: top;
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-top:170px;
+    font-size: 22px;
+}
+
+#card
+{
+    width: 180px;
+    height: 200px;
+    background-image:url('images/card.png');
+    background-position: top;
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-top:170px;
+    font-size: 22px;
+    color:black;
+}
+
+#card input
+{
+    vertical-align:baseline;
+}
+
+#card:active
+{
+    background-image:url('images/cardHover.png');
+    color:white;
+}
+
+#formcard
+{
+    width: 180px;
+    height: 200px;
+    display: inline-block;
+}
+
+#check:active
+{
+ background-image:url('images/chequeHover.png');
+ color:white;
+}
+
+#cash:activer
+{
+    background-image: url('images/cashHover.png');
+    color:white;
+}
+
+#popupcontent
+{
+    width: 350px;
+    height: auto;
+    margin:auto;
+}
+
+.recaptable td{
+    vertical-align: middle;
+    min-width: 60px;
+}
+
+.recaptable
+{
+    margin-left:100px;
+    font-size: 22px;
+}
+

@@ -1,0 +1,78 @@
+/* 
+    Document   : StyleSheetServeur
+    Created on : 1 juin 2012, 15:42:55
+    Author     : MIY1
+    Description:
+        Purpose of the stylesheet follows.
+*/
+@font-face { font-family: fontKloe; src: url(HASTERISTICO.TTF) format("opentype") }
+@font-face { font-family: fontKloeBold; src: url(HASTERISTICOBOLD.TTF) format("opentype") }
+
+@media (max-width: 300px) { 
+    body { font-size: 40px; width: 100%; }
+    
+}
+body {
+	font-family:fontKloeBold;
+        color: white;
+        background: #590b0f url('images/degrade.png') no-repeat fixed center;
+        width: 300px;
+        margin:auto;
+}
+.table{
+    box-shadow: 0px 2px 6px  black;
+    border-radius:5px;
+    margin:auto;
+    width: auto;
+    height: auto;
+    text-align: center;
+    margin-bottom:50px;
+    padding:20px;
+}
+
+.btMenu:hover {
+    background-image: url('images/btnClientHover.png');   
+}
+
+
+td img
+{
+    text-align: center;
+    margin:8px;
+    margin-left:40px;
+    vertical-align: middle;
+    width: 30px;
+}
+
+tr:first-child td
+{
+    width: 250px;
+}
+
+.globalTable
+{
+    width: auto;
+}
+.btMenu { 
+    display: block; 
+    margin-left: 50px; 
+    background-image: url('images/btnClient.png');
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    padding-top: 10px;
+    margin: auto; 
+    font-size: 22px;
+    color: white;
+    padding-top: 13px;
+    background-repeat: no-repeat;
+}
+
+.deco
+{
+    display: absolute;
+    top: 0;
+    margin: auto;
+    color:black;
+    text-decoration: none;
+}

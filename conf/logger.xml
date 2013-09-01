@@ -1,0 +1,70 @@
+<configuration>
+    
+  <conversionRule conversionWord="coloredLevel" converterClass="play.api.Logger$ColoredLevel" />
+  
+  <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <file>${application.home}/logs/application.log</file>
+     
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${application.home}/logs/rrd/application.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    
+     <encoder>
+       <pattern>%d{HH:mm:ss.SSS} [ReqId : %X{requestId}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+     </encoder>
+   </appender>
+   
+  <appender name="TEST" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <file>${application.home}/logs/test.log</file>
+     
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>test.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+     
+     <encoder>
+       <pattern>%date - [%level] - from %logger%n%message%n%xException%n</pattern>
+     </encoder>
+   </appender>
+   
+   <appender name="track" class="ch.qos.logback.core.rolling.RollingFileAppender">
+     <file>${application.home}/logs/tracking.log</file>
+     
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>tracking.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+     
+     <encoder>
+       <pattern>%date - [%level] - from %logger%n%message%n%xException%n</pattern>
+     </encoder>
+   </appender>     
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%coloredLevel %logger{15} - %message%n%xException{5}</pattern>
+    </encoder>
+  </appender>
+    
+  <logger name="tracking" level="INFO">
+    <appender-ref ref="track" />
+  </logger>  
+  
+  <logger name="application" level="DEBUG" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="APPLICATION"/>
+  </logger>
+
+  <logger name="play" level="INFO" additivity="false">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="APPLICATION"/>
+  </logger>
+
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="APPLICATION" />
+  </root>
+  
+</configuration>

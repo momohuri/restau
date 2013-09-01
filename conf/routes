@@ -9,3 +9,9 @@ GET         /section/:id    controllers.Application.section()
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /*file        controllers.Assets.at(path="/public", file)
+
+POST    /sayhello               controllers.HelloWorld.sayHello()
+
+GET    /user/:id         controllers.UserController.getUser(id: String)
+
+POST    /user         controllers.UserController.createUser()

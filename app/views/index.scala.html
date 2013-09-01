@@ -1,6 +1,4 @@
-@(message: String)
-
-
+@(list: List[org.codehaus.jackson.node.ObjectNode])
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +6,7 @@
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheetAdmin.css"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="../../css/StyleSheet.css"/>
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheet.css"/>
         <script charset="utf-8" src="/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
         <script charset="utf-8" src="/javascripts/underscore.js" type="text/javascript"></script>
         <script charset="utf-8" src="/javascripts/section-view.js" type="text/javascript"></script>
@@ -17,7 +15,7 @@
 
         <div id="menu">
             <span id="logoAdmin">
-                <img src="../../css/images/logoResto.png" width="300px" alt="logo"/>
+                <img src="/css/images/logoResto.png" width="300px" alt="logo"/>
             </span>
             <div id="bt_menu_superadmin">
             </div>
@@ -27,7 +25,9 @@
         <div id="sous_menu">
             <nav id="nav_menu">
                 <ul>
-                    <li><a href="">list of the section</a></li>
+                    @list.map { item =>
+                        <li><a href="section/@item.get("id").asInt()">@item.get("name").asText()</a></li>
+                    }
                     <li><a href="createNewSection">createNewSection</a></li>
                 </ul>
             </nav>
@@ -73,7 +73,7 @@
 
                             <div class="bt_ajout_sup">
                                 <a id='addItem'><img src="/css/images/admin/plus.png"></a>
-                                <a id='deleteItem'><img src="../../css/images/admin/-.png"></a>
+                                <a id='deleteItem'><img src="/css/images/admin/-.png"></a>
                             </div>
                         </td>
                     </tr>

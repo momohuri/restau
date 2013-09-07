@@ -1,86 +1,11 @@
-@(list: List[org.codehaus.jackson.node.ObjectNode])
-
-<!DOCTYPE html>
+<! doctype html>
 <html>
-    <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheetAdmin.css"/>
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheet.css"/>
-        <script charset="utf-8" src="/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-        <script charset="utf-8" src="/javascripts/underscore.js" type="text/javascript"></script>
-        <script charset="utf-8" src="/javascripts/section-view.js" type="text/javascript"></script>
-    </head>
-    <body>
-
-        <div id="menu">
-            <span id="logoAdmin">
-                <img src="/css/images/logoResto.png" width="300px" alt="logo"/>
-            </span>
-            <div id="bt_menu_superadmin">
-            </div>
-        </div>
-
-
-        <div id="sous_menu">
-            <nav id="nav_menu">
-                <ul>
-                    @list.map { item =>
-                        <li><a href="section/@item.get("id").asInt()">@item.get("name").asText()</a></li>
-                    }
-                    <li><a href="createNewSection">createNewSection</a></li>
-                </ul>
-            </nav>
-
-
-        </div>
-        <div id="formulaire_menu">
-            <h1 class="h1Admin">Creation of a new Section</h1>
-            <form>
-                <div id="nomMenu">
-                    <input type="text" name='name' placeholder="Section Name"></div>
-                <table>
-
-                    <tr>
-                        <td>
-                            <fieldset>
-                                <legend align="center">Items</legend>
-                                <table id='Items'>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Calories</th>
-                                        <th> Price </th>
-                                        <th> Spicy </th>
-                                        <th> Vegan </th>
-                                        <th> Enable </th>
-                                    </tr>
-                                    <tr id='item0'>
-                                        <td><input type='text' name='name' placeholder="Name" maxlength="25" minlength="4" required></td>
-                                        <td><input type='text' name='description' placeholder="Description"></td>
-                                        <td><input type='text' name='calories' placeholder="Calories"></td>
-                                        <td><input type='number' name='price' placeholder='0' required></td>
-                                        <td>
-                                            <select name="spicy"> <option value="0">0</option><option value="1">1</option><option value="2">2</option> <option value="3">3</option></select>
-                                        </td>
-                                        <td><select name="vegetarian"> <option value="yes">yes</option><option value="no" default>no</option></select>  </td>
-                                        <td><select name="enable"> <option value="yes">yes</option><option value="no">no</option></select>  </td>
-                                    </tr>
-                                </table>
-
-
-                            </fieldset>
-
-                            <div class="bt_ajout_sup">
-                                <a id='addItem'><img src="/css/images/admin/plus.png"></a>
-                                <a id='deleteItem'><img src="/css/images/admin/-.png"></a>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <input type='submit' name='addMenu' value="Submit" class="bt">
-            </form>
-        </div>
-
-    </body>
+  <head>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+      <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheetAdmin.css"/>
+      <link rel="stylesheet" type="text/css" media="screen" href="/css/StyleSheet.css"/>
+      <script data-main="js/main.js" src="/js/vendor/requirejs/require.js"></script>
+      </head>
+  <body>
+  </body>
 </html>

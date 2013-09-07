@@ -1,6 +1,7 @@
 package controllers;
 
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -24,10 +25,12 @@ public class Application extends Controller {
         result2.put("id",1);
         list.add(result2);
 
-        return ok(index.render(list));
+        return ok(views.html.index.render());
     }
 
     public static Result section(Integer id) {
+        JsonNode result = Json.newObject();
+        result = Json.parse("{\"items\":[{\"name\":\"name1\",\"description\":\"myDesc\",\"calories\":\"calories\",\"price\":\"2\",\"spicy\":\"0\",\"vegetarian\":\"yes\",\"enable\":\"yes\"},{\"name\":\"name2\",\"description\":\"\",\"calories\":\"\",\"price\":\"10\",\"spicy\":\"2\",\"vegetarian\":\"no\",\"enable\":\"yes\"}],\"name\":\"myNesction\"}");
         return ok(sectionEdit.render());
     }
 }

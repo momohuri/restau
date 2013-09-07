@@ -1,0 +1,20 @@
+<div id="menu">
+            <span id="logoAdmin">
+                <img src="/css/images/logoResto.png" width="300px" alt="logo"/>
+            </span>
+
+    <div id="bt_menu_superadmin">
+    </div>
+</div>
+
+
+<div id="sous_menu">
+    <nav id="nav_menu">
+        <ul>
+            <% sections.forEach(function(section){ %>
+            <li><a class="toSection" data-id="<%= section.get('id') %>"><%= section.get('name') %></a></li>
+            <% }); %>
+            <li><a href="createNewSection">createNewSection</a></li>
+        </ul>
+    </nav>
+</div>

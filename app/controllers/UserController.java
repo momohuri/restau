@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.JsonUtils;
-import views.html.index;
+import views.html.*;
 import exceptions.StorageBackendException;
 
 public class UserController extends BaseController {

@@ -38,6 +38,9 @@ public class CassandraDataStore extends DataStore {
 
     protected Cluster storageCluster;
     protected Keyspace storageKeyspace;
+    protected String clusterName;
+    protected String clusterHosts;
+    protected String keyspace;
 
 
     protected Properties properties;
@@ -63,9 +66,9 @@ public class CassandraDataStore extends DataStore {
         // me.prettyprint.cassandra.model.ConfigurableConsistencyLevelPolicy[Test]
         // for details
         
-        String clusterName = ApplicationConfig.getCassadraClusterName(); // properties.getProperty("cassandra.cluster.name", "Test Cluster"); 
-        String clusterHosts = ApplicationConfig.getCassadraClusterHosts(); // properties.getProperty("cassandra.cluster.hosts", "127.0.0.1:9160");
-        String keyspace =  ApplicationConfig.getCassadraKeyspace(); // properties.getProperty("cassandra.keyspace", "ProductGenomeDev");
+        clusterName = ApplicationConfig.getCassadraClusterName(); // properties.getProperty("cassandra.cluster.name", "Test Cluster"); 
+        clusterHosts = ApplicationConfig.getCassadraClusterHosts(); // properties.getProperty("cassandra.cluster.hosts", "127.0.0.1:9160");
+        keyspace =  ApplicationConfig.getCassadraKeyspace(); // properties.getProperty("cassandra.keyspace", "ProductGenomeDev");
         log.info("Storage config :: clusterName = " + clusterName + ", clusterHosts = " + clusterHosts + ", keyspace = " + keyspace);
 
 

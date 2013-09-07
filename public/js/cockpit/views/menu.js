@@ -27,6 +27,7 @@ define(['namespace', './base-view', '../collections/sections'
 //            });
 
 
+
         },
 
         render: function () {

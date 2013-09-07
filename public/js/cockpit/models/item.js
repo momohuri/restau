@@ -1,8 +1,8 @@
 define(['namespace', './base-model'],
     function (App, BaseModel, undefined) {
-        App.cockpit.models.section = BaseModel.extend({
+        App.cockpit.models.item = BaseModel.extend({
 
-            url: '/section',
+            url: '/item',
 
             defaults: {
                 created_at: new Date()
@@ -10,8 +10,9 @@ define(['namespace', './base-model'],
             },
             initialize: function () {
 
+
             }
         });
 
-        return  App.cockpit.models.section;
+        return  App.cockpit.models.item;
     });

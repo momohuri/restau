@@ -12,7 +12,9 @@ define(['namespace', './base-view', '../collections/sections'
         ]),
 
         events: {
-            'click .toSection': 'toSection'
+            'click .toSection': 'toSection',
+            'click #createNewSection': 'createNewSection'
+
         },
 
         initialize: function () {
@@ -37,8 +39,11 @@ define(['namespace', './base-view', '../collections/sections'
 
         toSection: function (e) {
             Backbone.history.navigate('section/' + e.currentTarget.dataset.id, true);
-        }
+        },
 
+        createNewSection: function () {
+            Backbone.history.navigate('createnewsection', true);
+        }
 
 
 

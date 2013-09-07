@@ -14,7 +14,11 @@
             <% sections.forEach(function(section){ %>
             <li><a class="toSection" data-id="<%= section.get('id') %>"><%= section.get('name') %></a></li>
             <% }); %>
-            <li><a href="createNewSection">createNewSection</a></li>
+            <li><a id="createNewSection">createNewSection</a></li>
         </ul>
     </nav>
 </div>
+
+
+
+<div id="content"></div>

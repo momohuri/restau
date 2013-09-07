@@ -1,0 +1,50 @@
+<table>
+
+    <tr>
+        <td>
+            <fieldset>
+                <legend align="center">Items</legend>
+                <table id='Items'>
+                    <tr>
+                        <th>Name</th>
+                        <th> Price</th>
+                        <th> Enable</th>
+                        <th> Edit</th>
+                        <th> Delete</th>
+                    </tr>
+                    <% items.forEach(function(item){ %>
+                    <tr data-id="<%= item.get('id') %>">
+                        <td><%= item.get('name')%>
+                        </td>
+                        <td>
+                            <input type='number' name='price' placeholder='0' required value="<%= item.get('price')%>">
+                        </td>
+                        <td><select name="enable">
+                            <option value="yes">yes</option>
+                            <option value="no" <%= if(item.get('enable')===0){"selected"} %>>no</option>
+                        </select></td>
+                        <td><input type="button" value="edit" class="edit"> </td>
+                        <td><input type="button" value="delete" class="delete"><td>
+                    </tr>
+                    <% }); %>
+                </table>
+
+
+            </fieldset>
+
+        </td>
+    </tr>
+</table>
+
+        <form id="newItem">
+
+            <label for="name">Name: </label> <input type='text' name='name' placeholder="Name" maxlength="25" minlength="4" required value="<%= item.get('name') %>">
+            <label for="description">description: </label> <input type='text' name='description' placeholder="Description" value="<%= item.get('description') %>">
+            <label for="calories">calories: </label> <input type='text' name='calories' placeholder="Calories"  value="<%= item.get('calories') %>">
+            <label for="price">price: </label> <input type='number' name='price' placeholder='0' required value="<%= item.get('price') %>">
+
+            <label for="spicy">spicy: </label>   <select name="spicy"> <option value="0">0</option><option value="1">1</option><option value="2">2</option> <option value="3">3</option></select>
+
+            <label for="vegetarian">vegetarian: </label> <select name="vegetarian"> <option value="yes">yes</option><option value="no" selected="selected">no</option></select>
+            <input type="submit" value="submit">
+        </form>

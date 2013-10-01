@@ -21,7 +21,7 @@
                         </td>
                         <td><select name="enable">
                             <option value="yes">yes</option>
-                            <option value="no" <%= if(item.get('enable')===0){"selected"} %>>no</option>
+                            <option value="no" <% if(item.get('enable')===0){ "selected" } %> >no</option>
                         </select></td>
                         <td><input type="button" value="edit" class="edit"> </td>
                         <td><input type="button" value="delete" class="delete"><td>

@@ -28,21 +28,18 @@ define(['namespace', './base-view', '../collections/sections'
 //                }
 //            });
 
-
-
         },
 
         render: function () {
             this.$el.html(this.template({sections: this.sections}));
-
-        },
+         },
 
         toSection: function (e) {
             Backbone.history.navigate('section/' + e.currentTarget.dataset.id, true);
         },
 
         createNewSection: function () {
-            Backbone.history.navigate('createnewsection', true);
+            Backbone.history.navigate('createNewSection', true);
         }
 
 

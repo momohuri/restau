@@ -5,7 +5,7 @@ define(['namespace', 'backbone', 'backboneRouteFilter', '../views/menu', '../vie
             routes: {
                 '': 'index',
                 'section/:id': 'section',
-                'createnewsection': 'createNewSection'
+                'createNewSection': 'createNewSection'
 
             },
 
@@ -19,6 +19,7 @@ define(['namespace', 'backbone', 'backboneRouteFilter', '../views/menu', '../vie
 
             index: function () {
                 new Menu();
+                new SectionNew();
             },
 
             section: function (id) {

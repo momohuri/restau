@@ -11,7 +11,7 @@ define(['namespace', './base-view', '../models/section'
         section: new Section(),
 
         events: {
-            'submit #createNewSection': 'newSection'
+            'submit #createNewSectionForm': 'newSection'
         },
 
         initialize: function () {

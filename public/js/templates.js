@@ -3,7 +3,7 @@ restau.tmpl.cockpit = restau.tmpl.cockpit || {};
 restau.tmpl.cockpit.menu = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<div id="menu">\n            <span id="logoAdmin">\n                <img src="/css/images/logoResto.png" width="300px" alt="logo"/>\n            </span>\n\n    <div id="bt_menu_superadmin">\n    </div>\n</div>\n\n\n<div id="sous_menu">\n    <nav id="nav_menu">\n        <ul>\n            ';
+__p+='\n<div class="navbar navbar-inverse navbar-fixed-top">\n    <div class="container">\n        <div class="navbar-header">\n            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n            </button>\n            <a class="navbar-brand" href="#">Restau</a>\n        </div>\n        <div class="collapse navbar-collapse">\n            <ul class="nav navbar-nav">\n                <li class="active"><a href="#">Home</a></li>\n                <li><a href="#about">About</a></li>\n                <li><a href="#contact">Contact</a></li>\n            </ul>\n        </div><!--/.nav-collapse -->\n    </div>\n</div>\n\n\n<div id="menu">\n    <nav id="nav_menu">\n        <ul>\n            ';
  sections.forEach(function(section){ 
 __p+='\n            <li><a class="toSection" data-id="'+
 ((__t=( section.get('id') ))==null?'':__t)+
@@ -33,9 +33,9 @@ __p+='\n                    <tr data-id="'+
 ((__t=( item.get('name')))==null?'':__t)+
 '\n                        </td>\n                        <td>\n                            <input type=\'number\' name=\'price\' placeholder=\'0\' required value="'+
 ((__t=( item.get('price')))==null?'':__t)+
-'">\n                        </td>\n                        <td><select name="enable">\n                            <option value="yes">yes</option>\n                            <option value="no" '+
-((__t=( item.get('enable')===0?"selected":true ))==null?'':__t)+
-'>no</option>\n                        </select></td>\n                        <td><input type="button" value="edit" class="edit"> </td>\n                        <td><input type="button" value="delete" class="delete"><td>\n                    </tr>\n                    ';
+'">\n                        </td>\n                        <td><select name="enable">\n                            <option value="yes">yes</option>\n                            <option value="no" ';
+ if(item.get('enable')===0){ "selected" } 
+__p+=' >no</option>\n                        </select></td>\n                        <td><input type="button" value="edit" class="edit"> </td>\n                        <td><input type="button" value="delete" class="delete"><td>\n                    </tr>\n                    ';
  }); 
 __p+='\n                </table>\n\n\n            </fieldset>\n\n        </td>\n    </tr>\n</table>\n\n        <form id="newItem">\n\n            <label for="name">Name: </label> <input type=\'text\' name=\'name\' placeholder="Name" maxlength="25" minlength="4" required value="'+
 ((__t=( item.get('name') ))==null?'':__t)+
@@ -52,7 +52,7 @@ return __p;
 restau.tmpl.cockpit.sectionNew = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<form id="createNewSection">\n    <label for="name">Name : </label>\n    <input id="name" name="name" type="text" placeholder="Section Name">\n\n\n\n    <input type="submit" value="submit">\n</form>\n\n\n';
+__p+='<form id="createNewSectionForm">\n    <label for="name">Name : </label>\n    <input id="name" name="name" type="text" placeholder="Section Name">\n\n\n\n    <input type="submit" value="submit">\n</form>\n\n\n';
 }
 return __p;
 };

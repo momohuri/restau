@@ -6,10 +6,21 @@ require.config({
 		'namespace': 'namespace',
 
         'backboneRouteFilter': 'vendor/backbone.routefilter',
-        'bootstrap': 'vendor/bootstrap/bootstrap.min'
+        'bootstrap': 'vendor/bootstrap.min'
 	},
 	shim: {
-
+        'backbone': {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+        'bootstrap':{
+            deps:['jquery'],
+            exports : 'bootstrap'
+        },
+        'backboneRouteFilter' :{
+            deps:['backbone'],
+            exports : 'backboneRouteFilter'
+        }
   }
 });
 

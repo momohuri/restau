@@ -1,12 +1,12 @@
 (function() {
-    var helpers = {
 
+
+    helpers = {
+        lol : function(){
+            debugger
+        }
     }
 
-    if (typeof define === 'function' && define.amd) {
-        define('helpers', function() {
-            return helpers;
-        });
-    }
 
-}).call(thisd)
+
+}).call(this);

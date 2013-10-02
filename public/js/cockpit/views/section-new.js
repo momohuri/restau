@@ -30,13 +30,8 @@ define(['namespace', './base-view', '../models/section'
         newSection: function (e) {
             e.preventDefault();
 
-            var data = $(e.currentTarget).serializeArray();
-            var result = _(data).reduce(function (acc, field) {
-                acc[field.name] = field.value;
-                return acc;
-            }, {});
+            var data = this.getFormData(e);
 
-            var that = this;
             this.section.save(result,{success:function(){
                 Backbone.history.navigate('section/'+this.section.id,true);
             }});

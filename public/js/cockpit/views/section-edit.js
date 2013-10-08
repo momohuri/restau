@@ -1,5 +1,5 @@
-define(['namespace', './base-view', '../collections/items', '../models/item'
-], function (App, BaseView, Items, Item, undefined) {
+define(['namespace', './base-view', '../collections/items', '../models/item','../collections/sections'
+], function (App, BaseView, Items, Item,Sections, undefined) {
 
     App.cockpit.views.sectionEdit = BaseView.extend({
 
@@ -7,18 +7,22 @@ define(['namespace', './base-view', '../collections/items', '../models/item'
 
         template: App.tmpl.cockpit.sectionEdit,
 
+        sections: new Sections([
+            {name: 'section1', id: 1},
+            {name: 'section2', id: 2}
+        ]),
+
         items: new Items([]),
 
         item: new Item(),
 
         events: {
             'submit #newItem': 'newItem',
-            'click .edit': 'editItem'
+            'click .edit': 'editItem',
+            'click .deleteItem': 'deleteItem'
         },
 
         initialize: function () {
-            var that = this;
-
             _.bindAll(this, 'render');
             this.items.bind('add', this.render, this);
             this.item.bind('change', this.render);
@@ -26,7 +30,7 @@ define(['namespace', './base-view', '../collections/items', '../models/item'
         },
 
         render: function (e) {
-            this.$el.html(this.template({items: this.items, item: this.item}));
+            this.$el.html(this.template({sections:this.sections,items: this.items, item: this.item}));
         },
 
         newItem: function (e) {
@@ -45,6 +49,10 @@ define(['namespace', './base-view', '../collections/items', '../models/item'
 
         editItem: function (e) {
             this.item.set(this.items.get(e.currentTarget.parentNode.parentNode.dataset.id).attributes);
+        },
+
+        deleteItem:function(e){
+            //destroy item
         }
 
 

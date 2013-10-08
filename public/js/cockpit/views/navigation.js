@@ -1,19 +1,19 @@
-define(['namespace', './base-view', '../collections/sections'
-], function (App, BaseView, Sections, undefined) {
+define(['namespace', './base-view', '../collections/menus'
+], function (App, BaseView, Menus, undefined) {
 
-    App.cockpit.views.menu = BaseView.extend({
+    App.cockpit.views.navigation = BaseView.extend({
 
         el: 'body',
 
-        template: App.tmpl.cockpit.menu,
+        template: App.tmpl.cockpit.navigation,
 
-        sections: new Sections([
+        menus: new Menus([
             {name: 'lol', id: 2}
         ]),
 
         events: {
             'click .toSection': 'toSection',
-            'click #createNewSection': 'createNewSection'
+            'click .newSection': 'createNewSection'
 
         },
 
@@ -31,19 +31,17 @@ define(['namespace', './base-view', '../collections/sections'
         },
 
         render: function () {
-            this.$el.html(this.template({sections: this.sections}));
-         },
+            this.$el.html(this.template({menus: this.menus}));
+        },
 
         toSection: function (e) {
             Backbone.history.navigate('section/' + e.currentTarget.dataset.id, true);
         },
 
         createNewSection: function () {
-            Backbone.history.navigate('createNewSection', true);
+            Backbone.history.navigate('section/new', true);
         }
 
-
-
     });
-    return  App.cockpit.views.menu;
+    return  App.cockpit.views.navigation;
 });

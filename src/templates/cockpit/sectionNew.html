@@ -1,3 +1,16 @@
+<div class="menuBasedOnId">
+    <ul class="nav nav-tabs">
+        <% sections.forEach(function(section){ %>
+        <li data-reference="<%= section.get('id') %>"><a class="toSection" data-id="<%= section.get('id') %>"><%=
+            section.get('name') %></a></li>
+        <% }); %>
+        <li data-reference="new"><a class="newSection">New Section</a></li>
+
+    </ul>
+</div>
+
+
+
 <form id="createNewSectionForm">
     <label for="name">Name : </label>
     <input id="name" name="name" type="text" placeholder="Section Name">

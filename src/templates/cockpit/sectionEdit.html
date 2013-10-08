@@ -1,10 +1,13 @@
-<ul class="nav nav-tabs">
+<div class="menuBasedOnId">
+    <ul class="nav nav-tabs">
+        <% sections.forEach(function(section){ %>
+        <li data-reference="<%= section.get('id') %>"><a class="toSection" data-id="<%= section.get('id') %>"><%=
+            section.get('name') %></a></li>
+        <% }); %>
+        <li data-reference="new"><a class="newSection">New Section</a></li>
 
-    <% sections.forEach(function(section){ %>
-    <li><a class="toSection" data-id="<%= section.get('id') %>"><%= section.get('name') %></a></li>
-    <% }); %>
-
-</ul>
+    </ul>
+</div>
 
 
 <div>
@@ -33,7 +36,7 @@
                 <% if(item.get('enable')===0){ "selected" } %> >no</option>
             </select></td>
             <td><input type="button" value="edit" class="edit"></td>
-            <td><input type="button" value="delete" class="delete">
+            <td><input type="button" value="delete" class="deleteItem">
             <td>
         </tr>
         <% }); %>
@@ -41,28 +44,40 @@
     </table>
 
 
-    <form id="newItem">
+    <form id="newItem" role="form">
+        <div class="form-horizontal">
+            <label for="name">Name: </label> <input
+                class="form-control" type='text' name='name' placeholder="Name" maxlength="25" minlength="4"
+                required value="<%= item.get('name') %>"> <br>
+        </div>
+        <div class="form-group">
+            <label for="description">Description: </label> <input type='text' name='description'
+                                                                  placeholder="Description"
+                                                                  value="<%= item.get('description') %>"> <br>
+        </div>
+        <div class="form-group">
+            <label for="calories">Calories: </label> <input type='text' name='calories' placeholder="Calories"
+                                                            value="<%= item.get('calories') %>"> <br>
+        </div>
+        <div class="form-group">
+            <label for="price">Price: </label> <input type='number' name='price' placeholder='0' required
+                                                      value="<%= item.get('price') %>"> <br>
 
-        <label for="name">Name: </label> <input type='text' name='name' placeholder="Name" maxlength="25" minlength="4"
-                                                required value="<%= item.get('name') %>">
-        <label for="description">description: </label> <input type='text' name='description' placeholder="Description"
-                                                              value="<%= item.get('description') %>">
-        <label for="calories">calories: </label> <input type='text' name='calories' placeholder="Calories"
-                                                        value="<%= item.get('calories') %>">
-        <label for="price">price: </label> <input type='number' name='price' placeholder='0' required
-                                                  value="<%= item.get('price') %>">
+        </div>
+        <div class="form-group">
+            <label for="spicy">Spicy: </label> <select name="spicy">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+            <br>
 
-        <label for="spicy">spicy: </label> <select name="spicy">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-    </select>
-
-        <label for="vegetarian">vegetarian: </label> <select name="vegetarian">
-        <option value="yes">yes</option>
-        <option value="no" selected="selected">no</option>
-    </select>
+            <label for="vegetarian">Vegetarian: </label> <select name="vegetarian">
+            <option value="yes">yes</option>
+            <option value="no" selected="selected">no</option>
+        </select>
+        </div>
         <input type="submit" value="submit">
     </form>
 </div>

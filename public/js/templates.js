@@ -1,17 +1,17 @@
 window.restau.tmpl = window.restau.tmpl || {};
 restau.tmpl.cockpit = restau.tmpl.cockpit || {};
-restau.tmpl.cockpit.menu = function(obj){
+restau.tmpl.cockpit.navigation = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<div class="navbar navbar-inverse navbar-fixed-top">\n    <div class="container">\n        <div class="navbar-header">\n            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n            </button>\n            <a class="navbar-brand" href="#">Restau</a>\n        </div>\n        <div class="collapse navbar-collapse">\n            <ul class="nav navbar-nav">\n                <li class="dropdown">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>\n                    <ul class="dropdown-menu">\n                        ';
+__p+='<div class="navbar navbar-inverse navbar-fixed-top menuBasedOnName">\n    <div class="container">\n        <div class="navbar-header">\n            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n                <span class="icon-bar"></span>\n            </button>\n            <a class="navbar-brand" href="#">Restau</a>\n        </div>\n        <div class="collapse navbar-collapse">\n            <ul class="nav navbar-nav">\n                <li class="dropdown" data-reference="menu">\n                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>\n                    <ul class="dropdown-menu">\n                        ';
  menus.forEach(function(menu){ 
 __p+='\n                        <li><a class="toSection" data-id="'+
-((__t=( section.get('id') ))==null?'':__t)+
+((__t=( menu.get('id') ))==null?'':__t)+
 '">'+
 ((__t=( menu.get('name') ))==null?'':__t)+
 '</a></li>\n                        ';
  }); 
-__p+='\n                    </ul>\n                </li>\n                <li><a id="createNewSection">createNewSection</a></li>\n                <li><a href="#contact">Contact</a></li>\n            </ul>\n        </div>\n    </div>\n</div>\n\n<div id="content" class="container"></div>';
+__p+='\n                    </ul>\n                </li>\n                <li data-reference="createNewSection"><a id="createNewSection">createNewSection</a></li>\n                <li data-reference="contact"><a href="#contact">Contact</a></li>\n            </ul>\n        </div>\n    </div>\n</div>\n\n<div id="content" class="container"></div>';
 }
 return __p;
 };
@@ -25,15 +25,18 @@ return __p;
 restau.tmpl.cockpit.sectionEdit = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<ul class="nav nav-tabs">\n\n    ';
+__p+='<div class="menuBasedOnId">\n    <ul class="nav nav-tabs">\n        ';
  sections.forEach(function(section){ 
-__p+='\n    <li><a class="toSection" data-id="'+
+__p+='\n        <li data-reference="'+
+((__t=( section.get('id') ))==null?'':__t)+
+'"><a class="toSection" data-id="'+
 ((__t=( section.get('id') ))==null?'':__t)+
 '">'+
-((__t=( section.get('name') ))==null?'':__t)+
-'</a></li>\n    ';
+((__t=(
+            section.get('name') ))==null?'':__t)+
+'</a></li>\n        ';
  }); 
-__p+='\n\n</ul>\n\n\n<div>\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th>Name</th>\n            <th> Price</th>\n            <th> Enable</th>\n            <th> Edit</th>\n            <th> Delete</th>\n        </tr>\n        </thead>\n        <tbody>\n        ';
+__p+='\n        <li data-reference="new"><a class="newSection">New Section</a></li>\n\n    </ul>\n</div>\n\n\n<div>\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th>Name</th>\n            <th> Price</th>\n            <th> Enable</th>\n            <th> Edit</th>\n            <th> Delete</th>\n        </tr>\n        </thead>\n        <tbody>\n        ';
  items.forEach(function(item){ 
 __p+='\n        <tr data-id="'+
 ((__t=( item.get('id') ))==null?'':__t)+
@@ -43,24 +46,35 @@ __p+='\n        <tr data-id="'+
 ((__t=( item.get('price')))==null?'':__t)+
 '">\n            </td>\n            <td><select name="enable">\n                <option value="yes">yes</option>\n                <option value="no"\n                ';
  if(item.get('enable')===0){ "selected" } 
-__p+=' >no</option>\n            </select></td>\n            <td><input type="button" value="edit" class="edit"></td>\n            <td><input type="button" value="delete" class="delete">\n            <td>\n        </tr>\n        ';
+__p+=' >no</option>\n            </select></td>\n            <td><input type="button" value="edit" class="edit"></td>\n            <td><input type="button" value="delete" class="deleteItem">\n            <td>\n        </tr>\n        ';
  }); 
-__p+='\n        </tbody>\n    </table>\n\n\n    <form id="newItem">\n\n        <label for="name">Name: </label> <input type=\'text\' name=\'name\' placeholder="Name" maxlength="25" minlength="4"\n                                                required value="'+
+__p+='\n        </tbody>\n    </table>\n\n\n    <form id="newItem" role="form">\n        <div class="form-horizontal">\n            <label for="name">Name: </label> <input\n                class="form-control" type=\'text\' name=\'name\' placeholder="Name" maxlength="25" minlength="4"\n                required value="'+
 ((__t=( item.get('name') ))==null?'':__t)+
-'">\n        <label for="description">description: </label> <input type=\'text\' name=\'description\' placeholder="Description"\n                                                              value="'+
+'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="description">Description: </label> <input type=\'text\' name=\'description\'\n                                                                  placeholder="Description"\n                                                                  value="'+
 ((__t=( item.get('description') ))==null?'':__t)+
-'">\n        <label for="calories">calories: </label> <input type=\'text\' name=\'calories\' placeholder="Calories"\n                                                        value="'+
+'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="calories">Calories: </label> <input type=\'text\' name=\'calories\' placeholder="Calories"\n                                                            value="'+
 ((__t=( item.get('calories') ))==null?'':__t)+
-'">\n        <label for="price">price: </label> <input type=\'number\' name=\'price\' placeholder=\'0\' required\n                                                  value="'+
+'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="price">Price: </label> <input type=\'number\' name=\'price\' placeholder=\'0\' required\n                                                      value="'+
 ((__t=( item.get('price') ))==null?'':__t)+
-'">\n\n        <label for="spicy">spicy: </label> <select name="spicy">\n        <option value="0">0</option>\n        <option value="1">1</option>\n        <option value="2">2</option>\n        <option value="3">3</option>\n    </select>\n\n        <label for="vegetarian">vegetarian: </label> <select name="vegetarian">\n        <option value="yes">yes</option>\n        <option value="no" selected="selected">no</option>\n    </select>\n        <input type="submit" value="submit">\n    </form>\n</div>';
+'"> <br>\n\n        </div>\n        <div class="form-group">\n            <label for="spicy">Spicy: </label> <select name="spicy">\n            <option value="0">0</option>\n            <option value="1">1</option>\n            <option value="2">2</option>\n            <option value="3">3</option>\n        </select>\n            <br>\n\n            <label for="vegetarian">Vegetarian: </label> <select name="vegetarian">\n            <option value="yes">yes</option>\n            <option value="no" selected="selected">no</option>\n        </select>\n        </div>\n        <input type="submit" value="submit">\n    </form>\n</div>';
 }
 return __p;
 };
 restau.tmpl.cockpit.sectionNew = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<form id="createNewSectionForm">\n    <label for="name">Name : </label>\n    <input id="name" name="name" type="text" placeholder="Section Name">\n\n\n    <input type="submit" value="submit">\n</form>\n\n\n';
+__p+='<div class="menuBasedOnId">\n    <ul class="nav nav-tabs">\n        ';
+ sections.forEach(function(section){ 
+__p+='\n        <li data-reference="'+
+((__t=( section.get('id') ))==null?'':__t)+
+'"><a class="toSection" data-id="'+
+((__t=( section.get('id') ))==null?'':__t)+
+'">'+
+((__t=(
+            section.get('name') ))==null?'':__t)+
+'</a></li>\n        ';
+ }); 
+__p+='\n        <li data-reference="new"><a class="newSection">New Section</a></li>\n\n    </ul>\n</div>\n\n\n\n<form id="createNewSectionForm">\n    <label for="name">Name : </label>\n    <input id="name" name="name" type="text" placeholder="Section Name">\n\n\n    <input type="submit" value="submit">\n</form>\n\n\n';
 }
 return __p;
 };

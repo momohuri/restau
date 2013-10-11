@@ -42,21 +42,23 @@ __p+='\n        <tr data-id="'+
 ((__t=( item.get('id') ))==null?'':__t)+
 '">\n            <td>'+
 ((__t=( item.get('name')))==null?'':__t)+
-'\n            </td>\n            <td>\n                <input type=\'number\' name=\'price\' placeholder=\'0\' required value="'+
+'\n            </td>\n            <td>\n                '+
 ((__t=( item.get('price')))==null?'':__t)+
-'">\n            </td>\n            <td><select name="enable">\n                <option value="yes">yes</option>\n                <option value="no"\n                ';
- if(item.get('enable')===0){ "selected" } 
-__p+=' >no</option>\n            </select></td>\n            <td><input type="button" value="edit" class="edit"></td>\n            <td><input type="button" value="delete" class="deleteItem">\n            <td>\n        </tr>\n        ';
+'\n            </td>\n            <td>\n                '+
+((__t=( item.get('enable')===0 ? "no":"yes" ))==null?'':__t)+
+'\n            </td>\n\n            <td><input type="button" value="edit" class="edit"></td>\n            <td><input type="button" value="delete" class="deleteItem">\n            <td>\n        </tr>\n        ';
  }); 
-__p+='\n        </tbody>\n    </table>\n\n\n    <form id="newItem" role="form">\n        <div class="form-horizontal">\n            <label for="name">Name: </label> <input\n                class="form-control" type=\'text\' name=\'name\' placeholder="Name" maxlength="25" minlength="4"\n                required value="'+
+__p+='\n        </tbody>\n    </table>\n\n\n    <form id="newItem" role="form" class="form-horizontal">\n        <input type="hidden" name="id" value="'+
+((__t=( item.get('id') ))==null?'':__t)+
+'">\n\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="name">Name: </label>\n\n            <div class="col-lg-2">\n                <input class="form-control" type=\'text\' name=\'name\' placeholder="Name" maxlength="25" minlength="4"\n                       required value="'+
 ((__t=( item.get('name') ))==null?'':__t)+
-'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="description">Description: </label> <input type=\'text\' name=\'description\'\n                                                                  placeholder="Description"\n                                                                  value="'+
+'">\n            </div>\n        </div>\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="description">Description: </label>\n\n            <div class="col-lg-4">\n                <input type=\'text\' name=\'description\' class="form-control"\n                       placeholder="Description"\n                       value="'+
 ((__t=( item.get('description') ))==null?'':__t)+
-'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="calories">Calories: </label> <input type=\'text\' name=\'calories\' placeholder="Calories"\n                                                            value="'+
+'"></div>\n        </div>\n        <div class="form-group">\n\n            <label class="col-lg-2 control-label" for="calories">Calories: </label>\n\n            <div class="col-lg-2">\n                <input type=\'text\' name=\'calories\' placeholder="Calories" class="form-control"\n                       value="'+
 ((__t=( item.get('calories') ))==null?'':__t)+
-'"> <br>\n        </div>\n        <div class="form-group">\n            <label for="price">Price: </label> <input type=\'number\' name=\'price\' placeholder=\'0\' required\n                                                      value="'+
+'"></div>\n        </div>\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="price">Price: </label>\n\n            <div class="col-lg-2">\n                <input type=\'number\' name=\'price\' placeholder=\'0\' required class="form-control"\n                       value="'+
 ((__t=( item.get('price') ))==null?'':__t)+
-'"> <br>\n\n        </div>\n        <div class="form-group">\n            <label for="spicy">Spicy: </label> <select name="spicy">\n            <option value="0">0</option>\n            <option value="1">1</option>\n            <option value="2">2</option>\n            <option value="3">3</option>\n        </select>\n            <br>\n\n            <label for="vegetarian">Vegetarian: </label> <select name="vegetarian">\n            <option value="yes">yes</option>\n            <option value="no" selected="selected">no</option>\n        </select>\n        </div>\n        <input type="submit" value="submit">\n    </form>\n</div>';
+'"></div>\n\n        </div>\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="spicy">Spicy: </label>\n\n            <div class="col-lg-2">\n                <select name="spicy" class="form-control">\n                    <option value="0">0</option>\n                    <option value="1">1</option>\n                    <option value="2">2</option>\n                    <option value="3">3</option>\n                </select>\n            </div>\n\n            <label class="col-lg-2 control-label" for="vegetarian">Vegetarian: </label>\n\n            <div class="col-lg-2">\n                <select name="vegetarian" class="form-control">\n                    <option value="yes">yes</option>\n                    <option value="no" selected="selected">no</option>\n                </select>\n            </div>\n\n        </div>\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="enable">Enable: </label>\n\n            <div class="col-lg-2">\n                <select name="enable" class="form-control">\n                    <option value="0">no</option>\n                    <option value="1">yes</option>\n                </select>\n            </div>\n        </div>\n        <div class="form-group">\n            <div class="col-lg-offset-2 col-lg-10">\n                <button type="submit" class="btn btn-default">Submit</button>\n            </div>\n        </div>\n    </form>\n</div>';
 }
 return __p;
 };

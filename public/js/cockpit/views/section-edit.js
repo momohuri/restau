@@ -1,5 +1,5 @@
-define(['namespace', './base-view', '../collections/items', '../models/item','../collections/sections'
-], function (App, BaseView, Items, Item,Sections, undefined) {
+define(['namespace', './base-view', '../collections/items', '../models/item', '../collections/sections'
+], function (App, BaseView, Items, Item, Sections, undefined) {
 
     App.cockpit.views.sectionEdit = BaseView.extend({
 
@@ -24,13 +24,15 @@ define(['namespace', './base-view', '../collections/items', '../models/item','..
 
         initialize: function () {
             _.bindAll(this, 'render');
+            var that = this;
             this.items.bind('add', this.render, this);
+            this.items.bind('change', this.render, this);
             this.item.bind('change', this.render);
             this.render();
         },
 
         render: function (e) {
-            this.$el.html(this.template({sections:this.sections,items: this.items, item: this.item}));
+            this.$el.html(this.template({sections: this.sections, items: this.items, item: this.item}));
         },
 
         newItem: function (e) {
@@ -38,20 +40,30 @@ define(['namespace', './base-view', '../collections/items', '../models/item','..
             var that = this;
             var result = this.getFormData(e);
 
-            result.id = 0;  //todelete
+
+            if (result.id !== '') {
+                this.items.remove(result.id)
+            }  else{
+                result.id = 1;  //todo delete when api
+            }
+
             //  this.item.save(result,{success:function(){
             this.item.set(result);
             this.items.add(that.item.clone());
             //  }});
 
             this.item.clear();
+            this.render();
+
+
         },
 
         editItem: function (e) {
-            this.item.set(this.items.get(e.currentTarget.parentNode.parentNode.dataset.id).attributes);
+            this.item = this.items.get(e.currentTarget.parentNode.parentNode.dataset.id);
+            this.render();
         },
 
-        deleteItem:function(e){
+        deleteItem: function (e) {
             //destroy item
         }
 

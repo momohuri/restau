@@ -1,4 +1,4 @@
-define(['namespace', './base-view', '../collections/sections'
+define(['namespace', './base-view', '../../shared/collections/sections'
 ], function (App, BaseView, Sections, undefined) {
 
     App.cockpit.views.sectionNew = BaseView.extend({
@@ -36,7 +36,7 @@ define(['namespace', './base-view', '../collections/sections'
 
             var that = this;
             this.section.save(data,{success:function(){
-                Backbone.history.navigate('section/'+this.section.id,true);
+                Backbone.history.navigate('cockpit/section/'+this.section.id,true);
             }});
 
 

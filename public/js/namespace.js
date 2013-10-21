@@ -16,6 +16,21 @@ define([], function () {
             routers: {
 
             }
+        },
+
+        client:{
+            views: {
+
+            },
+            models: {
+
+            },
+            collections: {
+
+            },
+            routers: {
+
+            }
         }
 
     };

@@ -1,4 +1,4 @@
-define(['namespace', './base-view', '../collections/items', '../models/item', '../collections/sections'
+define(['namespace', './base-view', '../../shared/collections/items', '../../shared/models/item', '../../shared/collections/sections'
 ], function (App, BaseView, Items, Item, Sections, undefined) {
 
     App.cockpit.views.sectionEdit = BaseView.extend({
@@ -39,7 +39,6 @@ define(['namespace', './base-view', '../collections/items', '../models/item', '.
             e.preventDefault();
             var that = this;
             var result = this.getFormData(e);
-
 
             if (result.id !== '') {
                 this.items.remove(result.id)

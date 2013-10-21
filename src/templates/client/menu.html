@@ -1,0 +1,72 @@
+<form>
+    <div id="menuSections">
+        <% sections.forEach(function(section){ %>
+        <a class="toSection" data-id="<%= section.get('id')%>"><%= section.get('name')%></a> <br>
+        <%});%>
+
+        <button class="animate">See Order</button>
+    </div>
+
+
+    <div id="clientMenu">
+
+        <% sections.forEach(function(section){ %>
+        <a id="<%= section.get('id')%>"><%= section.get('name')%> </a>
+        <table class="table clientMenu">
+            <thead>
+            </thead>
+            <tbody>
+            <% section.get('items').forEach(function(item,i){ %>
+            <tr data-id="<%= item.get('id') %>">
+                <td><%= item.get('name')%> <%= item.get('spicy') %> <%= item.get('vegan') %>
+                </td>
+                <td colspan="2">
+                    <%= item.get('price')%>
+                </td>
+                <td colspan="2">
+                    <select class="orderItem" data-sectionId="<%= section.get('id')%>"
+                            data-itemId="<%= item.get('id') %>">
+                        <% for(var i=0;i<21;i++){ %>
+                        <option value="<%= i %>" <%= item.get('quantity')==i?"selected":true %>> <%= i %></option>
+                        <% } %>
+                    </select>
+                </td>
+            <tr>
+                <td>
+                    <%= item.get('description')%>
+                </td>
+            </tr>
+
+            </tr>
+            <% }); %>
+            </tbody>
+
+        </table>
+        <%});%>
+    </div>
+
+    <div id="right">
+        <div id="animate" class="animate">
+            <
+        </div>
+        <div id="reminder">
+
+            <h3>Already ordered</h3>
+            <% sentOrder.get('items').forEach(function(item){ %>
+            <%= item.get('name') %>   <%= item.get('quantity')%>  <br>
+            <% })%>
+
+            <h3>Current order</h3>
+            <% order.get('items').forEach(function(item){ %>
+            <%= item.get('name') %>   <%= item.get('quantity')%>  <br>
+            <% })%>
+
+
+            <button id="sendOrder"> Send Order </button>
+
+
+
+        </div>
+    </div>
+
+</form>

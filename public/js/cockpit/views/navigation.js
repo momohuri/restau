@@ -1,4 +1,4 @@
-define(['namespace', './base-view', '../collections/menus'
+define(['namespace', './base-view', '../../shared/collections/menus'
 ], function (App, BaseView, Menus, undefined) {
 
     App.cockpit.views.navigation = BaseView.extend({
@@ -35,11 +35,11 @@ define(['namespace', './base-view', '../collections/menus'
         },
 
         toSection: function (e) {
-            Backbone.history.navigate('section/' + e.currentTarget.dataset.id, true);
+            Backbone.history.navigate('cockpit/section/' + e.currentTarget.dataset.id, true);
         },
 
         createNewSection: function () {
-            Backbone.history.navigate('section/new', true);
+            Backbone.history.navigate('cockpit/section/new', true);
         }
 
     });

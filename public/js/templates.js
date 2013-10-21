@@ -1,4 +1,74 @@
 window.restau.tmpl = window.restau.tmpl || {};
+restau.tmpl.client = restau.tmpl.client || {};
+restau.tmpl.client.menu = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<form>\n    <div id="menuSections">\n        ';
+ sections.forEach(function(section){ 
+__p+='\n        <a class="toSection" data-id="'+
+((__t=( section.get('id')))==null?'':__t)+
+'">'+
+((__t=( section.get('name')))==null?'':__t)+
+'</a> <br>\n        ';
+});
+__p+='\n\n        <button class="animate">See Order</button>\n    </div>\n\n\n    <div id="clientMenu">\n\n        ';
+ sections.forEach(function(section){ 
+__p+='\n        <a id="'+
+((__t=( section.get('id')))==null?'':__t)+
+'">'+
+((__t=( section.get('name')))==null?'':__t)+
+' </a>\n        <table class="table clientMenu">\n            <thead>\n            </thead>\n            <tbody>\n            ';
+ section.get('items').forEach(function(item,i){ 
+__p+='\n            <tr data-id="'+
+((__t=( item.get('id') ))==null?'':__t)+
+'">\n                <td>'+
+((__t=( item.get('name')))==null?'':__t)+
+' '+
+((__t=( item.get('spicy') ))==null?'':__t)+
+' '+
+((__t=( item.get('vegan') ))==null?'':__t)+
+'\n                </td>\n                <td colspan="2">\n                    '+
+((__t=( item.get('price')))==null?'':__t)+
+'\n                </td>\n                <td colspan="2">\n                    <select class="orderItem" data-sectionId="'+
+((__t=( section.get('id')))==null?'':__t)+
+'"\n                            data-itemId="'+
+((__t=( item.get('id') ))==null?'':__t)+
+'">\n                        ';
+ for(var i=0;i<21;i++){ 
+__p+='\n                        <option value="'+
+((__t=( i ))==null?'':__t)+
+'" '+
+((__t=( item.get('quantity')==i?"selected":true ))==null?'':__t)+
+'> '+
+((__t=( i ))==null?'':__t)+
+'</option>\n                        ';
+ } 
+__p+='\n                    </select>\n                </td>\n            <tr>\n                <td>\n                    '+
+((__t=( item.get('description')))==null?'':__t)+
+'\n                </td>\n            </tr>\n\n            </tr>\n            ';
+ }); 
+__p+='\n            </tbody>\n\n        </table>\n        ';
+});
+__p+='\n    </div>\n\n    <div id="right">\n        <div id="animate" class="animate">\n            <\n        </div>\n        <div id="reminder">\n\n            <h3>Already ordered</h3>\n            ';
+ sentOrder.get('items').forEach(function(item){ 
+__p+='\n            '+
+((__t=( item.get('name') ))==null?'':__t)+
+'   '+
+((__t=( item.get('quantity')))==null?'':__t)+
+'  <br>\n            ';
+ })
+__p+='\n\n            <h3>Current order</h3>\n            ';
+ order.get('items').forEach(function(item){ 
+__p+='\n            '+
+((__t=( item.get('name') ))==null?'':__t)+
+'   '+
+((__t=( item.get('quantity')))==null?'':__t)+
+'  <br>\n            ';
+ })
+__p+='\n\n\n            <button id="sendOrder"> Send Order </button>\n\n\n\n        </div>\n    </div>\n\n</form>';
+}
+return __p;
+};
 restau.tmpl.cockpit = restau.tmpl.cockpit || {};
 restau.tmpl.cockpit.navigation = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};

@@ -26,9 +26,10 @@ require.config({
 
 require(['jquery', './templates', 'bootstrap','helpers']);
 
-define(['namespace', 'backbone', 'cockpit/routers/router'], function (App, Backbone, cockpitRouter, undefined) {
+define(['namespace', 'backbone', 'cockpit/routers/router', 'client/routers/router'], function (App, Backbone, cockpitRouter,clientRouter, undefined) {
     $(function () {
         App.cockpit.router = new cockpitRouter();
+        App.client.router = new clientRouter();
         Backbone.history.start();
     });
 });

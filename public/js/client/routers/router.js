@@ -1,11 +1,9 @@
-define(['namespace', 'backbone', 'backboneRouteFilter', '../views/navigation', '../views/section-new', '../views/section-edit'],
-    function (App, Backbone, Backbonefilter, Menu, SectionNew, SectionEdit, undefined) {
-        App.cockpit.routers.Router = Backbone.Router.extend({
+define(['namespace', 'backbone', 'backboneRouteFilter','../views/menu'],
+    function (App, Backbone, Backbonefilter,Menu, undefined) {
+        App.client.routers.Router = Backbone.Router.extend({
 
             routes: {
-                'cockpit/section/new': 'createNewSection',
-                'cockpit/section/:id': 'section',
-                'cockpit/*actions': 'index'
+                'client/*actions': 'index'
             },
 
             initialize: function () {
@@ -16,7 +14,6 @@ define(['namespace', 'backbone', 'backboneRouteFilter', '../views/navigation', '
                 $('*').off();
             },
             after: function () {
-
                 //the function will put active the menu selected.
                 // to use give add class menuBasedOnName or menuBasedOnId to the div with the menu
                 // and then add a data-reference with the id or name to each li of the menu
@@ -36,19 +33,7 @@ define(['namespace', 'backbone', 'backboneRouteFilter', '../views/navigation', '
 
             index: function () {
                 new Menu();
-                new SectionNew();
-            },
-
-            section: function (id) {
-                new Menu();
-                new SectionEdit();
-            },
-
-            createNewSection: function () {
-                new Menu();
-                new SectionNew();
             }
-
         });
-        return App.cockpit.routers.Router;
+        return App.client.routers.Router;
     });

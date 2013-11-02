@@ -31,6 +31,6 @@ public class Application extends Controller {
     public static Result section(Integer id) {
         JsonNode result = Json.newObject();
         result = Json.parse("{\"items\":[{\"name\":\"name1\",\"description\":\"myDesc\",\"calories\":\"calories\",\"price\":\"2\",\"spicy\":\"0\",\"vegetarian\":\"yes\",\"enable\":\"yes\"},{\"name\":\"name2\",\"description\":\"\",\"calories\":\"\",\"price\":\"10\",\"spicy\":\"2\",\"vegetarian\":\"no\",\"enable\":\"yes\"}],\"name\":\"myNesction\"}");
-        return ok(sectionEdit.render());
+        return ok(views.html.sectionEdit.render());
     }
 }

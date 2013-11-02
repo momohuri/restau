@@ -1,12 +1,16 @@
 package models.dao;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.DateSerializer;
+import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
 import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
@@ -46,6 +50,8 @@ public class CassandraDataStore extends DataStore {
     protected Properties properties;
     private static String configFilename = System.getProperty("com.mycompany.myproduct.storage.config","storage.conf");
 
+    static StringSerializer stringSerializer = StringSerializer.get();
+    static LongSerializer longSerializer = LongSerializer.get();
 
     protected void init() {
         
@@ -84,6 +90,29 @@ public class CassandraDataStore extends DataStore {
         init();
     }
 
+    @Override
+    public Map<String,String> getAllColumnNameValue(String columnFamily, String rowKey) {
+        Map<String,String> resultSet = new HashMap<String, String>(); 
+        // TODO Auto-generated method stub
+        SliceQuery<String, String, String> sliceQuery = HFactory
+                .createSliceQuery(storageKeyspace, stringSerializer,stringSerializer, stringSerializer);
+        
+        sliceQuery.setColumnFamily(columnFamily);
+        sliceQuery.setKey(rowKey);        
+        sliceQuery.setRange(null, null, false, Integer.MAX_VALUE);
+        
+        QueryResult<ColumnSlice<String, String>> result = sliceQuery.execute();
+
+        if (result != null && result.get() != null) {
+            List<HColumn<String, String>> hColumns = result.get().getColumns();
+            for (HColumn<String, String> hColumn : hColumns) {
+                resultSet.put(hColumn.getName(), hColumn.getValue());
+            }
+            return resultSet;
+        } else
+            return null;
+    }
+    
     @Override
     public String getValue(String columnFamily, String rowKey, String colName) {
         // TODO Auto-generated method stub

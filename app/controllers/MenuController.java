@@ -66,7 +66,7 @@ public class MenuController extends BaseController {
     }
     
     @BodyParser.Of(BodyParser.Json.class)
-    public static Result createMenu() {
+    public static Result createSection() {
         JsonNode  jnode = request().body().asJson();
         if (jnode == null) {
             return invalidJsonData("Expecting Json data");

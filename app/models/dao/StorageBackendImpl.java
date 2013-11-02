@@ -1,5 +1,7 @@
 package models.dao;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -86,6 +88,39 @@ public class StorageBackendImpl implements StorageBackend {
     public String getProperty(String key) {
         // TODO Auto-generated method stub
         return dataStore.getProperty(key);
+    }
+
+    @Override
+    public Map<String, String> getAllColumnNameValue(String table,
+            String rowKey) throws StorageBackendException {
+        // TODO Auto-generated method stub
+        
+        
+        String input = "getAllColumnNameValue() input: table=" + table + " ; rowKey=" +rowKey;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
+            log.error("Null i/p arguments to getAllColumnNameValue(). " + input);
+            throw new StorageBackendException("Null i/p arguments to getAllColumnNameValue(). " + input);
+        }
+        
+        Map<String, String> response = null;
+        try {
+            log.info("Reading data for " + input);
+            response = dataStore.getAllColumnNameValue(table, rowKey);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }
+
+        if (response == null) {
+            // No data found in cassandra
+            log.info("Response is NULL: No data for " + input);
+            return null;
+        }
+
+        log.info("Response = " + response + " for " + input);
+        return response;
     }
     
 

@@ -2,10 +2,15 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+POST    /section         controllers.SectionController.upsertSection()
+PUT     /section         controllers.SectionController.upsertSection()
+GET     /section/:id     controllers.SectionController.getSection(id: String)
+GET     /sections        controllers.SectionController.getAllSections()
+
 # Home page
 GET         /                   controllers.Application.index()
 
-GET         /section/:id        controllers.Application.section(id: Int)
+# GET         /section/:id        controllers.Application.section(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /*file              controllers.Assets.at(path="/public", file)
@@ -16,4 +21,3 @@ GET         /user/:id           controllers.UserController.getUser(id: String)
 
 POST    /user         controllers.UserController.createUser()
 
-POST    /section         controllers.MenuController.createSection()

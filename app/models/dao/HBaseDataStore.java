@@ -1,5 +1,7 @@
 package models.dao;
 
+import java.util.Map;
+
 
 public class HBaseDataStore extends DataStore {
 
@@ -18,6 +20,12 @@ public class HBaseDataStore extends DataStore {
 
     @Override
     public String getProperty(String key) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, String> getAllColumnNameValue(String table, String rowKey) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -57,7 +57,9 @@ __p+='\n            '+
 ((__t=( item.get('quantity')))==null?'':__t)+
 '  <br>\n            ';
  })
-__p+='\n\n            <h3>Current order</h3>\n            ';
+__p+='\n\n            price : '+
+((__t=( sentOrder.get('price')))==null?'':__t)+
+'\n\n            <h3>Current order</h3>\n            ';
  order.get('items').forEach(function(item){ 
 __p+='\n            '+
 ((__t=( item.get('name') ))==null?'':__t)+
@@ -65,7 +67,11 @@ __p+='\n            '+
 ((__t=( item.get('quantity')))==null?'':__t)+
 '  <br>\n            ';
  })
-__p+='\n\n\n            <button id="sendOrder"> Send Order </button>\n\n\n\n        </div>\n    </div>\n\n</form>';
+__p+='\n            ';
+ debugger  
+__p+='\n            price : '+
+((__t=( order.get('price')))==null?'':__t)+
+'\n\n\n            <button id="sendOrder"> Send Order </button>\n\n\n\n        </div>\n    </div>\n\n</form>';
 }
 return __p;
 };
@@ -81,7 +87,7 @@ __p+='\n                        <li><a class="toSection" data-id="'+
 ((__t=( menu.get('name') ))==null?'':__t)+
 '</a></li>\n                        ';
  }); 
-__p+='\n                    </ul>\n                </li>\n                <li data-reference="createNewSection"><a id="createNewSection">createNewSection</a></li>\n                <li data-reference="contact"><a href="#contact">Contact</a></li>\n            </ul>\n        </div>\n    </div>\n</div>\n\n<div id="content" class="container"></div>';
+__p+='\n                    </ul>\n                </li>\n                <li data-reference="currentOrders"><a id="currentOrders">Current orders</a></li>\n                <li data-reference="contact"><a href="#contact">Contact</a></li>\n            </ul>\n        </div>\n    </div>\n</div>\n\n<div id="content" class="container"></div>';
 }
 return __p;
 };

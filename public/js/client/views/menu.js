@@ -96,6 +96,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
             if (target.value != 0) {
                 item.set('quantity', target.value);
                 this.order.get('items').add(item);
+                this.order.setPrice();
             } else if (target.value == 0) {
                 this.order.get('items').remove(target.dataset.itemid)
             } else {
@@ -113,10 +114,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
                 that.sections.forEach(function (item) {
                     item.get('items').put("quantity", 0);
                 });
-
-
                 that.order.get('items').reset();
-
                 that.toggle = 1;// we render so the reminder will have the default place
             });
         },

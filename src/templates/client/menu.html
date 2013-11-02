@@ -56,10 +56,14 @@
             <%= item.get('name') %>   <%= item.get('quantity')%>  <br>
             <% })%>
 
+            price : <%= sentOrder.get('price')%>
+
             <h3>Current order</h3>
             <% order.get('items').forEach(function(item){ %>
             <%= item.get('name') %>   <%= item.get('quantity')%>  <br>
             <% })%>
+            <% debugger  %>
+            price : <%= order.get('price')%>
 
 
             <button id="sendOrder"> Send Order </button>

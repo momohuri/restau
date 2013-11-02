@@ -13,7 +13,8 @@ define(['namespace', './base-view', '../../shared/collections/menus'
 
         events: {
             'click .toSection': 'toSection',
-            'click .newSection': 'createNewSection'
+            'click .newSection': 'createNewSection',
+            'click #currentOrders':'toOrders'
 
         },
 
@@ -40,6 +41,9 @@ define(['namespace', './base-view', '../../shared/collections/menus'
 
         createNewSection: function () {
             Backbone.history.navigate('cockpit/section/new', true);
+        } ,
+        toOrders:function(){
+            Backbone.history.navigate('cockpit/orders',true);
         }
 
     });

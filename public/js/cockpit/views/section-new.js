@@ -21,7 +21,11 @@ define(['namespace', './base-view', '../../shared/collections/sections'
 
             _.bindAll(this, 'render');
 
-            this.render();
+            this.sections.fetch({
+                success:function(){
+                    that.render();
+                }
+            })
 
         },
 

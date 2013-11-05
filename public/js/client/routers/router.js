@@ -1,5 +1,5 @@
-define(['namespace', 'backbone', 'backboneRouteFilter','../views/menu'],
-    function (App, Backbone, Backbonefilter,Menu, undefined) {
+define(['namespace', 'backboneRouteFilter','../views/menu'],
+    function (App, Backbonefilter,Menu, undefined) {
         App.client.routers.Router = Backbone.Router.extend({
 
             routes: {

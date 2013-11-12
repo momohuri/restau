@@ -1,5 +1,5 @@
-define(['namespace', 'backbone', 'backboneRouteFilter', '../views/navigation', '../views/section-new', '../views/section-edit','../views/orders'],
-    function (App, Backbone, Backbonefilter, Menu, SectionNew, SectionEdit,Orders, undefined) {
+define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/section-new', '../views/section-edit','../views/orders'],
+    function (App, Backbonefilter, Menu, SectionNew, SectionEdit,Orders, undefined) {
         App.cockpit.routers.Router = Backbone.Router.extend({
 
             routes: {

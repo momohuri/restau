@@ -17,7 +17,6 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
                 $('*').off();
             },
             after: function () {
-
                 //the function will put active the menu selected.
                 // to use give add class menuBasedOnName or menuBasedOnId to the div with the menu
                 // and then add a data-reference with the id or name to each li of the menu
@@ -32,7 +31,7 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
                     }
                 }
                 activeNav('.menuBasedOnName');
-                activeNav('.menuBasedOnId')
+                activeNav('.menuBasedOnId');
             },
 
             index: function () {

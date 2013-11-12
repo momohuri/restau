@@ -1,5 +1,5 @@
-define(['namespace', './base-view', '../../shared/collections/sections'
-], function (App, BaseView, Sections, undefined) {
+define(['namespace', './base-view', '../../shared/collections/sections','../../shared/models/section'
+], function (App, BaseView, Sections, Section, undefined) {
 
     App.cockpit.views.sectionNew = BaseView.extend({
 
@@ -12,6 +12,8 @@ define(['namespace', './base-view', '../../shared/collections/sections'
             {name: 'section1', id: 1},
             {name: 'section2', id: 2}
         ]),
+
+        section: new Section(),
         events: {
             'submit #createNewSectionForm': 'newSection'
         },
@@ -31,6 +33,7 @@ define(['namespace', './base-view', '../../shared/collections/sections'
 
         render: function (e) {
             this.$el.html(this.template({sections:this.sections}));
+            this.activeNav('.menuBasedOnId');
         },
 
         newSection: function (e) {
@@ -40,7 +43,7 @@ define(['namespace', './base-view', '../../shared/collections/sections'
 
             var that = this;
             this.section.save(data,{success:function(){
-                Backbone.history.navigate('cockpit/section/'+this.section.id,true);
+                Backbone.history.navigate('cockpit/section/'+that.section.id,true);
             }});
 
 

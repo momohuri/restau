@@ -2,7 +2,7 @@ define(['namespace', './base-collection','../models/order'],
     function (App, BaseCollection,Order, undefined) {
         App.cockpit.collections.orders = BaseCollection.extend({
 
-            url: '/',
+            url: '/orders',
 
             model : Order,
 

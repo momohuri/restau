@@ -4,7 +4,7 @@
         <li data-reference="<%= section.get('id') %>"><a class="toSection" data-id="<%= section.get('id') %>"><%=
             section.get('name') %></a></li>
         <% }); %>
-        <li data-reference="new"><a class="newSection">New Section</a></li>
+        <li data-reference="manage"><a class="manageSections">Manage Sections</a></li>
 
     </ul>
 </div>
@@ -31,17 +31,17 @@
                 <%= item.get('price')%>
             </td>
             <td>
-                <%= item.get('enable')===0 ? "no":"yes" %>
+                <%= item.get('enable')===0 ? "yes":"no" %>
             </td>
 
-            <td><input type="button" value="edit" class="edit"></td>
-            <td><input type="button" value="delete" class="deleteItem">
+            <td><input type="button" value="edit" class="edit btn"></td>
+            <td><input type="button" value="delete" class="deleteItem btn-danger">
             <td>
         </tr>
         <% }); %>
         </tbody>
     </table>
-
+    <button class="btn btn-success" id="saveRankDisplay">Save Rank Display</button>
 
     <form id="newItem" role="form" class="form-horizontal">
         <input type="hidden" name="id" value="<%= item.get('id') %>">

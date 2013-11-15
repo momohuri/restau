@@ -48,9 +48,9 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
                 new manageSections();
             },
 
-            orders: function(){
+            orders: function(action){
                 new Menu();
-                new Orders();
+                new Orders({action:action});
             }
 
         });

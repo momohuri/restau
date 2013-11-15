@@ -1,4 +1,4 @@
-define(['namespace', './base-view','../../shared/collections/orders'
+define(['namespace', './base-view', '../../shared/collections/orders'
 ], function (App, BaseView, Orders, undefined) {
 
     App.cockpit.views.orders = BaseView.extend({
@@ -9,27 +9,37 @@ define(['namespace', './base-view','../../shared/collections/orders'
 
 
         events: {
-            'click .navigation':'navigation'
+            'click .navigation': 'navigation'
         },
 
-        orders : new Orders(),
+        orders: new Orders(),
 
-        initialize: function () {
+        initialize: function (param) {
             var that = this;
             _.bindAll(this, 'render');
+
+
+            this.orders.fetch({
+                data:{
+                    q:param.action
+                },
+                success: function () {
+                    //that.render();
+                }
+            });
+
             this.render();
+
         },
 
         render: function (e) {
-            this.$el.html(this.template({orders:this.orders}));
+            this.$el.html(this.template({orders: this.orders}));
             this.activeNav('.menuBasedOnName');
-        } ,
+        },
 
-        navigation:function(e){
-            Backbone.history.navigate('cockpit/orders/' +$(e.currentTarget)[0].id,true);
+        navigation: function (e) {
+            Backbone.history.navigate('cockpit/orders/' + $(e.currentTarget)[0].id, true);
         }
-
-
 
     });
     return  App.cockpit.views.orders;

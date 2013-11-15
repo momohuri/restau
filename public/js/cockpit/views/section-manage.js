@@ -50,10 +50,9 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             }});
         },
 
-        saveOrder:function(){
-            var order = $('tbody tr').map(function(index,item){ return item.dataset.id });
+        saveRankDisplay:function(){
+            var order = _.map($('tbody tr'),function(item,index){ return {id : item.dataset.id,rankOrder:index}});
             this.sections.sendRankDisplay(order);
-
         },
 
         editItem: function (e) {

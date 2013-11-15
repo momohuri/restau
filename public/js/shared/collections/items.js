@@ -1,10 +1,12 @@
-define(['namespace', './base-collection','../models/item'],
-    function (App, BaseCollection,Item, undefined) {
+define(['namespace', './base-collection', '../models/item'],
+    function (App, BaseCollection, Item, undefined) {
         App.cockpit.collections.items = BaseCollection.extend({
 
-            url: '/items',
+            url: function(){
+                return 'sections/' + this.at(0).get('sectionId') + '/items'
+            },
 
-            model:Item,
+            model: Item,
 
             defaults: {
                 created_at: new Date()

@@ -1,9 +1,9 @@
-define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/section-new', '../views/section-edit','../views/orders'],
-    function (App, Backbonefilter, Menu, SectionNew, SectionEdit,Orders, undefined) {
+define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/section-manage', '../views/section-edit','../views/orders'],
+    function (App, Backbonefilter, Menu, manageSection, SectionEdit,Orders, undefined) {
         App.cockpit.routers.Router = Backbone.Router.extend({
 
             routes: {
-                'cockpit/section/new': 'createNewSection',
+                'cockpit/section/manageSection': 'manageSection',
                 'cockpit/section/:id': 'section',
                 'cockpit/orders':'orders',
                 'cockpit/*actions': 'index'
@@ -44,9 +44,9 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
                 new SectionEdit();
             },
 
-            createNewSection: function () {
+            manageSection: function () {
                 new Menu();
-                new SectionNew();
+                new manageSection();
             },
 
             orders: function(){

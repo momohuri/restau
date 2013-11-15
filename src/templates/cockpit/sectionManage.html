@@ -1,0 +1,57 @@
+<div class="menuBasedOnId">
+    <ul class="nav nav-tabs">
+        <% sections.forEach(function(section){ %>
+        <li data-reference="<%= section.get('id') %>"><a class="toSection" data-id="<%= section.get('id') %>"><%=
+            section.get('name') %></a></li>
+        <% }); %>
+        <li data-reference="manageSection"><a class="manageSection">Manage Section</a></li>
+
+    </ul>
+</div>
+
+
+<div>
+    <table class="table">
+        <thead>
+
+        <tr>
+            <th>Name</th>
+            <th> Description</th>
+            <th> Enable</th>
+            <th> Edit</th>
+            <th> Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% sections.forEach(function(section){ %>
+        <tr data-id="<%= section.get('id') %>">
+            <td><%= section.get('name')%>
+            </td>
+            <td>
+                <%= section.get('description')%>
+            </td>
+            <td>
+                <%= section.get('enable')===0 ? "yes":"no" %>
+            </td>
+
+            <td><input type="button" value="edit" class="edit btn"></td>
+            <td><input type="button" value="delete" class="deleteItem btn-danger">
+            <td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <button class="btn btn-success" id="saveRankDisplay">Save rank display</button>
+</div>
+
+<div>
+    <form id="createNewSectionForm">
+        <br>
+        <label for="name">Name : </label>
+        <input id="name" name="name" type="text" placeholder="Section Name">
+
+
+        <input type="submit" class="btn" value="submit">
+    </form>
+
+</div>

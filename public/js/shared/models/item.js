@@ -2,7 +2,7 @@ define(['namespace', './base-model'],
     function (App, BaseModel, undefined) {
         App.cockpit.models.item = BaseModel.extend({
 
-            url: '/item',
+            urlRoot: '/item',
 
             defaults: {
                 created_at: new Date()

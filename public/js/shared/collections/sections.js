@@ -10,27 +10,25 @@ define(['namespace', './base-collection','../models/section'],
             initialize: function () {
 
 
+            },
+
+            sendRankDisplay:function(order,next){
+                debugger
+                $.ajax({
+                    type: "PUT",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: 'section/'+ +'items',
+                    data: order,
+                    success: function (id) {
+
+
+                    },
+                    error: function (e) {
+                        console.log('error : ', e);
+                    }
+                });
             }
-        },
-            {
-                sendOrder:function(order,next){
-                    $.ajax({
-                        type: verb,
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'json',
-                        url: url,
-                        data: order,
-                        success: function (id) {
-                            if (model.get('id') === undefined) model.set('id', id);
-                            options.success(model, model.attributes, options);
-
-                        },
-                        error: function (e) {
-                            console.log('error : ', e);
-                        }
-                    });
-                }
-            });
-
+        });
          return  App.cockpit.collections.sections;
     });

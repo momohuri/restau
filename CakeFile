@@ -7,13 +7,50 @@ _.str           = require 'underscore.string';
 PATH_TO_SRC     = 'src'
 PATH_TO_PUBLIC  = 'public'
 
+namespace = "define([], function () {
+window.restau = window.restau || {
+apps: {
+
+},
+cockpit:{
+  views: {
+
+  },
+  models: {
+
+  },
+  collections: {
+
+  },
+  routers: {
+
+  }
+},
+
+client:{
+  views: {
+
+  },
+  models: {
+
+  },
+  collections: {
+
+  },
+  routers: {
+
+  }
+}
+
+};"
+
 path_to_js_output       = "#{PATH_TO_PUBLIC}/js"
 path_to_css_output      = "#{PATH_TO_PUBLIC}/css"
 path_to_template_output = "#{path_to_js_output}/templates.js"
-      
+
 task 'watch:l', 'build Less files', (file) ->
   path_to_src = "#{PATH_TO_SRC}/styles"
-      
+
   watch.watchTree path_to_src, () ->
     fs.readdir path_to_src, (err, files) ->
       _.each files, (file) ->
@@ -24,16 +61,17 @@ task 'watch:l', 'build Less files', (file) ->
               console.error "ERROR: #{err} || #{stdout} || #{stderr}"
             else
               console.log "lessc: compiling #{file}"
-              
+
 task 'watch:t', 'build templates', (options) ->
   path_to_src = "#{PATH_TO_SRC}/templates"
   tmpl_namespace = options.namespace or= 'restau.tmpl'
 
   watch.watchTree path_to_src, () ->
     templates = """
-        window.#{tmpl_namespace} = window.#{tmpl_namespace} || {};\n
-    """
-    
+    #{namespace}
+                window.#{tmpl_namespace} = window.#{tmpl_namespace} || {};\n
+                """
+
     parseDirectory = (directory, prefix) ->
       filesOrDirectories = fs.readdirSync directory
 
@@ -45,8 +83,8 @@ task 'watch:t', 'build templates', (options) ->
           tmpl = fs.readFileSync fullpath, 'utf-8'
 
           # grab the identifier from the path
-          identifier = fullpath.replace /^src\/templates\/(.+).html/, () -> 
-            arguments[1].replace(/\//g, '.').replace /(-.)/g, () -> 
+          identifier = fullpath.replace /^src\/templates\/(.+).html/, () ->
+            arguments[1].replace(/\//g, '.').replace /(-.)/g, () ->
               arguments[0].substring(1).toUpperCase()
 
           # test for additional namespaces in the identifer
@@ -67,9 +105,10 @@ task 'watch:t', 'build templates', (options) ->
           # compile the template  
           template = _.template(tmpl).source
           templates += "#{tmpl_namespace}.#{identifier} = #{template};\n"
-    
-    parseDirectory path_to_src
 
+
+    parseDirectory path_to_src
+    templates += "    return window.restau;  });"
     fs.writeFile path_to_template_output, templates, (err) ->
       if err
         console.error "ERROR #{err}"

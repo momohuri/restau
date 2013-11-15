@@ -13,7 +13,7 @@ define(['namespace', './base-view', '../../shared/collections/menus'
 
         events: {
             'click .toSection': 'toSection',
-            'click .manageSection': 'manageSection',
+            'click .manageSections': 'manageSections',
             'click #currentOrders':'toOrders'
 
         },
@@ -39,8 +39,8 @@ define(['namespace', './base-view', '../../shared/collections/menus'
             Backbone.history.navigate('cockpit/section/' + e.currentTarget.dataset.id, true);
         },
 
-        manageSection: function () {
-            Backbone.history.navigate('cockpit/section/manageSection', true);
+        manageSections: function () {
+            Backbone.history.navigate('cockpit/section/manageSections', true);
         } ,
         toOrders:function(){
             Backbone.history.navigate('cockpit/orders',true);

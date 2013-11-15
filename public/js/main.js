@@ -3,11 +3,11 @@ require.config({
         'jquery': 'vendor/jquery/jquery.min',
         'underscore': 'vendor/underscore-amd/underscore',
         'Backbone': 'vendor/backbone',
-        'namespace': 'namespace',
+        'namespace': './templates',
         'helpers': 'helpers/mainHelper',
         'backboneRouteFilter': 'vendor/backbone.routefilter',
         'bootstrap': 'vendor/bootstrap.min',
-        'jqueryUI':'vendor/jquery-ui-1.10.3.custom.min'
+        'jqueryUI': 'vendor/jquery-ui-1.10.3.custom.min'
     },
     shim: {
         'Backbone': {
@@ -22,15 +22,15 @@ require.config({
             deps: ['Backbone'],
             exports: 'backboneRouteFilter'
         },
-        'jqueryUI':{
-            deps:['jquery']
+        'jqueryUI': {
+            deps: ['jquery']
         }
     }
 });
 
-//require(['jquery', './templates', 'bootstrap','helpers']);
+require(['Backbone', './templates', 'jqueryUI']);
 
-define(['namespace', 'Backbone', 'cockpit/routers/router','client/routers/router','./templates','jqueryUI'], function (App, Backbone, cockpitRouter,clientRouter, undefined) {
+define(['namespace', 'cockpit/routers/router', 'client/routers/router'], function (App, cockpitRouter, clientRouter, undefined) {
     $(function () {
         App.cockpit.router = new cockpitRouter();
         App.client.router = new clientRouter();

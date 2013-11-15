@@ -150,8 +150,16 @@ public class SectionController extends BaseController {
 
         try {
             for (String sectionJson : sectionMapJson.values()) {
+                /*
+                 * TODO : Need to ensure that the Section is not disabled/deleted
+                 * before you add that to the sections List.
+                 */
                 sections.add(JsonUtils.getObject(sectionJson, Section.class));
             }
+            
+            /*
+             * TODO : Sort the Sections based on displayrank
+             */
 
             JsonNode jsonResponse = JsonUtils.getJsonWithException(sections);
             setCORS();

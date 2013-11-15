@@ -47,8 +47,28 @@
 <div>
     <form id="createNewSectionForm">
         <br>
-        <label for="name">Name : </label>
-        <input id="name" name="name" type="text" placeholder="Section Name">
+        <div class="form-group">
+
+            <label class="col-lg-2 control-label" for="name">Name: </label>
+
+            <div class="col-lg-2">
+                <input type='text' name='name' placeholder="Section Name" class="form-control"
+                       value="<%= item.get('name') %>"></div>
+        </div>
+
+        <label for="description">Description : </label>
+        <input id="description" name="description" type="text" placeholder="Section description">
+
+        <div class="form-group">
+            <label  for="enable">Enable: </label>
+
+            <div>
+                <select name="enable" id="enable" class="form-control">
+                    <option value="0">no</option>
+                    <option value="1">yes</option>
+                </select>
+            </div>
+        </div>
 
 
         <input type="submit" class="btn" value="submit">

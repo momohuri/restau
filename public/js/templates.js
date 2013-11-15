@@ -165,7 +165,9 @@ __p+='\n        <tr data-id="'+
 ((__t=( section.get('enable')===0 ? "yes":"no" ))==null?'':__t)+
 '\n            </td>\n\n            <td><input type="button" value="edit" class="edit btn"></td>\n            <td><input type="button" value="delete" class="deleteItem btn-danger">\n            <td>\n        </tr>\n        ';
  }); 
-__p+='\n        </tbody>\n    </table>\n    <button class="btn btn-success" id="saveRankDisplay">Save rank display</button>\n</div>\n\n<div>\n    <form id="createNewSectionForm">\n        <br>\n        <label for="name">Name : </label>\n        <input id="name" name="name" type="text" placeholder="Section Name">\n\n\n        <input type="submit" class="btn" value="submit">\n    </form>\n\n</div>\n';
+__p+='\n        </tbody>\n    </table>\n    <button class="btn btn-success" id="saveRankDisplay">Save rank display</button>\n</div>\n\n<div>\n    <form id="createNewSectionForm">\n        <br>\n        <div class="form-group">\n\n            <label class="col-lg-2 control-label" for="name">Name: </label>\n\n            <div class="col-lg-2">\n                <input type=\'text\' name=\'name\' placeholder="Section Name" class="form-control"\n                       value="'+
+((__t=( item.get('name') ))==null?'':__t)+
+'"></div>\n        </div>\n\n        <label for="description">Description : </label>\n        <input id="description" name="description" type="text" placeholder="Section description">\n\n        <div class="form-group">\n            <label  for="enable">Enable: </label>\n\n            <div>\n                <select name="enable" id="enable" class="form-control">\n                    <option value="0">no</option>\n                    <option value="1">yes</option>\n                </select>\n            </div>\n        </div>\n\n\n        <input type="submit" class="btn" value="submit">\n    </form>\n\n</div>\n';
 }
 return __p;
 };

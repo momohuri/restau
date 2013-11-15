@@ -43,7 +43,7 @@ define(['namespace', './base-view', '../../shared/collections/menus'
             Backbone.history.navigate('cockpit/section/manageSections', true);
         } ,
         toOrders:function(){
-            Backbone.history.navigate('cockpit/orders',true);
+            Backbone.history.navigate('cockpit/orders/currentOrders',true);
         }
 
     });

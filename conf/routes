@@ -8,7 +8,7 @@ GET     /section/:id     controllers.SectionController.getSection(id: String)
 GET     /sections        controllers.SectionController.getAllSections()
 
 # Home page
-GET         /                   controllers.Application.index()
+GET		/							controllers.Assets.at(path="/public", file="index.html")
 
 # GET         /section/:id        controllers.Application.section(id: Int)
 

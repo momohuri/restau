@@ -1,4 +1,5 @@
 require.config({
+    baseUrl: 'js',
     paths: {
         'jquery': 'vendor/jquery/jquery.min',
         'underscore': 'vendor/underscore-amd/underscore',
@@ -28,9 +29,9 @@ require.config({
     }
 });
 
-require(['Backbone', './templates', 'jqueryUI']);
+//require(['Backbone', './templates', 'jqueryUI']);
 
-define(['namespace', 'cockpit/routers/router', 'client/routers/router'], function (App, cockpitRouter, clientRouter, undefined) {
+require(['Backbone', 'jqueryUI', 'namespace', 'cockpit/routers/router', 'client/routers/router'], function (Backbone, $UI, App, cockpitRouter, clientRouter, undefined) {
     $(function () {
         App.cockpit.router = new cockpitRouter();
         App.client.router = new clientRouter();

@@ -1,14 +1,21 @@
 <div class="list-group">
 
+    <div class="menuBasedOnName">
+        <ul class="nav nav-tabs">
+            <li data-reference="currentOrders"><a id="currentOrders" class="navigation">Current Orders</a></li>
+            <li data-reference="toPayOrders"><a id="toPayOrders" class="navigation">Orders waiting for payment</a></li>
+            <li data-reference="paidOrders"><a id="paidOrders" class="navigation">Orders paid</a></li>
+        </ul>
+    </div>
+
+
     <%orders.forEach(function(order,i){%>
+    <a href="#" class="list-group-item <%= i===1?'active':''%>">
+        <h4 class="list-group-item-heading">Order One</h4>
+        <span>Status :  <%= order.get('status') %></span>
 
-        <a href="#" class="list-group-item <%= i===1?'active':''%>">
-            <h4 class="list-group-item-heading">Order One</h4>
-            <span>Status :  <%= order.get('status') %></span>
-
-            <p class="list-group-item-text"></p>
-        </a>
-
+        <p class="list-group-item-text"></p>
+    </a>
     <%})%>
 
 </div>

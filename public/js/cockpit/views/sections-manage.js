@@ -19,7 +19,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             'submit #createNewSectionForm': 'newSection',
             'click .edit': 'editItem',
             'click .deleteItem': 'deleteItem',
-            'click #saveRankDisplay' : 'saveRankDisplay'
+            'click #saveRankDisplay': 'saveRankDisplay'
         },
 
         initialize: function () {
@@ -50,8 +50,10 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             }});
         },
 
-        saveRankDisplay:function(){
-            var order = _.map($('tbody tr'),function(item,index){ return {id : item.dataset.id,rankOrder:index}});
+        saveRankDisplay: function () {
+            var order = _.map($('tbody tr'), function (item, index) {
+                return {id: item.dataset.id, rankOrder: index}
+            });
             this.sections.sendRankDisplay(order);
         },
 
@@ -62,7 +64,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
 
         deleteItem: function (e) {
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
-            this.section.destroy(function(){
+            this.section.destroy(function () {
 
             });
             //destroy item

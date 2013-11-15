@@ -5,7 +5,7 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
             routes: {
                 'cockpit/section/manageSections': 'manageSections',
                 'cockpit/section/:id': 'section',
-                'cockpit/orders':'orders',
+                'cockpit/orders/*action':'orders',
                 'cockpit/*actions': 'index'
             },
 
@@ -35,7 +35,7 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
             },
 
             index: function () {
-                Backbone.history.navigate('cockpit/section/manageSections')
+                Backbone.history.navigate('cockpit/section/manageSections',true);
             },
 
             section: function (id) {

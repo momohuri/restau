@@ -1,7 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,7 +12,9 @@ import models.dao.StorageBackend;
 import models.dao.StorageBackendImpl;
 import models.entities.Item;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +67,7 @@ public class MenuController extends BaseController {
         
         Item item = null;
         try {
-            item =  JsonUtils.getObjectWithException(jnode.toString(), Item.class);
+            item =  JsonUtils.getObjectWithException(jnode, Item.class);
         } catch (Exception e) {
             log.error(e.getMessage(),e);
             log.error("Returning BadRequest : Invalid Json data.");
@@ -196,6 +201,138 @@ public class MenuController extends BaseController {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 
         }
+    }
+    
+    public static Result deleteItem(String sectionId, String itemId) {
+
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO : Ensure that the Cockpit is deleting the item in the section that he owns for his restaurant only.
+         * 
+         */
+        
+        if (StringUtils.isEmpty(sectionId) || StringUtils.isEmpty(itemId)) {
+            return badRequest("id can't be null/empty");
+        }
+
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Item item = new Item();
+        item.setId(itemId);
+        item.setDeleted(true);
+        item.setUpdatedAt(new Date());
+        
+        try {
+
+            JsonNode itemJson = JsonUtils.getJson(item);
+            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            compositeColumn.put(item.getId(), itemJson);
+            sb.putValue(ColFamily_Menu, sectionId, compositeColumn);
+            
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+
+        try {
+            // Item item = JsonUtils.getObjectWithException(itemJson.toString(), Item.class);
+            setCORS();
+            return ok("Success");
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+
+    }
+    
+    public static Result getItem(String sectionId, String itemId) {
+
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO : Ensure that the Cockpit is getting the item in the section that he owns for his restaurant only.
+         * 
+         */
+        
+        if (StringUtils.isEmpty(sectionId) || StringUtils.isEmpty(itemId)) {
+            return badRequest("id can't be null/empty");
+        }
+
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        ObjectNode itemJson = null;
+        
+        try {
+
+            itemJson = sb.getCompositeValues(ColFamily_Menu, sectionId, itemId);
+
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+
+        if (itemJson == null) {
+            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
+                    null);
+        }
+
+        try {
+            // Item item = JsonUtils.getObjectWithException(itemJson.toString(), Item.class);
+            setCORS();
+            return ok(itemJson);
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+
+    }
+    
+    public static Result getBulkItems(String sectionId) {
+
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO : Ensure that the Cockpit is getting the item in the section that he owns for his restaurant only.
+         * 
+         */
+        
+        if (StringUtils.isEmpty(sectionId)) {
+            return badRequest("id can't be null/empty");
+        }
+
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Map<String, ObjectNode> itemsJson = null;
+        
+        try {
+
+            itemsJson = sb.getAllCompositeValues(ColFamily_Menu, sectionId);
+
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+
+        if (itemsJson == null) {
+            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
+                    null);
+        }
+
+        try {
+            List<Item> items = new ArrayList<Item>();
+            for (ObjectNode json : itemsJson.values()) {
+                Item item = JsonUtils.getObject(json, Item.class);
+                if (Boolean.FALSE.equals(item.getDeleted())) {
+                    items.add(item);
+                }
+            }
+            Collections.sort(items, Item.ItemDisplayRankComparator);
+            setCORS();
+            JsonNode jsonResponse = JsonUtils.getJsonWithException(items);
+            return ok(jsonResponse);
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+
     }
     
 

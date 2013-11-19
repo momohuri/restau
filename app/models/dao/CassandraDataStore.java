@@ -1,5 +1,6 @@
 package models.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,10 +32,16 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
+import models.entities.Item;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import utils.JsonUtils;
 
 import conf.ApplicationConfig;
 
@@ -49,6 +56,7 @@ public class CassandraDataStore extends DataStore {
     protected String clusterHosts;
     protected String keyspace;
 
+    protected ObjectMapper mapper = new ObjectMapper();
 
     protected Properties properties;
     private static String configFilename = System.getProperty("com.mycompany.myproduct.storage.config","storage.conf");
@@ -113,7 +121,7 @@ public class CassandraDataStore extends DataStore {
         Map<String,String> resultSet = new HashMap<String, String>(); 
         // TODO Auto-generated method stub
         SliceQuery<String, String, String> sliceQuery = HFactory
-                .createSliceQuery(storageKeyspace, stringSerializer,stringSerializer, stringSerializer);
+                .createSliceQuery(storageKeyspace, stringSerializer, stringSerializer, stringSerializer);
         
         sliceQuery.setColumnFamily(columnFamily);
         sliceQuery.setKey(rowKey);        
@@ -145,6 +153,85 @@ public class CassandraDataStore extends DataStore {
         } else
             return null;
     }
+    
+    public ObjectNode getCompositeValues(String columnFamily, String rowKey, String compositeName) {
+        ObjectNode json = JsonNodeFactory.instance.objectNode();
+        
+        SliceQuery<String, Composite, String> sliceQuery = HFactory
+                .createSliceQuery(storageKeyspace,
+                        stringSerializer, new CompositeSerializer(),
+                        stringSerializer);
+        sliceQuery.setColumnFamily(columnFamily);
+        sliceQuery.setKey(rowKey);
+
+        Composite startRange = new Composite();
+        startRange.addComponent(0, compositeName, ComponentEquality.EQUAL);
+
+        Composite endRange = new Composite();
+        endRange.addComponent(0, compositeName, ComponentEquality.GREATER_THAN_EQUAL);
+
+        sliceQuery.setRange(startRange, endRange, false, Integer.MAX_VALUE);
+
+        QueryResult<ColumnSlice<Composite, String>> result = sliceQuery
+                .execute();
+        ColumnSlice<Composite, String> cs = result.get();
+        for (HColumn<Composite, String> col : cs.getColumns()) {
+            /*
+             * Note : String key1 is same as compositeName given to this method.
+             */
+            String key2 = col.getName().get(1, stringSerializer);
+
+            String value = col.getValue();
+            JsonNode valueJson = JsonUtils.getObject(value, JsonNode.class);
+            
+            json.put(key2, valueJson);
+            
+        }
+
+        return json;
+    }
+    
+    public Map<String, ObjectNode> getAllCompositeValues(String columnFamily, String rowKey) {
+        Map<String, ObjectNode> result = new HashMap<String, ObjectNode>();
+        
+        SliceQuery<String, Composite, String> sliceQuery = HFactory
+                .createSliceQuery(storageKeyspace, stringSerializer, new CompositeSerializer(), stringSerializer);
+        sliceQuery.setColumnFamily(columnFamily);
+        sliceQuery.setKey(rowKey);
+        
+        sliceQuery.setRange(null, null, false, Integer.MAX_VALUE);
+
+        String key1, key2, value;
+        ObjectNode key1Json;
+        JsonNode valueJson;
+        
+        QueryResult<ColumnSlice<Composite, String>> queryResult = sliceQuery.execute();
+        ColumnSlice<Composite, String> cs = queryResult.get();
+        for (HColumn<Composite, String> col : cs.getColumns()) {
+            key1 = col.getName().get(0, stringSerializer);
+            key2 = col.getName().get(1, stringSerializer);
+            value = col.getValue();
+
+            valueJson = null;
+            if (value != null) {
+                valueJson = JsonUtils.getObject(value, JsonNode.class);
+            }
+            
+            key1Json = result.get(key1);
+            if (key1Json == null) {
+                key1Json = JsonNodeFactory.instance.objectNode();
+            }
+            
+            if (key2 != null) {
+                key1Json.put(key2, valueJson);
+            }
+            
+            result.put(key1, key1Json);
+        }
+
+        return result;
+    }
+
     
     // NOT BEING USED.
     public String getVersionValue(String table, String rowKey, Date d,
@@ -304,8 +391,34 @@ public class CassandraDataStore extends DataStore {
     }
 
     public static void main(String[] args) {
+        /*
+         * set Menu['11']['2:b'] = '"v4"'; 
+         * Data : 1:a:v1 , 1:b:v2 , 2:a:v3 , 2:b:v4 , 3:a:v5 , 3:b:v6 
+         */
+        JsonNode result = null;
         CassandraDataStore ds = new CassandraDataStore("RestauLocalCluster", "127.0.0.1:9160", "RestauLocal");
         
+        result = ds.getCompositeValues("Menu", "11", "1");
+        System.out.println(result);
+
+        result = ds.getCompositeValues("Menu", "102", "94d10f8e-a92f-432d-aeb3-50943f78eb28");
+        Item i = JsonUtils.getObject(result.toString(), Item.class);
+        System.out.println(i.getId());
+        
+        Map<String, ObjectNode> result2 = null;
+        result2 = ds.getAllCompositeValues("Menu", "11");
+        System.out.println(result2);
+
+        List<Item> items = new ArrayList<Item>();
+        result2 = ds.getAllCompositeValues("Menu", "101");
+        System.out.println(result2);
+        for (Map.Entry<String, ObjectNode> entry : result2.entrySet()) {
+            //String key1 = entry.getKey();
+            ObjectNode n1 = entry.getValue();
+            items.add(JsonUtils.getObject(n1.toString(), Item.class));
+            
+        }
+        System.out.println(items);
     }
 
 }

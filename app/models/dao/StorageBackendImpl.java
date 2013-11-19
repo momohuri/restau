@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +97,6 @@ public class StorageBackendImpl implements StorageBackend {
             String rowKey) throws StorageBackendException {
         // TODO Auto-generated method stub
         
-        
         String input = "getAllColumnNameValue() input: table=" + table + " ; rowKey=" +rowKey;
         if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
             log.error("Null i/p arguments to getAllColumnNameValue(). " + input);
@@ -146,6 +146,66 @@ public class StorageBackendImpl implements StorageBackend {
             throw new StorageBackendException(e);
         }   
         
+        return response;
+    }
+
+    @Override
+    public Map<String, ObjectNode> getAllCompositeValues(String table,
+            String rowKey) throws StorageBackendException {
+        String input = "getAllCompositeValues() input: table=" + table + " ; rowKey=" +rowKey;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
+            log.error("Null i/p arguments to getCompositeValues(). " + input);
+            throw new StorageBackendException("Null i/p arguments to getCompositeValues(). " + input);
+        }
+        
+        Map<String, ObjectNode> response = null;
+        try {
+            log.info("Reading data for " + input);
+            response = dataStore.getAllCompositeValues(table, rowKey);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }
+
+        if (response == null) {
+            // No data found in cassandra
+            log.info("Response is NULL: No data for " + input);
+            return null;
+        }
+
+        log.info("Response = " + response + " for " + input);
+        return response;
+    } 
+
+    @Override
+    public ObjectNode getCompositeValues(String table, String rowKey,
+            String compositeName) throws StorageBackendException {
+        String input = "getCompositeValues() input: table=" + table + " ; rowKey=" +rowKey;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
+            log.error("Null i/p arguments to getCompositeValues(). " + input);
+            throw new StorageBackendException("Null i/p arguments to getCompositeValues(). " + input);
+        }
+        
+        ObjectNode response = null;
+        try {
+            log.info("Reading data for " + input);
+            response = dataStore.getCompositeValues(table, rowKey, compositeName);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }
+
+        if (response == null) {
+            // No data found in cassandra
+            log.info("Response is NULL: No data for " + input);
+            return null;
+        }
+
+        log.info("Response = " + response + " for " + input);
         return response;
     }   
     

@@ -2,6 +2,8 @@ package models.dao;
 
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import exceptions.StorageBackendException;
 
 public interface StorageBackend {
@@ -10,6 +12,8 @@ public interface StorageBackend {
     
     public boolean putValue(String table, String rowKey, String colName, String value)  throws StorageBackendException; // colName, rowKey, colName, colValue
    
+    public boolean putValue(String table, String rowKey, Map<String,JsonNode> compositeColumn) throws StorageBackendException; // colName, rowKey, Map<composite_Key, JsonNode>
+
     public Map<String,String> getAllColumnNameValue(String columnFamily, String rowKey)  throws StorageBackendException; 
 
     //public void bulkUpload(String fpath, LineParser lineParser) throws StorageBackendException, InternalException;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
@@ -26,10 +27,12 @@ import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.Rows;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
 
+import org.codehaus.jackson.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -237,6 +240,52 @@ public class CassandraDataStore extends DataStore {
                 storageCluster.getConnectionManager().shutdown();
             }
         }
+    }
+
+    @Override
+    public boolean putValue(String table, String rowKey,
+            Map<String, JsonNode> compositeColumn) {
+        // TODO Auto-generated method stub
+        Mutator<String> mutator = HFactory.createMutator(storageKeyspace, stringSerializer);
+
+        for (Map.Entry<String, JsonNode> col : compositeColumn.entrySet()) {
+            String key1 = col.getKey();
+            JsonNode jnode = col.getValue();
+            
+            Iterator<Entry<String, JsonNode>> jIterator = jnode.getFields();
+            while (jIterator.hasNext()) {
+                Map.Entry<String, JsonNode> entry = (Map.Entry<String, JsonNode>) jIterator.next();
+                String key2 = entry.getKey();
+                JsonNode valueJson =  entry.getValue();
+                String value = valueJson == null ? null : valueJson.toString();
+                HColumn<Composite,String>  insertCol = getCompositeColumn(key1, key2 , value);
+                mutator.addInsertion(rowKey, table, insertCol);
+            }
+            
+        }
+        
+        mutator.execute();
+        return true;
+    }
+    
+    /**
+     * Creates an HColumn with a column name composite of the form:
+     *   [key1]:[key2]
+     * and a value of ['value']
+     * @return
+     */
+    private HColumn<Composite,String> getCompositeColumn(String key1, String key2, String value) {
+
+      Composite composite = new Composite();
+      //Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+      //Date d1 = cal.getTime();
+      composite.addComponent(key1, StringSerializer.get());
+      composite.addComponent(key2, StringSerializer.get());
+
+      HColumn<Composite,String> col =
+              HFactory.createColumn(composite, value, new CompositeSerializer(), stringSerializer);
+      
+      return col;
     }
 
 

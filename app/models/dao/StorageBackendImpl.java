@@ -3,6 +3,7 @@ package models.dao;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,31 @@ public class StorageBackendImpl implements StorageBackend {
         log.info("Response = " + response + " for " + input);
         return response;
     }
+
+    @Override
+    public boolean putValue(String table, String rowKey,
+            Map<String, JsonNode> compositeColumn)
+            throws StorageBackendException {
+        
+        String input = "putValue compositeColumn() input: table=" + table + " ; rowKey=" +rowKey + " ; compositeColumn=" + compositeColumn.toString();
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey) || compositeColumn == null || compositeColumn.size() < 1 ) {
+            log.error("Null i/p arguments to putValue(). " + input);
+            throw new StorageBackendException("Null i/p arguments to putValue(). " + input);
+        }
+        
+        boolean response = false;
+        try {
+            log.info("Writing data for " + input);
+            response = dataStore.putValue(table, rowKey, compositeColumn);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }   
+        
+        return response;
+    }   
     
 
 //    @Override

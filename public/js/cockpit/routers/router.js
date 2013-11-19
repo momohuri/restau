@@ -40,7 +40,7 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
 
             section: function (id) {
                 new Menu();
-                new SectionEdit();
+                new SectionEdit({sectionId:id});
             },
 
             manageSections: function () {

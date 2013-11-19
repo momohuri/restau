@@ -14,7 +14,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
 
         events: {
             'submit #createNewSectionForm': 'newSection',
-            'click .edit': 'editItem',
+            'click .edit': 'editSection',
             'click .deleteItem': 'deleteItem',
             'click #saveRankDisplay': 'saveRankDisplay'
         },
@@ -23,28 +23,27 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             var that = this;
 
             _.bindAll(this, 'render');
-
             this.sections.fetch({
                 success: function () {
                     that.render();
                 }
-            })
-
+            });
         },
 
         render: function (e) {
-            this.$el.html(this.template({sections: this.sections}));
+            this.$el.html(this.template({sections: this.sections, section: this.section}));
             this.activeNav('.menuBasedOnId');
             $('.table tbody').sortable();
         },
 
         newSection: function (e) {
             e.preventDefault();
-            var data = this.getFormData(e);
-            var that = this;
-            this.section.save(data, {success: function () {
-                Backbone.history.navigate('cockpit/section/' + that.section.id, true);
-            }});
+            var result = this.getFormData(e);
+            if (result.id === '') {
+                delete result.id;
+            }
+
+            this.sections.create(result);
         },
 
         saveRankDisplay: function () {
@@ -54,17 +53,14 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             this.sections.sendRankDisplay(order);
         },
 
-        editItem: function (e) {
+        editSection: function (e) {
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
             this.render();
         },
 
         deleteItem: function (e) {
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
-            this.section.destroy(function () {
-
-            });
-            //destroy item
+            this.section.destroy();
         }
 
 

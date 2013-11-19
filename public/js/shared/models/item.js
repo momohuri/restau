@@ -13,7 +13,7 @@ define(['namespace', './base-model'],
 
             },
             sync: function (method, model, options) {
-                var url = 'section/' + model.get('section') + '/item'
+                var url = 'section/' + model.get('sectionId') + '/item'
                 var verb;
                 switch (method) {
                     case 'create':
@@ -30,7 +30,6 @@ define(['namespace', './base-model'],
 
                 }
 
-
                 $.ajax({
                     type: verb,
                     contentType: 'application/json; charset=utf-8',
@@ -39,10 +38,11 @@ define(['namespace', './base-model'],
                     data: JSON.stringify(model.attributes),
                     success: function (id) {
                         if (model.get('id') === undefined) model.set('id', id);
-                        options.success(model, model.attributes, options);
+                        options.success(model);
 
                     },
                     error: function (e) {
+                        debugger
                         console.log('error : ', e);
                     }
                 });

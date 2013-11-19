@@ -34,7 +34,10 @@ public class MenuController extends BaseController {
         return upsertItem(sectionId);
     }
     
-    
+    /*
+     * SAMPLE UPDATE : 
+     * curl --header "Content-type: application/json" --request PUT --data '{"id":"94d10f8e-a92f-432d-aeb3-50943f78eb28","name":"Tofu/Paneer Masala","displayRank":1,"price":30.12,"sectionId":"101","calories":22,"spicy":2,"isVegetarian":true,"enabled":true}' localhost:9000/section/102/item/94d10f8e-a92f-432d-aeb3-50943f78eb28
+     */
     @BodyParser.Of(BodyParser.Json.class)
     public static Result updateItem(String sectionId, String itemId) {
         return upsertItem(sectionId);

@@ -8,10 +8,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
         template: App.tmpl.cockpit.sectionManage,
 
 
-        sections: new Sections([
-            {name: 'section1', id: 1},
-            {name: 'section2', id: 2}
-        ]),
+        sections: new Sections(),
 
         section: new Section(),
 

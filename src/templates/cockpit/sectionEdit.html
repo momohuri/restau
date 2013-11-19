@@ -31,7 +31,7 @@
                 <%= item.get('price')%>
             </td>
             <td>
-                <%= item.get('enable')===0 ? "yes":"no" %>
+                <%= item.get('enable') ? "yes":"no" %>
             </td>
 
             <td><input type="button" value="edit" class="edit btn"></td>
@@ -105,8 +105,8 @@
 
             <div class="col-lg-2">
                 <select name="enable" class="form-control">
-                    <option value="0">no</option>
-                    <option value="1">yes</option>
+                    <option value="false">no</option>
+                    <option value="true">yes</option>
                 </select>
             </div>
         </div>

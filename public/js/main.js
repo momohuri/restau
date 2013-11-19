@@ -31,10 +31,11 @@ require.config({
 
 //require(['Backbone', './templates', 'jqueryUI']);
 
-require(['Backbone', 'jqueryUI', 'namespace', 'cockpit/routers/router', 'client/routers/router'], function (Backbone, $UI, App, cockpitRouter, clientRouter, undefined) {
+require(['Backbone', 'jqueryUI', 'namespace', 'cockpit/routers/router', 'client/routers/router'], function (Backbone, $UI, App, cockpitRouter, clientRouter,cookRouter, undefined) {
     $(function () {
         App.cockpit.router = new cockpitRouter();
         App.client.router = new clientRouter();
+
         Backbone.history.start();
     });
 });

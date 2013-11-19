@@ -1,5 +1,5 @@
-define(['namespace', './base-view', '../../shared/collections/menus'
-], function (App, BaseView, Menus, undefined) {
+define(['namespace', './base-view'
+], function (App, BaseView, undefined) {
 
     App.cockpit.views.navigation = BaseView.extend({
 
@@ -7,9 +7,6 @@ define(['namespace', './base-view', '../../shared/collections/menus'
 
         template: App.tmpl.cockpit.navigation,
 
-        menus: new Menus([
-            {name: 'lol', id: 2}
-        ]),
 
         events: {
             'click .toSection': 'toSection',
@@ -23,16 +20,12 @@ define(['namespace', './base-view', '../../shared/collections/menus'
 
             _.bindAll(this, 'render');
 
-//            this.sections.fetch({
-//                success: function (e) {
             that.render();
-//                }
-//            });
 
         },
 
         render: function () {
-            this.$el.html(this.template({menus: this.menus}));
+            this.$el.html(this.template());
         },
 
         toSection: function (e) {

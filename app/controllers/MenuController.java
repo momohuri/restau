@@ -24,6 +24,21 @@ public class MenuController extends BaseController {
 
     private static final String ColFamily_Menu = "Menu";
 
+    /*
+     * SAMPLE CREATE : 
+     * curl --header "Content-type: application/json" --request POST --data '{"name":"Tofu Masala","displayRank":1,"price":11.49,"sectionId":"101","calories":22,"spicy":2,"isVegetarian":true,"enabled":true}' localhost:9000/section/101/item
+     *
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result insertItem(String sectionId) {
+        return upsertItem(sectionId);
+    }
+    
+    
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result updateItem(String sectionId, String itemId) {
+        return upsertItem(sectionId);
+    }
     
     /*
      * Sample Creation : 

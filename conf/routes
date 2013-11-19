@@ -7,10 +7,10 @@ PUT     /section         controllers.SectionController.upsertSection()
 GET     /section/:id     controllers.SectionController.getSection(id: String)
 GET     /sections        controllers.SectionController.getAllSections()
 
-POST    /section/:id/item         controllers.MenuController.upsertItem(id: String)
-PUT     /section/:id/item         controllers.MenuController.upsertItem(id: String)
-POST    /section/:id/items         controllers.MenuController.upsertBulkItems(id: String)
-PUT     /section/:id/items         controllers.MenuController.upsertBulkItems(id: String)
+POST    /section/:id/item         controllers.MenuController.insertItem(id: String)
+PUT     /section/:sid/item/:iid   controllers.MenuController.updateItem(sid: String, iid: String)
+POST    /section/:id/items        controllers.MenuController.upsertBulkItems(id: String)
+PUT     /section/:id/items        controllers.MenuController.upsertBulkItems(id: String)
 
 
 # Home page

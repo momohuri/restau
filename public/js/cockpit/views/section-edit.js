@@ -7,32 +7,43 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
 
         template: App.tmpl.cockpit.sectionEdit,
 
-        sections: new Sections([
-            {name: 'section1', id: 1},
-            {name: 'section2', id: 2}
-        ]),
+        sections: new Sections(),
 
-        items: new Items([]),
+        sectionId: null,
+
+        items: new Items(),
 
         item: new Item(),
 
         events: {
             'submit #newItem': 'newItem',
             'click .edit': 'editItem',
-            'click .deleteItem': 'deleteItem'
+            'click .deleteItem': 'deleteItem',
+            'click #saveRankDisplay': 'saveRankDisplay'
         },
 
-        initialize: function () {
+        initialize: function (params) {
+
+            this.sectionId = params.sectionId;
+
             _.bindAll(this, 'render');
             var that = this;
             this.items.bind('add', this.render, this);
             this.items.bind('change', this.render, this);
             this.item.bind('change', this.render);
-            this.render();
+
+            this.items.add({sectionId: this.sectionId}, {at: 0});
+
+            $.when(this.items.fetch(), this.sections.fetch()).then(function () {
+                that.render();
+            });
+
         },
 
         render: function (e) {
-            this.$el.html(this.template({sections: this.sections, items: this.items, item: this.item}));
+            this.$el.html(this.template({sections: this.sections, sectionId: this.sectionId, items: this.items, item: this.item}));
+            this.activeNav('.menuBasedOnId');
+            $('.table tbody').sortable();
         },
 
         newItem: function (e) {
@@ -42,19 +53,27 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
 
             if (result.id !== '') {
                 this.items.remove(result.id)
-            }  else{
-                result.id = 1;  //todo delete when api
+            } else {
+                delete result.id;
             }
 
-            //  this.item.save(result,{success:function(){
             this.item.set(result);
-            this.items.add(that.item.clone());
-            //  }});
+            this.item.save({}, {
+                    success: function () {
+                        that.items.add(that.item.clone());
+                        that.item.clear();
+                        that.render();
+                    }}
+            );
 
-            this.item.clear();
-            this.render();
 
+        },
 
+        saveRankDisplay: function () {
+            var order = _.map($('tbody tr'), function (item, index) {
+                return {id: item.dataset.id, rankOrder: index}
+            });
+            this.items.sendRankDisplay(order);
         },
 
         editItem: function (e) {
@@ -63,7 +82,11 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
         },
 
         deleteItem: function (e) {
-            //destroy item
+            var id = $(e.currentTarget).closest('tr')[0].dataset.id;
+            this.item = this.items.get(id);
+            this.item.destroy(function () {
+
+            });
         }
 
 

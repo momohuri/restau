@@ -105,9 +105,9 @@ public class MenuController extends BaseController {
         } 
         
         try {
-            JsonNode jsonResponse = JsonUtils.getJsonWithException(item);
+            //JsonNode jsonResponse = JsonUtils.getJsonWithException(item);
             setCORS();
-            return ok(jsonResponse);
+            return ok(item.getId());
         } catch (Exception e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 

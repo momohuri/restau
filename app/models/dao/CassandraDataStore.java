@@ -92,6 +92,21 @@ public class CassandraDataStore extends DataStore {
     public CassandraDataStore() {
         init();
     }
+    
+    public CassandraDataStore(String clusterName, String clusterHosts, String keyspace) {
+        this.clusterName = clusterName;
+        this.clusterHosts = clusterHosts;
+        this.keyspace = keyspace;
+        log.info("Storage config :: clusterName = " + clusterName + ", clusterHosts = " + clusterHosts + ", keyspace = " + keyspace);
+
+
+        storageCluster = HFactory.getOrCreateCluster(clusterName, clusterHosts);
+        
+        ConfigurableConsistencyLevel ccl = new ConfigurableConsistencyLevel();
+        ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
+        
+        storageKeyspace = HFactory.createKeyspace(keyspace, storageCluster,ccl);
+    }
 
     @Override
     public Map<String,String> getAllColumnNameValue(String columnFamily, String rowKey) {
@@ -288,5 +303,9 @@ public class CassandraDataStore extends DataStore {
       return col;
     }
 
+    public static void main(String[] args) {
+        CassandraDataStore ds = new CassandraDataStore("RestauLocalCluster", "127.0.0.1:9160", "RestauLocal");
+        
+    }
 
 }

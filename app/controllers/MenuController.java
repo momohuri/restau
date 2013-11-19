@@ -18,6 +18,7 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.JsonUtils;
@@ -111,8 +112,10 @@ public class MenuController extends BaseController {
         
         try {
             //JsonNode jsonResponse = JsonUtils.getJsonWithException(item);
+            ObjectNode result = Json.newObject();
+            result.put("id", item.getId());
             setCORS();
-            return ok("{\"id\":\""+item.getId()+"\"}");
+            return ok(result);
         } catch (Exception e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 

@@ -36,13 +36,12 @@ define(['namespace', './base-model'],
                     dataType: 'json',
                     url: url,
                     data: JSON.stringify(model.attributes),
-                    success: function (id) {
-                        if (model.get('id') === undefined) model.set('id', id);
+                    success: function (attrs) {
+                        model.set(attrs);
                         options.success(model);
 
                     },
                     error: function (e) {
-                        debugger
                         console.log('error : ', e);
                     }
                 });

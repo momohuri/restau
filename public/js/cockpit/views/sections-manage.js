@@ -38,12 +38,23 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
 
         newSection: function (e) {
             e.preventDefault();
+            var that = this;
             var result = this.getFormData(e);
-            if (result.id === '') {
+
+            if (result.id !== '') {
+                this.sections.remove(result.id)
+            } else {
                 delete result.id;
             }
 
-            this.sections.create(result);
+            this.section.set(result);
+            this.section.save({}, {
+                    success: function () {
+                        that.sections.add(that.section.clone());
+                        that.section.clear();
+                        that.render();
+                    }}
+            );
         },
 
         saveRankDisplay: function () {

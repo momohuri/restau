@@ -70,8 +70,13 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
         },
 
         deleteItem: function (e) {
+            var that = this;
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
-            this.section.destroy();
+            this.section.destroy({},{
+                success:function () {
+                    that.render();
+                }
+            });
         }
 
 

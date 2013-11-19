@@ -82,10 +82,13 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
         },
 
         deleteItem: function (e) {
+            var that = this;
             var id = $(e.currentTarget).closest('tr')[0].dataset.id;
             this.item = this.items.get(id);
-            this.item.destroy(function () {
-
+            this.item.destroy({},{
+                success:function () {
+                    that.render();
+                }
             });
         }
 

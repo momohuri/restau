@@ -61,7 +61,7 @@ public class Test {
         System.out.println(i.getCalories());
         System.out.println(i.getEnabled());
         
-        System.out.println(s.getOrderRank());
+        System.out.println(s.getDisplayRank());
         System.out.println(JsonUtils.getJson(i));
     }
 

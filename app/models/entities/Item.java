@@ -211,10 +211,14 @@ public class Item {
         public int compare(Item item1, Item item2) {
             Integer rank1 = item1.getDisplayRank();
             Integer rank2 = item2.getDisplayRank();
-            if (rank1 != null) {
-                return rank1.compareTo(rank2);
+            if (rank1 == null) {
+                rank1 = Integer.MAX_VALUE;
             }
-            return 0; 
+            if (rank2 == null) {
+                rank2 = Integer.MAX_VALUE;
+            }
+            
+            return rank1.compareTo(rank2);
         }
     };
 }

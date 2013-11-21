@@ -30,6 +30,7 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
             var that = this;
             this.items.bind('add', this.render, this);
             this.items.bind('change', this.render, this);
+            this.items.bind('remove', this.render, this);
             this.item.bind('change', this.render);
 
             this.items.add({sectionId: this.sectionId}, {at: 0});
@@ -71,7 +72,7 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
 
         saveRankDisplay: function () {
             var order = _.map($('tbody tr'), function (item, index) {
-                return {id: item.dataset.id, rankOrder: index}
+                return {id: item.dataset.id, displayRank: index}
             });
             this.items.sendRankDisplay(order);
         },
@@ -85,11 +86,9 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
             var that = this;
             var id = $(e.currentTarget).closest('tr')[0].dataset.id;
             this.item = this.items.get(id);
-            this.item.destroy({},{
-                success:function () {
-                    that.render();
-                }
-            });
+
+            this.items.remove(this.item);
+            this.item.destroy();
         }
 
 

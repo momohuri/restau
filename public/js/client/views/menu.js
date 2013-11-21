@@ -60,9 +60,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
 
         events: {
-            'click .toSection': 'toSection',
             'change .orderItem': 'addToOrder',
-            'click .animate': 'toggleReminder',
             'click #sendOrder': 'sendOrder'
 
         },
@@ -83,14 +81,8 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
             this.$el.html(this.template({ sections: this.sections, order: this.order, sentOrder: this.sentOrder}));
         },
 
-        toSection: function (e) {
-            $(document.body).animate({
-                'scrollTop': $('#' + e.currentTarget.dataset.id).offset().top
-            }, 1000);
-        },
-
-
         addToOrder: function (e) {
+            debugger
             var target = e.currentTarget;
             var item = this.sections.get(target.dataset.sectionid).get('items').get(target.dataset.itemid);
             if (target.value != 0) {
@@ -117,37 +109,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
                 that.order.get('items').reset();
                 that.toggle = 1;// we render so the reminder will have the default place
             });
-        },
-
-        toggle: 1,
-        toggleReminder: function (e, next) {
-            var that = this;
-            var callback = true;//the callback happen twice, we just need it once
-            if (this.toggle === 1) {
-                var size = 600,
-                    html = '>';
-            } else {
-                var size = -600,
-                    html = '<';
-            }
-
-            $("#reminder,#animate").animate({
-                right: "+=" + size
-            }, 800, function (e) {
-                if (callback) {
-                    that.toggle *= -1;
-                    callback = false;
-                    $('#animate').html(html);
-                    if (next !== undefined) {
-                        next()
-                    }
-                    ;
-                }
-            });
         }
-
-
-
 
     });
     return  App.client.views.menu;

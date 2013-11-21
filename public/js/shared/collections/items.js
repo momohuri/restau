@@ -3,7 +3,7 @@ define(['namespace', './base-collection', '../models/item'],
         App.cockpit.collections.items = BaseCollection.extend({
 
             url: function(){
-                return 'sections/' + this.at(0).get('sectionId') + '/items'
+                return 'section/' + this.at(0).get('sectionId') + '/items'
             },
 
             model: Item,

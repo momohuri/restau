@@ -7,52 +7,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
         template: App.tmpl.client.menu,
 
-        sections: new Sections([
-            {
-                id: 0, name: 'sections1', items: new Items([
-                {id: 0, name: 'lol', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 1, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 2, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 3, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 4, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 5, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 6, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 7, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 8, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 9, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 10, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 11, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 12, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 13, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 14, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 15, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 16, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 17, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 18, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20}
-            ])  } ,
-            {
-                id: 1, name: 'section2', items: new Items([
-                {id: 0, name: 'lol', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 1, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 2, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 3, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 4, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 5, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 6, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 7, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 8, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 9, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 10, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 11, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 12, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 13, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 14, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 15, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 16, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 17, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20},
-                {id: 18, name: 'hello', spicy: '2', vegan: 'no', description: 'coucou', price: 20}
-            ]) }
-        ]),
+        sections: new Sections(),
 
         order: new Order({items: new Items()}),
 
@@ -61,8 +16,12 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
         events: {
             'change .orderItem': 'addToOrder',
-            'click #sendOrder': 'sendOrder'
+            'click #sendOrder': 'sendOrder',
+            'touchstart .sectionTitle' : 'showSection',
 
+
+            //computer
+            'click .sectionTitle' : 'showSection'
         },
 
         initialize: function () {
@@ -73,12 +32,18 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
             this.order.get('items').bind('all', this.render, this);
 
-            this.render();
+            this.sections.fetch({
+                success: function () {
+                    that.render();
+                }
+            });
+
 
         },
 
         render: function (e) {
             this.$el.html(this.template({ sections: this.sections, order: this.order, sentOrder: this.sentOrder}));
+            $('.dishes').hide();
         },
 
         addToOrder: function (e) {
@@ -96,6 +61,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
             }
         },
 
+
         sendOrder: function () {
             var that = this;
             this.toggleReminder('', function () {
@@ -109,6 +75,11 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
                 that.order.get('items').reset();
                 that.toggle = 1;// we render so the reminder will have the default place
             });
+        },
+
+        showSection: function(e){
+            $(e.currentTarget.nextElementSibling).toggle(900);
+            $('.dishes').not(e.currentTarget.nextElementSibling).hide(900)
         }
 
     });

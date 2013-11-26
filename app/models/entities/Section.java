@@ -1,5 +1,6 @@
 package models.entities;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -29,8 +30,14 @@ public class Section {
     @JsonProperty("url")
     String url;
     
-    @JsonProperty("orderrank")
-    int orderRank;
+    @JsonProperty("displayRank")
+    Integer displayRank;
+    
+    @JsonProperty("enabled")
+    Boolean enabled;
+    
+    @JsonProperty("deleted")
+    Boolean deleted;
     
     @JsonProperty("items")
     List<Item> items;
@@ -73,31 +80,56 @@ public class Section {
         this.url = url;
     }
 
-    @JsonIgnore
-    public int getOrderRankInt() {
-        return orderRank;
+    
+//    @JsonIgnore
+//    public int getOrderRankInt() {
+//        return orderRank;
+//    }
+//
+//    @JsonProperty("orderrank")
+//    public String getOrderRank() {
+//        return Integer.toString(orderRank);
+//    }
+//    
+//    @JsonIgnore
+//    public void setOrderRank(int orderRank) {
+//        this.orderRank = orderRank;
+//    }
+//
+//    @JsonProperty("orderrank")
+//    public void setOrderRank(String orderRank) {
+//        try {
+//            this.orderRank = Integer.parseInt(orderRank);
+//        } catch (NumberFormatException e) {
+//            log.error(e.getMessage(), e);
+//            log.error("OrderRank of Section : " + getId() + " is being initialized with faulty String : " + orderRank);
+//        }
+//    }
+    
+    public Integer getDisplayRank() {
+        return displayRank;
     }
 
-    @JsonProperty("orderrank")
-    public String getOrderRank() {
-        return Integer.toString(orderRank);
-    }
-    
-    @JsonIgnore
-    public void setOrderRank(int orderRank) {
-        this.orderRank = orderRank;
+    public void setDisplayRank(Integer displayRank) {
+        this.displayRank = displayRank;
     }
 
-    @JsonProperty("orderrank")
-    public void setOrderRank(String orderRank) {
-        try {
-            this.orderRank = Integer.parseInt(orderRank);
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage(), e);
-            log.error("OrderRank of Section : " + getId() + " is being initialized with faulty String : " + orderRank);
-        }
+    public Boolean getEnabled() {
+        return enabled;
     }
-    
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -106,6 +138,19 @@ public class Section {
         this.items = items;
     }
     
-    
+    public static Comparator<Section> SectionDisplayRankComparator = new Comparator<Section>() { 
+        public int compare(Section section1, Section section2) {
+            Integer rank1 = section1.getDisplayRank();
+            Integer rank2 = section2.getDisplayRank();
+            if (rank1 == null) {
+                rank1 = Integer.MAX_VALUE;
+            }
+            if (rank2 == null) {
+                rank2 = Integer.MAX_VALUE;
+            }
+            
+            return rank1.compareTo(rank2);
+        }
+    };
     
 }

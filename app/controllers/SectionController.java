@@ -1,6 +1,9 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -9,10 +12,13 @@ import models.dao.StorageBackend;
 import models.dao.StorageBackendImpl;
 import models.entities.Section;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.JsonUtils;
@@ -41,22 +47,22 @@ public class SectionController extends BaseController {
 
     private static final String ColFamily_Section = "Section";
 
-    public static Result getSection(String id) {
+    public static Result getSection(String sectionId) {
 
         String restaurantId = "1"; // GET THIS FROM USER SESSION
         
-        if (id == null || id.isEmpty()) {
+        if (sectionId == null || sectionId.isEmpty()) {
             return badRequest("id can't be null/empty");
         }
 
         StorageBackend sb = StorageBackendImpl.getInstance();
 
         //Section section = null;
-        String sectionJson = null;
+        ObjectNode sectionJson = null;
         
         try {
 
-            sectionJson = sb.getValue(ColFamily_Section, restaurantId, id);
+            sectionJson = sb.getCompositeValues(ColFamily_Section, restaurantId, sectionId);
 
         } catch (StorageBackendException e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR,
@@ -69,10 +75,8 @@ public class SectionController extends BaseController {
         }
 
         try {
-            Section section = JsonUtils.getObject(sectionJson, Section.class);
-            JsonNode jsonResponse = JsonUtils.getJsonWithException(section);
             setCORS();
-            return ok(jsonResponse);
+            return ok(sectionJson);
         } catch (Exception e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 
@@ -81,21 +85,42 @@ public class SectionController extends BaseController {
     }
     
     @BodyParser.Of(BodyParser.Json.class)
+    public static Result insertSection() {
+        return upsertSection();
+    }
+    
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result updateSection(String sectionId) {
+        return upsertSection();
+    }
+        
+    @BodyParser.Of(BodyParser.Json.class)
     public static Result upsertSection() {
         JsonNode  jnode = request().body().asJson();
         if (jnode == null) {
+            log.error("Returning BadRequest : Expecting Json data.");
             return invalidJsonData("Expecting Json data");
         }
         
-        
-        
         log.info("Request Object received :" + jnode.toString());
-        Section section =  JsonUtils.getObject(jnode.toString(), Section.class);
+        
+        Section section = null;
+        try {
+            section =  JsonUtils.getObjectWithException(jnode, Section.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            log.error("Returning BadRequest : Invalid Json data.");
+            return invalidJsonData("Invalid Json data");
+        }
         if (section == null) {
+            log.error("Returning BadRequest : Invalid Json data.");
             return invalidJsonData("Invalid Json data");
         }
         
         String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO: Ensure the client is allowed to do this action.
+         */
         
         StorageBackend sb = StorageBackendImpl.getInstance();
 
@@ -104,9 +129,12 @@ public class SectionController extends BaseController {
         }
         
         try {
+            section.setDeleted(false);
 
-            String sectionJson = JsonUtils.getJson(section).toString();
-            sb.putValue(ColFamily_Section, restaurantId, section.getId(), sectionJson);
+            JsonNode sectionJson = JsonUtils.getJson(section);
+            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            compositeColumn.put(section.getId(), sectionJson);
+            sb.putValue(ColFamily_Section, restaurantId, compositeColumn);
 
         } catch (StorageBackendException e) {
             // TODO Auto-generated catch block
@@ -115,55 +143,167 @@ public class SectionController extends BaseController {
         } 
         
         try {
-            JsonNode jsonResponse = JsonUtils.getJsonWithException(section);
+            ObjectNode result = Json.newObject();
+            result.put("id", section.getId());
             setCORS();
-            return ok(jsonResponse);
+            return ok(result);
         } catch (Exception e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 
         }
     }
     
-    public static Result getAllSections() {
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result upsertBulkSections() {
+        JsonNode  jnode = request().body().asJson();
+        if (jnode == null) {
+            log.error("Returning BadRequest : Expecting Json data.");
+            return invalidJsonData("Expecting Json data");
+        }
+                
+        log.info("Request Object received :" + jnode.toString());
+        
+        Section[] sections = null;
+        try {
+            sections =  JsonUtils.getObjectWithException(jnode.toString(), Section[].class);
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            log.error("Returning BadRequest : Invalid Json data.");
+            return invalidJsonData("Invalid Json data");
+        }
+        if (sections == null || sections.length < 1) {
+            log.error("Returning BadRequest : Invalid Json data.");
+            return invalidJsonData("Invalid Json data");
+        }
+        
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO : Ensure that the User is working on the section that he owns for his restaurant only.
+         * 
+         */
+        
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Map<String,JsonNode> compositeColumns = new HashMap<String, JsonNode>();
+        Date currentDate = new Date();
+        
+        for (Section section : sections) {
+            if (section.getId() == null || section.getId().length() < 1) {
+                section.setId(UUID.randomUUID().toString());
+                //section.setCreatedAt(currentDate);
+            }
+            
+            //section.setUpdatedAt(currentDate);
+            /*
+             * We dont update to ever cause a delete. Hence the when upsert is called
+             * delete = false always.
+             */
+            section.setDeleted(false);
+            
+            JsonNode sectionJson = JsonUtils.getJson(section);
+            compositeColumns.put(section.getId(), sectionJson);
+            
+        }
+        
+        try {
+            
+            sb.putValue(ColFamily_Section, restaurantId, compositeColumns);
+
+        } catch (StorageBackendException e) {
+            // TODO Auto-generated catch block
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+        
+        try {
+            setCORS();
+            JsonNode jsonResponse = JsonUtils.getJsonWithException(sections);
+            return ok(jsonResponse);
+            //return ok();
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+    }
+    
+    public static Result getAllSections(Boolean items) {
 
         String restaurantId = "1"; // GET THIS FROM USER SESSION
         
         StorageBackend sb = StorageBackendImpl.getInstance();
 
-        //Section section = null;
-        Map<String, String> sectionMapJson = null;
-        List<Section> sections = new ArrayList<Section>();
-         
+        Map<String, ObjectNode> sectionsJson = null;
         try {
 
-            sectionMapJson = sb.getAllColumnNameValue(ColFamily_Section, restaurantId);
+            sectionsJson = sb.getAllCompositeValues(ColFamily_Section, restaurantId);
+
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+
+        if (sectionsJson == null) {
+            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
+                    null);
+        }
+
+        try {
+            List<Section> sections = new ArrayList<Section>();
+            for (ObjectNode json : sectionsJson.values()) {
+                Section section = JsonUtils.getObject(json, Section.class);
+                if (Boolean.FALSE.equals(section.getDeleted())) {
+                    if (Boolean.TRUE.equals(items)) {
+                        section.setItems(MenuController.getBulkItemsInternal(section.getId()));
+                    }    
+                    sections.add(section);
+                }
+            }
+            Collections.sort(sections, Section.SectionDisplayRankComparator);
+            setCORS();
+            JsonNode jsonResponse = JsonUtils.getJsonWithException(sections);
+            return ok(jsonResponse);
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+
+    }
+    
+    public static Result deleteSection(String sectionId) {
+
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        /*
+         * TODO : Ensure that the Cockpit is deleting the section that he owns for his restaurant only.
+         * 
+         */
+        
+        if (StringUtils.isEmpty(sectionId)) {
+            return badRequest("id can't be null/empty");
+        }
+
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Section section = new Section();
+        section.setId(sectionId);
+        section.setDeleted(true);
+        //section.setUpdatedAt(new Date());
+        
+        try {
+
+            JsonNode sectionJson = JsonUtils.getJson(section);
+            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            compositeColumn.put(section.getId(), sectionJson);
+            sb.putValue(ColFamily_Section, restaurantId, compositeColumn);
             
         } catch (StorageBackendException e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR,
                     "Internal Error: talking to StorageBackend", e);
         } 
 
-        if (sectionMapJson == null) {
-            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
-                    null);
-        }
-
         try {
-            for (String sectionJson : sectionMapJson.values()) {
-                /*
-                 * TODO : Need to ensure that the Section is not disabled/deleted
-                 * before you add that to the sections List.
-                 */
-                sections.add(JsonUtils.getObject(sectionJson, Section.class));
-            }
-            
-            /*
-             * TODO : Sort the Sections based on displayrank
-             */
-
-            JsonNode jsonResponse = JsonUtils.getJsonWithException(sections);
+            // Item item = JsonUtils.getObjectWithException(itemJson.toString(), Item.class);
             setCORS();
-            return ok(jsonResponse);
+            return ok();
         } catch (Exception e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
 

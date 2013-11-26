@@ -2,33 +2,38 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-POST          /section                       controllers.SectionController.upsertSection()
-PUT           /section                       controllers.SectionController.upsertSection()
-GET           /section/:id                   controllers.SectionController.getSection(id: String)
-GET           /sections                      controllers.SectionController.getAllSections()
+POST    /section         controllers.SectionController.insertSection()
+PUT     /section/:id     controllers.SectionController.updateSection(id: String)
+GET     /section/:id     controllers.SectionController.getSection(id: String)
+DELETE  /section/:id     controllers.SectionController.deleteSection(id: String)
 
-POST          /section/:sid/item             controllers.MenuController.insertItem(sid: String)
-PUT           /section/:sid/item/:iid        controllers.MenuController.updateItem(sid: String, iid: String)
-GET           /section/:sid/item/:iid        controllers.MenuController.getItem(sid: String, iid: String)
-DELETE        /section/:sid/item/:iid        controllers.MenuController.deleteItem(sid: String, iid: String)
+GET     /sections        controllers.SectionController.getAllSections(items: Boolean ?= false)
+POST    /sections        controllers.SectionController.upsertBulkSections()
+PUT     /sections        controllers.SectionController.upsertBulkSections()
 
 
-POST          /section/:sid/items            controllers.MenuController.upsertBulkItems(sid: String)
-PUT           /section/:sid/items            controllers.MenuController.upsertBulkItems(sid: String)
-GET           /section/:sid/items            controllers.MenuController.getBulkItems(sid: String)
+POST    /section/:sid/item         controllers.MenuController.insertItem(sid: String)
+PUT     /section/:sid/item/:iid    controllers.MenuController.updateItem(sid: String, iid: String)
+GET     /section/:sid/item/:iid    controllers.MenuController.getItem(sid: String, iid: String)
+DELETE  /section/:sid/item/:iid    controllers.MenuController.deleteItem(sid: String, iid: String)
+
+
+POST    /section/:sid/items        controllers.MenuController.upsertBulkItems(sid: String)
+PUT     /section/:sid/items        controllers.MenuController.upsertBulkItems(sid: String)
+GET     /section/:sid/items        controllers.MenuController.getBulkItems(sid: String)
 
 
 # Home page
-GET           /                              controllers.Assets.at(path="/public", file="index.html")
+GET		/							controllers.Assets.at(path="/public", file="index.html")
 
 # GET         /section/:id        controllers.Application.section(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /*file                         controllers.Assets.at(path="/public", file)
+GET         /*file              controllers.Assets.at(path="/public", file)
 
-POST          /sayhello                      controllers.HelloWorld.sayHello()
+POST        /sayhello           controllers.HelloWorld.sayHello()
 
-GET           /user/:id                      controllers.UserController.getUser(id: String)
+GET         /user/:id           controllers.UserController.getUser(id: String)
 
-POST          /user                          controllers.UserController.createUser()
+POST    /user         controllers.UserController.createUser()
 

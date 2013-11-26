@@ -293,12 +293,24 @@ public class MenuController extends BaseController {
 
         String restaurantId = "1"; // GET THIS FROM USER SESSION
         /*
-         * TODO : Ensure that the Cockpit is getting the item in the section that he owns for his restaurant only.
-         * 
+         * TODO : Ensure that the Cockpit is getting the item in the section
+         * that he owns for his restaurant only.
          */
-        
+
+        List<Item> items = getBulkItemsInternal(sectionId);
+        if (items == null) {
+            customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error", null);
+        }
+        setCORS();
+        JsonNode jsonResponse = JsonUtils.getJsonWithException(items);
+        return ok(jsonResponse);
+
+    }
+    
+    public static List<Item> getBulkItemsInternal(String sectionId) {
         if (StringUtils.isEmpty(sectionId)) {
-            return badRequest("id can't be null/empty");
+            log.error("sectionId cant be null/empty");
+            return null;
         }
 
         StorageBackend sb = StorageBackendImpl.getInstance();
@@ -310,16 +322,16 @@ public class MenuController extends BaseController {
             itemsJson = sb.getAllCompositeValues(ColFamily_Menu, sectionId);
 
         } catch (StorageBackendException e) {
-            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
-                    "Internal Error: talking to StorageBackend", e);
+            log.error(e.getMessage(), e);
+            log.error("Internal Error: talking to StorageBackend");
+            return null;
         } 
 
         if (itemsJson == null) {
-            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
-                    null);
+            log.error("No Data found in Storage");
+            return null;
         }
 
-        try {
             List<Item> items = new ArrayList<Item>();
             for (ObjectNode json : itemsJson.values()) {
                 Item item = JsonUtils.getObject(json, Item.class);
@@ -328,15 +340,8 @@ public class MenuController extends BaseController {
                 }
             }
             Collections.sort(items, Item.ItemDisplayRankComparator);
-            setCORS();
-            JsonNode jsonResponse = JsonUtils.getJsonWithException(items);
-            return ok(jsonResponse);
-        } catch (Exception e) {
-            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
-
-        }
-
-    }
     
+            return items;
+    }
 
 }

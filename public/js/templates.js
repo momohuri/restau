@@ -131,8 +131,8 @@ __p+='\n        </tbody>\n    </table>\n    <button class="btn btn-success" id="
 ((__t=( section.get('id') ))==null?'':__t)+
 '">\n\n\n\n        <div class="form-group">\n\n            <label class="col-lg-2 control-label" for="name">Name: </label>\n\n            <div class="col-lg-2">\n                <input type=\'text\' name=\'name\' placeholder="Section Name" class="form-control"\n                       value="'+
 ((__t=( section.get('name') ))==null?'':__t)+
-'">\n            </div>\n        </div>\n\n        <div class="form-group">\n\n            <label class="col-lg-2 control-label" for="description">Description : </label>\n\n            <div class="col-lg-4">\n                <input type=\'text\' name=\'description\' class="form-control"\n                       placeholder="Description" value="'+
-((__t=( section.get('description') ))==null?'':__t)+
+'">\n            </div>\n        </div>\n\n        <div class="form-group">\n\n            <label class="col-lg-2 control-label" for="description">Description : </label>\n\n            <div class="col-lg-4">\n                <input type=\'text\' name=\'desc\' class="form-control"\n                       placeholder="Description" value="'+
+((__t=( section.get('desc') ))==null?'':__t)+
 '">\n            </div>\n        </div>\n\n        <div class="form-group">\n            <label class="col-lg-2 control-label" for="enabled">Enable: </label>\n\n            <div class="col-lg-2">\n                <select name="enabled" id="enabled" class="form-control">\n                    <option value="false">no</option>\n                    <option value="true" '+
 ((__t=( section.get('enabled')?"selected":'' ))==null?'':__t)+
 '>yes</option>\n                </select>\n            </div>\n        </div>\n\n\n        <input type="submit" class="btn" value="submit">\n    </form>\n\n</div>\n';

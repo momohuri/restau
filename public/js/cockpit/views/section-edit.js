@@ -53,7 +53,9 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
             var result = this.getFormData(e);
 
             if (result.id !== '') {
-                this.items.remove(result.id)
+               var model = this.items.get(result.id)
+               var index = this.items.indexOf(model);
+               this.items.remove(result.id)
             } else {
                 delete result.id;
             }
@@ -61,7 +63,7 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
             this.item.set(result);
             this.item.save({}, {
                     success: function () {
-                        that.items.add(that.item.clone());
+                        that.items.add(that.item.clone(),{at:index});
                         that.item.clear();
                         that.render();
                     }}

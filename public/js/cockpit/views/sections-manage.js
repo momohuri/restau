@@ -45,6 +45,8 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             var result = this.getFormData(e);
 
             if (result.id !== '') {
+                var model = this.sections.get(result.id)
+                var index = this.sections.indexOf(model);
                 this.sections.remove(result.id)
             } else {
                 delete result.id;
@@ -53,7 +55,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             this.section.set(result);
             this.section.save({}, {
                     success: function () {
-                        that.sections.add(that.section.clone());
+                        that.sections.add(that.section.clone(),{at:index});
                         that.section.clear();
                         that.render();
                     }}

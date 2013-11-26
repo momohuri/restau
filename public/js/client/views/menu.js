@@ -32,6 +32,7 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
             this.order.get('items').bind('all', this.render, this);
 
             this.sections.fetch({
+                data: {items:true },
                 success: function () {
                     that.render();
                 }

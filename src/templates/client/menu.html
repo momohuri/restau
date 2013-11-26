@@ -33,7 +33,6 @@
         <% sections.forEach(function(section,i){%>
         <li><a calss='goToSection' data-name="<%= section.get('name') %>"><%= section.get('name') %></a></li>
         <%});%>
-
     </ul>
 </div>
 
@@ -41,241 +40,48 @@
 <div class="tab-pane active" id="tab-breakfast">
 
 <div class="row-fluid"> <!-- menucards -->
-    <div class="span12">
+
+    <% sections.forEach(function(section,i){%>
+    <div class="span6">
         <article class="menucard">
             <header class="sectionTitle">
-                <h3>Appetizers for breakfast</h3>
+                <h3><%= section.get('name') %></h3>
             </header>
             <section class="dishes">
                 <ul>
+                    <% section.get('items').forEach(function(item){ %>
                     <li>
                         <div class="image">
-                            <figure class="rounded">
-                                <img src="http://www.indianfoodforever.com/images/masala.jpg" alt="">
-                            </figure>
+
+                        </div>
+                        <div class="data">
+                            <h4><%= item.name %></h4>
+
+                            <p>
+                                <%= item.description %>
+                            </p>
+                            <span class="price"><%= item.price + '$' %></span>
+                        </div>
+                        <div class="quantity">
                             <select>
                                 <option value=0>0</option>
                                 <option value=1>1</option>
                                 <option value=2>2</option>
                                 <option value=3>3</option>
                                 <option value=4>4</option>
-
                             </select>
                         </div>
-                        <div class="data">
-                            <h4>Appetizer No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
                     </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img44.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Appetizer No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img45.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Appetizer No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
+                    <%})%>
                 </ul>
             </section>
         </article>
     </div>
-    <div class="span6">
-        <article class="menucard">
-            <header class="sectionTitle">
-                <h3>Salad</h3>
-            </header>
-            <section class="dishes">
-                <ul>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img43.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Salad No. 1</h4>
+    <%});%>
 
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img44.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Salad No. 1</h4>
 
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img45.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Salad No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </article>
-    </div>
 </div>
-<div class="row-fluid">
-    <div class="span6">
-        <article class="menucard">
-            <header class="sectionTitle">
-                <h3>Meat</h3>
-            </header>
-            <section class="dishes">
-                <ul>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img43.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Meat No. 1</h4>
 
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img44.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Meat No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img45.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Meat No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </article>
-    </div>
-    <div class="span6">
-        <article class="menucard">
-            <header class="sectionTitle">
-                <h3>Fish</h3>
-            </header>
-            <section class="dishes">
-                <ul>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img43.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Fish No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img44.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Fish No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="image">
-                            <figure class="rounded">
-                                <img src="images/content-demo/img45.jpg" alt="">
-                            </figure>
-                        </div>
-                        <div class="data">
-                            <h4>Fish No. 1</h4>
-
-                            <p>
-                                Pellentesque habitant morbi tristique senectus et netus et male.
-                            </p>
-                            <span class="price">7.99$</span>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </article>
-    </div>
-</div>
 <!-- //menucards -->
 </div>
 

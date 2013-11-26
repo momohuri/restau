@@ -32,6 +32,10 @@ define(['namespace', 'backboneRouteFilter','../views/menu'],
             },
 
             index: function () {
+                //todo this is bad !!!
+
+                $('head').append(' <link rel="stylesheet" type="text/css" media="screen" href="/css/client/theme.css"/>')
+
                 new Menu();
             }
         });

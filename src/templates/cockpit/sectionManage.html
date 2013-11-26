@@ -76,7 +76,7 @@
             <div class="col-lg-2">
                 <select name="enabled" id="enabled" class="form-control">
                     <option value="false">no</option>
-                    <option value="true" <%= section.get('enabled')?selected:'' %>>yes</option>
+                    <option value="true" <%= section.get('enabled')?"selected":'' %>>yes</option>
                 </select>
             </div>
         </div>

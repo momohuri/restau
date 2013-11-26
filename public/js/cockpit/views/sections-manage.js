@@ -23,6 +23,9 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             var that = this;
 
             _.bindAll(this, 'render');
+            this.sections.bind('remove', this.render, this);
+
+
             this.sections.fetch({
                 success: function () {
                     that.render();
@@ -59,7 +62,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
 
         saveRankDisplay: function () {
             var order = _.map($('tbody tr'), function (item, index) {
-                return {id: item.dataset.id, rankOrder: index}
+                return {id: item.dataset.id, displayRank: index}
             });
             this.sections.sendRankDisplay(order);
         },
@@ -73,11 +76,8 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             var that = this;
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
             this.sections.remove(this.section);
-            this.section.destroy({},{
-                success:function () {
-                    that.render();
-                }
-            });
+            this.section.destroy();
+
         }
 
 

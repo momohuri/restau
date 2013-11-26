@@ -26,24 +26,24 @@ public class Section {
     
     @JsonProperty("desc")
     String desc;
-    
+
     @JsonProperty("url")
     String url;
-    
+
     @JsonProperty("displayRank")
     Integer displayRank;
-    
+
     @JsonProperty("enabled")
     Boolean enabled;
-    
+
     @JsonProperty("deleted")
     Boolean deleted;
-    
+
     @JsonProperty("items")
     List<Item> items;
-    
-    public Section() {} 
-    
+
+    public Section() {}
+
     public Section(String name) {
         this.name  = name;
     }

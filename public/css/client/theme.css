@@ -152,7 +152,7 @@ figure {
     padding: 0;
 }
 #top .line {
-    background-image: url(./../images/top-line.jpg);
+    background-image: url(./../client-images/top-line.jpg);
     background-repeat: no-repeat;
     background-position: left top;
     background-color: transparent;
@@ -164,7 +164,7 @@ figure {
 }
 /* Other Elements */
 #content .separator {
-    background-image: url(./../images/separator.png);
+    background-image: url(./../client-images/separator.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-color: transparent;
@@ -212,7 +212,7 @@ figure {
     padding: 0 0 40px 0;
 }
 #content .menucard ul li {
-    background-image: url(./../images/menucard.png);
+    background-image: url(./../client-images/menucard.png);
     background-repeat: no-repeat;
     background-position: left top;
     background-color: transparent;
@@ -482,7 +482,7 @@ blockquote:after {
         padding-right: 20px;
     }
     #content .separator {
-        background-image: url(./../images/separator-small.png);
+        background-image: url(./../client-images/separator-small.png);
         background-repeat: no-repeat;
         background-position: left top;
         background-color: transparent;

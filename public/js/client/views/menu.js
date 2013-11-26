@@ -13,7 +13,6 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
         sentOrder: new Order({items: new Items()}),
 
-
         events: {
             'change .orderItem': 'addToOrder',
             'click #sendOrder': 'sendOrder',
@@ -60,7 +59,6 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
                 debugger
             }
         },
-
 
         sendOrder: function () {
             var that = this;

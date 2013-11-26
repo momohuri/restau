@@ -253,9 +253,21 @@ public class SectionController extends BaseController {
                 Section section = JsonUtils.getObject(json, Section.class);
                 if (Boolean.FALSE.equals(section.getDeleted())) {
                     if (Boolean.TRUE.equals(items)) {
-                        section.setItems(MenuController.getBulkItemsInternal(section.getId()));
-                    }    
-                    sections.add(section);
+                        /*
+                         * /sections?items=true implies restaurant eater is making a request 
+                         * and hence we need to give only those sections which are enabled. 
+                         */
+                        if (Boolean.TRUE.equals(section.getEnabled())) {
+                            section.setItems(MenuController.getBulkItemsInternal(section.getId(), true));
+                            sections.add(section);
+                        }
+                    } else {
+                        /*
+                         * This path is used by the cockit and hence 
+                         * we return all the sections whether enabled or disabled.
+                         */
+                        sections.add(section);
+                    }
                 }
             }
             Collections.sort(sections, Section.SectionDisplayRankComparator);

@@ -297,7 +297,7 @@ public class MenuController extends BaseController {
          * that he owns for his restaurant only.
          */
 
-        List<Item> items = getBulkItemsInternal(sectionId);
+        List<Item> items = getBulkItemsInternal(sectionId, false);
         if (items == null) {
             customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error", null);
         }
@@ -307,7 +307,7 @@ public class MenuController extends BaseController {
 
     }
     
-    public static List<Item> getBulkItemsInternal(String sectionId) {
+    public static List<Item> getBulkItemsInternal(String sectionId, boolean enabled) {
         if (StringUtils.isEmpty(sectionId)) {
             log.error("sectionId cant be null/empty");
             return null;
@@ -336,7 +336,13 @@ public class MenuController extends BaseController {
             for (ObjectNode json : itemsJson.values()) {
                 Item item = JsonUtils.getObject(json, Item.class);
                 if (Boolean.FALSE.equals(item.getDeleted())) {
-                    items.add(item);
+                    if (enabled == true) {
+                        if (Boolean.TRUE.equals(item.getEnabled())) {
+                            items.add(item);
+                        }
+                    } else {
+                        items.add(item);
+                    }
                 }
             }
             Collections.sort(items, Item.ItemDisplayRankComparator);

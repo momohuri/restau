@@ -150,8 +150,33 @@ public class CassandraDataStore extends DataStore {
         QueryResult<HColumn<String, String>> result = columnQuery.execute();
         if (result != null && result.get() != null) {
             return result.get().getValue();
-        } else
+        } else  
             return null;
+    }
+    
+    @Override
+    public String getCompositeValue(String columnFamily, String rowKey, String colName1, String colName2) {
+        
+        
+        SliceQuery<String, Composite, String> sliceQuery = HFactory
+                .createSliceQuery(storageKeyspace,
+                        stringSerializer, new CompositeSerializer(),
+                        stringSerializer);
+        sliceQuery.setColumnFamily(columnFamily);
+        sliceQuery.setKey(rowKey);
+
+        Composite composite = new Composite();
+        composite.add(0, colName1);
+        composite.add(1, colName2);
+        sliceQuery.setColumnNames(composite);
+        
+        QueryResult<ColumnSlice<Composite, String>> result = sliceQuery
+                .execute();
+        ColumnSlice<Composite, String> cs = result.get();
+        for (HColumn<Composite, String> col : cs.getColumns()) {
+            return col.getValue();
+        }
+        return null;
     }
     
     public ObjectNode getCompositeValues(String columnFamily, String rowKey, String compositeName) {
@@ -164,6 +189,7 @@ public class CassandraDataStore extends DataStore {
         sliceQuery.setColumnFamily(columnFamily);
         sliceQuery.setKey(rowKey);
 
+        
         Composite startRange = new Composite();
         startRange.addComponent(0, compositeName, ComponentEquality.EQUAL);
 
@@ -390,7 +416,7 @@ public class CassandraDataStore extends DataStore {
       return col;
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         /*
          * set Menu['11']['2:b'] = '"v4"'; 
          * Data : 1:a:v1 , 1:b:v2 , 2:a:v3 , 2:b:v4 , 3:a:v5 , 3:b:v6 
@@ -420,5 +446,20 @@ public class CassandraDataStore extends DataStore {
         }
         System.out.println(items);
     }
+    
+    
+    public static void main(String[] args) {
+        /*
+         * set Menu['11']['2:b'] = '"v4"'; 
+         * Data : 1:a:v1 , 1:b:v2 , 2:a:v3 , 2:b:v4 , 3:a:v5 , 3:b:v6 
+         */
+        String result = null;
+        CassandraDataStore ds = new CassandraDataStore("RestauLocalCluster", "127.0.0.1:9160", "RestauLocal");
+        
+        result = ds.getCompositeValue("Order", "ad2714a1-c2a8-4c52-8d80-4b381bc2b568", "456", "togo");
+        System.out.println(result);
+
+    }
+
 
 }

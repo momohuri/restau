@@ -20,7 +20,12 @@ create column family Menu
     with comparator = 'CompositeType(UTF8Type,UTF8Type)'
     and default_validation_class = 'UTF8Type'
     and key_validation_class = 'UTF8Type';
-    
+
+create column family Order
+    with comparator = 'CompositeType(UTF8Type,UTF8Type)'
+    and default_validation_class = 'UTF8Type'
+    and key_validation_class = 'UTF8Type';
+        
 //////////////////////////   
 create column family Node
     with comparator = UTF8Type

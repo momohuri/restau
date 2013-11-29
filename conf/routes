@@ -22,6 +22,10 @@ POST    /section/:sid/items        controllers.MenuController.upsertBulkItems(si
 PUT     /section/:sid/items        controllers.MenuController.upsertBulkItems(sid: String)
 GET     /section/:sid/items        controllers.MenuController.getBulkItems(sid: String)
 
+POST    /client/order                     controllers.UserOrderController.createOrder()
+GET     /client/order/:oid                controllers.UserOrderController.getOrder(oid: String)
+GET     /client/order/:oid/status         controllers.UserOrderController.getOrderStatus(oid: String)
+
 
 # Home page
 GET		/							controllers.Assets.at(path="/public", file="index.html")

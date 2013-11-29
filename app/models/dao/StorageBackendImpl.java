@@ -61,6 +61,37 @@ public class StorageBackendImpl implements StorageBackend {
         log.info("Response = " + response + " for " + input);
         return response;
     }
+    
+    @Override
+    public String getCompositeValue(String table, String rowKey, String colName1, String colName2) throws StorageBackendException {
+        
+        
+        String input = "getCompositeValue() input: table=" + table + " ; rowKey=" +rowKey + " ; colName1=" + colName1 + " ; colName2=" +colName2;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey) || StringUtils.isEmpty(colName1) || StringUtils.isEmpty(colName2)) {
+            log.error("Null i/p arguments to getCompositeValue(). " + input);
+            throw new StorageBackendException("Null i/p arguments to getCompositeValue(). " + input);
+        }
+        
+        String response = null;
+        try {
+            log.info("Reading data for " + input);
+            response = dataStore.getCompositeValue(table, rowKey, colName1, colName2);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }
+
+        if (response == null) {
+            // No data found in cassandra
+            log.info("Response is NULL: No data for " + input);
+            return null;
+        }
+
+        log.info("Response = " + response + " for " + input);
+        return response;
+    }
 
     @Override
     public boolean putValue(String table, String rowKey, String colName,

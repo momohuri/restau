@@ -11,6 +11,8 @@ public interface StorageBackend {
     
     public String getValue(String table, String rowKey, String colName) throws StorageBackendException; // colName, rowKey, colName.
     
+    public String getCompositeValue(String table, String rowKey, String colName1, String colName2) throws StorageBackendException; // colName, rowKey, colName.
+
     public boolean putValue(String table, String rowKey, String colName, String value)  throws StorageBackendException; // colName, rowKey, colName, colValue
    
     public boolean putValue(String table, String rowKey, Map<String,JsonNode> compositeColumn) throws StorageBackendException; // colName, rowKey, Map<composite_Key, JsonNode>

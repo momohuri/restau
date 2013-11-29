@@ -24,5 +24,7 @@ public abstract class DataStore {
 
     public abstract String getProperty(String key);
 
+    public abstract String getCompositeValue(String table, String rowKey, String colName1, String colName2);
+
 }
 

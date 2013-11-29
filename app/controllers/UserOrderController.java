@@ -1,0 +1,234 @@
+package controllers;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import models.dao.StorageBackend;
+import models.dao.StorageBackendImpl;
+import models.entities.Order;
+import models.entities.OrderItem;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import play.libs.Json;
+import play.mvc.BodyParser;
+import play.mvc.Result;
+import utils.JsonUtils;
+import exceptions.StorageBackendException;
+
+
+public class UserOrderController extends BaseController {
+    
+    private static Logger log = LoggerFactory.getLogger(UserOrderController.class);
+
+    private static final String ColFamily_ORDER = "Order";
+
+    private static Boolean isDeviceAuthorized(String deviceId, String orderId) {
+        StorageBackend sb = StorageBackendImpl.getInstance();
+        try {
+            String result = sb.getCompositeValue(ColFamily_ORDER, orderId, orderId, "deviceId");
+            JsonNode valueJson = JsonUtils.getObject(result, JsonNode.class);
+            String cassDeviceId = valueJson.asText();
+            if (!deviceId.equals(cassDeviceId)) {
+                return false;
+            }
+            return true;
+        } catch (StorageBackendException e) {
+            // TODO Auto-generated catch block
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
+    
+    /*
+     * curl localhost:9000/client/order/4633fe01-124d-4197-b5de-afdda3087dfb/status
+     * 
+     */
+    public static Result getOrderStatus(String orderId) {
+
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION .. ENSURE not NULL;
+        if (orderId == null || orderId.isEmpty()) {
+            return badRequest("id can't be null/empty");
+        }
+        
+        Boolean isAuthorized = isDeviceAuthorized(deviceId, orderId);
+        if (isAuthorized == null) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error: talking to StorageBackend", null);
+        } else if (Boolean.FALSE.equals(isAuthorized)) {
+            return customStatus(UNAUTHORIZED, "Not Authorized", null);
+        }
+            
+        
+        StorageBackend sb = StorageBackendImpl.getInstance();
+        try {            
+            String status = sb.getCompositeValue(ColFamily_ORDER, orderId, orderId, "status");
+            return ok(status);
+        } catch (StorageBackendException e) {
+            // TODO Auto-generated catch block
+            log.error(e.getMessage(), e);
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error: talking to StorageBackend", e);
+        }
+
+    }
+    
+    /*
+     * Example : 
+     * sgandh1-mac:MapTracker sgandh1$ curl localhost:9000/client/order/288d7baa-cd03-4c9b-b939-33c53067ce01
+     * Sample ANS :: {"createdAt":1385695665493,"deviceId":"ABCDEFGHI","id":"288d7baa-cd03-4c9b-b939-33c53067ce01","price":12.97,"restaurantId":"1","status":"RECEIVED","tableId":"10","userId":"1233456789","orderItems":[{"comments":["Room Temperature"],"itemId":"123","name":"Orange Juice","pricePerUnit":2.99,"quantity":1,"questions":[{"ice-no ice?":"ice"}],"sectionId":"SectionId-Drinks"},{"comments":[null,"Veg. Allergic to onion n garlic"],"customize":[["No Mushrooms"],["No Onion","No Garlic","No Carrot"]],"itemId":"456","name":"sandwich","pricePerUnit":4.99,"quantity":2,"questions":[{"How much cooked":"Dark","Type of Meat":"Chicken"},{"How much cooked":"Medium"}],"sectionId":"SectionId-Breakfast","togo":[true,false]}]}
+     */
+    public static Result getOrder(String orderId) {
+
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION .. Ensure not null;
+        
+        if (orderId == null || orderId.isEmpty()) {
+            return badRequest("id can't be null/empty");
+        }
+
+        Boolean isAuthorized = isDeviceAuthorized(deviceId, orderId);
+        if (isAuthorized == null) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error: talking to StorageBackend", null);
+        } else if (Boolean.FALSE.equals(isAuthorized)) {
+            return customStatus(UNAUTHORIZED, "Not Authorized", null);
+        }
+           
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Map<String, ObjectNode> resultJson = null;
+        
+        try {
+
+            resultJson = sb.getAllCompositeValues(ColFamily_ORDER, orderId);
+
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+
+        if (resultJson == null) {
+            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
+                    null);
+        }
+
+        try {
+            ObjectNode orderJson = resultJson.get(orderId);
+            ArrayNode itemsJson = orderJson.putArray("orderItems");
+            for ( Entry<String, ObjectNode> entry : resultJson.entrySet()) {
+                String key = entry.getKey();
+                if ( !orderId.equals(key) ) {
+                    itemsJson.add(entry.getValue());
+                }                
+            }
+            setCORS();
+            return ok(orderJson);
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+
+    }
+    
+    /*
+     * Example : 
+     * sgandh1-mac:MapTracker sgandh1$ curl --header "Content-type: application/json" --request POST --data '{"orderItems":[{"itemId":"123","sectionId":"SectionId-Drinks","name":"Orange Juice","quantity":1,"pricePerUnit":2.99,"questions":[{"ice-no ice?":"ice"}],"comments":["Room Temperature"]},{"itemId":"456","sectionId":"SectionId-Breakfast","name":"sandwich","quantity":2,"pricePerUnit":4.99,"customize":[["No Mushrooms"],["No Onion","No Garlic","No Carrot"]],"questions":[{"How much cooked":"Dark","Type of Meat":"Chicken"},{"How much cooked":"Medium"}],"comments":[null,"Veg. Allergic to onion n garlic"],"togo":[true,false]}]}' localhost:9000/client/order
+     */
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result createOrder() {
+        JsonNode  jnode = request().body().asJson();
+        if (jnode == null) {
+            log.error("Returning BadRequest : Expecting Json data.");
+            return invalidJsonData("Expecting Json data");
+        }
+        
+        log.info("Request Object received :" + jnode.toString());
+        
+        Order order = null;
+        try {
+            order =  JsonUtils.getObjectWithException(jnode, Order.class);
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            log.error("Returning BadRequest : Invalid Json data.");
+            return invalidJsonData("Invalid Json data");
+        }
+        if (order == null) {
+            log.error("Returning BadRequest : Invalid Json data.");
+            return invalidJsonData("Invalid Json data");
+        }
+        
+        /*
+         * TODO : sanity testing the data. Each item quantity is > 0 (also check some max)
+         * and each item price > 0.
+         * 
+         */
+        
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        String tableId = "10"; // GET THIS FROM USER SESSION
+        String userId = "1233456789"; // GET THIS FROM USER SESSION
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION
+
+
+        order.setRestaurantId(restaurantId);
+        order.setDeviceId(deviceId);
+        order.setTableId(tableId);
+        order.setUserId(userId);
+        
+        int quantity;
+        double itemprice, price = 0;
+        for (OrderItem item : order.getOrderItems()) {
+            quantity = item.getQuantity();
+            itemprice = item.getPricePerUnit();
+            price += quantity*itemprice;
+        }
+        order.setPrice(price);
+        
+        Date d = new Date();
+        order.setCreatedAt(d);
+        
+        order.setId(UUID.randomUUID().toString());
+
+        order.setStatus(models.entities.Status.RECEIVED);
+        StorageBackend sb = StorageBackendImpl.getInstance();
+        
+        try {
+            List<OrderItem> items = order.getOrderItems();
+            order.setOrderItems(null);
+
+            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+
+            JsonNode orderJson = JsonUtils.getJson(order);
+            compositeColumn.put(order.getId(), orderJson);
+            
+            for (OrderItem item : items) {
+                compositeColumn.put(item.getItemId(), JsonUtils.getJson(item));
+            }
+            
+            sb.putValue(ColFamily_ORDER, order.getId(), compositeColumn);
+
+        } catch (StorageBackendException e) {
+            // TODO Auto-generated catch block
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+        
+        try {
+            ObjectNode result = Json.newObject();
+            result.put("id", order.getId());
+            /*
+             * TODO : Need to return the price too
+             */
+            setCORS();
+            return ok(result);
+        } catch (Exception e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
+
+        }
+    }
+    
+}

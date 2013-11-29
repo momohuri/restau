@@ -54,4 +54,11 @@ public class HBaseDataStore extends DataStore {
         return null;
     }
 
+    @Override
+    public String getCompositeValue(String table, String rowKey,
+            String colName1, String colName2) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

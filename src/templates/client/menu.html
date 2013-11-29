@@ -1,178 +1,186 @@
 <div id="boxedWrapper">
 
-<header id="top">
+    <header id="top">
 
-    <div class="container">
-        <div class="row-fluid">
-            <div class="span12">
-                <h4>Restau !</h4>
-                <nav class="short-contact pull-right">
-                    <ul class="wheel-group">
-                        <li><p>Some info about the restaurant</p></li>
-                    </ul>
-                    <div class="line"></div>
-                </nav>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h4>Restau !</h4>
+                    <nav class="short-contact pull-right">
+                        <ul class="wheel-group">
+                            <li><p>Some info about the restaurant</p></li>
+                        </ul>
+                        <div class="line"></div>
+                    </nav>
 
-                <div class="clearfix"></div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
-    </div>
 
-</header>
+    </header>
 
-<section id="content">
+    <section id="content">
 
-<div class="container">
-<div class="row-fluid">
-<div class="span12">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
 
-<section id="menucard">
+                    <section id="menucard">
 
-<div class="filter">
-    <ul id="menucard-tabs">
-        <% sections.forEach(function(section,i){%>
-        <li><a calss='goToSection' data-name="<%= section.get('name') %>"><%= section.get('name') %></a></li>
-        <%});%>
-    </ul>
-</div>
+                        <div class="filter">
+                            <ul id="menucard-tabs">
+                                <% sections.forEach(function(section,i){%>
+                                <li><a class='toSection' data-name="<%= section.get('name') %>"><%= section.get('name')
+                                    %></a></li>
+                                <%});%>
+                            </ul>
+                        </div>
 
-<div class="tab-content">
-<div class="tab-pane active" id="tab-breakfast">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab-breakfast">
 
-<div class="row-fluid"> <!-- menucards -->
+                                <div class="row-fluid"> <!-- menucards -->
 
-    <% sections.forEach(function(section,i){%>
-    <div class="span6">
-        <article class="menucard">
-            <header class="sectionTitle">
-                <h3><%= section.get('name') %></h3>
-            </header>
-            <section class="dishes">
-                <ul>
-                    <% section.get('items').forEach(function(item){ %>
-                    <li>
-                        <div class="image">
+                                    <% sections.forEach(function(section,i){%>
+                                    <div class="span6">
+                                        <article class="menucard">
+                                            <header class="sectionTitle" id="<%= section.get('name') %>">
+                                                <h3><%= section.get('name') %></h3>
+                                            </header>
+                                            <section class="dishes">
+                                                <ul>
+                                                    <% section.get('items').forEach(function(item){ %>
+                                                    <li>
+                                                        <div class="image">
+
+                                                        </div>
+                                                        <div class="data">
+                                                            <h4><%= item.get('name') %></h4>
+
+                                                            <p>
+                                                                <%= item.get('desc') %>
+                                                            </p>
+                                                            <span class="price"><%= item.get('price') + '$' %></span>
+                                                        </div>
+                                                        <div class="quantity">
+                                                            <select class='quantityDropdown'
+                                                                    data-itemId="<%= item.id %>"
+                                                                    data-sectionId="<%= section.id %>">
+                                                                <option value=0>0</option>
+                                                                <option value=1>1</option>
+                                                                <option value=2>2</option>
+                                                                <option value=3>3</option>
+                                                                <option value=4>4</option>
+                                                            </select>
+                                                        </div>
+                                                    </li>
+                                                    <%})%>
+                                                </ul>
+                                            </section>
+                                        </article>
+                                    </div>
+                                    <%});%>
+
+
+                                </div>
+
+                                <!-- //menucards -->
+                            </div>
+
 
                         </div>
-                        <div class="data">
-                            <h4><%= item.name %></h4>
+                        <div>
+                            <br>
+                            <header class="text-center">
+                                <h3> Price <span id="price"><%= order.get('price') %></span> $</h3>
+                            <button class="sendOrder btn btn-success">Check Order</button>
+                            </header>
 
-                            <p>
-                                <%= item.desc %>
-                            </p>
-                            <span class="price"><%= item.price + '$' %></span>
                         </div>
-                        <div class="quantity">
-                            <select>
-                                <option value=0>0</option>
-                                <option value=1>1</option>
-                                <option value=2>2</option>
-                                <option value=3>3</option>
-                                <option value=4>4</option>
-                            </select>
-                        </div>
-                    </li>
-                    <%})%>
-                </ul>
-            </section>
-        </article>
-    </div>
-    <%});%>
 
 
-</div>
+                        <!--add later-->
 
-<!-- //menucards -->
-</div>
+                        <!--<header class="text-center">-->
+                        <!--<h3>Are you overwhelmed? Here are our reccomendations!</h3>-->
+                        <!--</header>-->
 
+                        <!--<div class="recommendations"> &lt;!&ndash; recommendations &ndash;&gt;-->
+                        <!--<div class="row-fluid">-->
+                        <!--<div class="span6">-->
+                        <!--<div class="media">-->
+                        <!--<a class="pull-left" href="#">-->
+                        <!--<figure class="rounded"><img class="media-object" src="images/content-demo/img28.jpg" alt="">-->
+                        <!--</figure>-->
+                        <!--</a>-->
 
-</div>
+                        <!--<div class="media-body">-->
+                        <!--<h3><a href="#">Appetizer</a></h3>-->
 
+                        <!--<p><strong>Donec sed odio dui.</strong> Nulla vitae elit libero, a pharetra augue. Nullam id dolor-->
+                        <!--id nibh ultricies vehicula ut id elit. Integer posuere erat.</p>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="span6">-->
+                        <!--<div class="media">-->
+                        <!--<a class="pull-left" href="#">-->
+                        <!--<figure class="rounded"><img class="media-object" src="images/content-demo/img29.jpg" alt="">-->
+                        <!--</figure>-->
+                        <!--</a>-->
 
+                        <!--<div class="media-body">-->
+                        <!--<h3><a href="#">Main Dish</a></h3>-->
 
+                        <!--<p><strong>Donec sed odio dui.</strong> Nulla vitae elit libero, a pharetra augue. Nullam id dolor-->
+                        <!--id nibh ultricies vehicula ut id elit. Integer posuere erat.</p>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!-- //recommendations -->
 
-<!--add later-->
-
-<!--<header class="text-center">-->
-<!--<h3>Are you overwhelmed? Here are our reccomendations!</h3>-->
-<!--</header>-->
-
-<!--<div class="recommendations"> &lt;!&ndash; recommendations &ndash;&gt;-->
-<!--<div class="row-fluid">-->
-<!--<div class="span6">-->
-<!--<div class="media">-->
-<!--<a class="pull-left" href="#">-->
-<!--<figure class="rounded"><img class="media-object" src="images/content-demo/img28.jpg" alt="">-->
-<!--</figure>-->
-<!--</a>-->
-
-<!--<div class="media-body">-->
-<!--<h3><a href="#">Appetizer</a></h3>-->
-
-<!--<p><strong>Donec sed odio dui.</strong> Nulla vitae elit libero, a pharetra augue. Nullam id dolor-->
-<!--id nibh ultricies vehicula ut id elit. Integer posuere erat.</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="span6">-->
-<!--<div class="media">-->
-<!--<a class="pull-left" href="#">-->
-<!--<figure class="rounded"><img class="media-object" src="images/content-demo/img29.jpg" alt="">-->
-<!--</figure>-->
-<!--</a>-->
-
-<!--<div class="media-body">-->
-<!--<h3><a href="#">Main Dish</a></h3>-->
-
-<!--<p><strong>Donec sed odio dui.</strong> Nulla vitae elit libero, a pharetra augue. Nullam id dolor-->
-<!--id nibh ultricies vehicula ut id elit. Integer posuere erat.</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!-- //recommendations -->
-
-<!--</section>-->
+                        <!--</section>-->
 
 
-
-</section>
-<!-- //span -->
-</div>
-<!-- //row -->
-</div>
-<!-- //container -->
-</div>
-
-</section>
-
-
-<footer id="footer">
-    <div class="container">
-        <div class="row-fluid">
-            <div class="span3">
-                <p>
-                    &copy; Copyright 2013 by Gandhi && Maurin</span>
-                </p>
-
+                    </section>
+                    <!-- //span -->
+                </div>
+                <!-- //row -->
             </div>
-            <div class="span9">
-                <nav class="short-menu">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Pages</a></li>
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Gallerie</a></li>
-                        <li><a href="#">Shortcodes</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </nav>
+            <!-- //container -->
+        </div>
+
+    </section>
+
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span3">
+                    <p>
+                        &copy; Copyright 2013 by Gandhi && Maurin</span>
+                    </p>
+
+                </div>
+                <div class="span9">
+                    <nav class="short-menu">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Pages</a></li>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Gallerie</a></li>
+                            <li><a href="#">Shortcodes</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
 </div>
 

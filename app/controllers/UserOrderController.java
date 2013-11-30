@@ -311,11 +311,11 @@ public class UserOrderController extends BaseController {
 
             Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
 
-            ObjectNode orderJson = JsonUtils.getJson(order);
+            ObjectNode orderJson = (ObjectNode) JsonUtils.getJson(order);
             compositeColumn.put(order.getId(), orderJson);
             
             for (OrderItem item : items) {
-                compositeColumn.put(item.getItemId(), JsonUtils.getJson(item));
+                compositeColumn.put(item.getItemId(), (ObjectNode) JsonUtils.getJson(item));
             }
             
             sb.putValue(ColFamily_ORDER, order.getId(), compositeColumn);

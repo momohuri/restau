@@ -103,8 +103,8 @@ import org.slf4j.LoggerFactory;
         }
 
         
-        public static <T> ObjectNode getJson(T pgdf) {
-            ObjectNode jsonResponse = null;
+        public static <T> JsonNode getJson(T pgdf) {
+            JsonNode jsonResponse = null;
             try {
                 
                 jsonResponse = getJsonWithException(pgdf);
@@ -115,10 +115,10 @@ import org.slf4j.LoggerFactory;
             return jsonResponse;
         }
 
-        public static <T> ObjectNode getJsonWithException(T obj)
+        public static <T> JsonNode getJsonWithException(T obj)
                 throws IllegalArgumentException {
             // TODO Auto-generated method stub
-            ObjectNode jsonResponse = mapper.valueToTree(obj);
+            JsonNode jsonResponse = mapper.valueToTree(obj);
             return jsonResponse;
         }
         

@@ -9,13 +9,15 @@ define(['namespace', './base-collection', '../models/order'],
             defaults: {
 
             },
+
             initialize: function () {
 
 
             }
+
         }, {
             isAllBillGenerated: function (next) {
-                $.get("/orders?isAllBillGenerated", function (bool) {
+                $.get("client/isAllBillGenerated", function (bool) {
                     next(bool);
                 });
             }

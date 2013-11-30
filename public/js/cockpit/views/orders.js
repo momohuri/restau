@@ -9,7 +9,8 @@ define(['namespace', './base-view', '../../shared/collections/orders'
 
 
         events: {
-            'click .navigation': 'navigation'
+            'click .navigation': 'navigation',
+            'click .editOrder': 'editOrder'
         },
 
         orders: new Orders(),
@@ -20,8 +21,8 @@ define(['namespace', './base-view', '../../shared/collections/orders'
 
 
             this.orders.fetch({
-                data:{
-                    q:param.action
+                data: {
+                    q: param.action
                 },
                 success: function () {
                     //that.render();
@@ -39,6 +40,11 @@ define(['namespace', './base-view', '../../shared/collections/orders'
 
         navigation: function (e) {
             Backbone.history.navigate('cockpit/orders/' + $(e.currentTarget)[0].id, true);
+        },
+
+        editOrder: function (e) {
+            var id = e.currentTarget.dataset.id;
+            Backbone.history.navigate('cockpit/orderEdit/'+id,{trigger:true})
         }
 
     });

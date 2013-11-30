@@ -30,7 +30,6 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
             var that = this;
             _.bindAll(this, 'render');
-            order = this.order;
             this.sections.fetch({
                 data: {items: true },
                 success: function () {
@@ -39,6 +38,8 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
                     });
                     if (typeof order !== 'undefined') {
                         that.order = order;
+                    } else{
+                        order= that.order;
                     }
                     that.render();
                 }

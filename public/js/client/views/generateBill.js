@@ -9,8 +9,8 @@ define(['namespace', './base-view', '../../shared/collections/orders'
 
 
         events: {
-            'click goToMenu': 'goToMenu',
-            'click generateBill': 'generateBill'
+            'click .goToMenu': 'goToMenu',
+            'click .generateBill': 'generateBill'
         },
 
         isAllBillGenerated: false,
@@ -20,14 +20,14 @@ define(['namespace', './base-view', '../../shared/collections/orders'
 
             _.bindAll(this, 'render');
 
-             Orders.isAllBillGenerated(function(bool){
-                 that.isAllBillGenerated = bool;
-                 that.render();
-             });
+            Orders.isAllBillGenerated(function (bool) {
+                that.isAllBillGenerated = bool == "true";
+                that.render();
+            });
         },
 
         render: function (e) {
-            this.$el.html(this.template({isAllBillGenerated:this.isAllBillGenerated}));
+            this.$el.html(this.template({isAllBillGenerated: this.isAllBillGenerated}));
         },
 
         goToMenu: function () {
@@ -35,7 +35,12 @@ define(['namespace', './base-view', '../../shared/collections/orders'
         },
 
         generateBill: function () {
-            debugger
+            var that = this;
+            //todo change to put and add to model instead of direct ajax
+            $.get('client/generateBill.do', function () {
+                that.isAllBillGenerated = true;
+                that.render()
+            })
         }
 
 

@@ -24,14 +24,9 @@ define(['namespace', './base-view'],
 
             render: function (e) {
                 this.$el.html(this.template());
-            },
-
-            goToMenu: function () {
-                Backbone.history.navigate('client/menu', {trigger: true});
-            },
-            goToCheckOrder:function(){
-                Backbone.history.navigate('client/checkOrder', {trigger: true});
             }
+
+
         });
         return  App.client.views.header;
     }

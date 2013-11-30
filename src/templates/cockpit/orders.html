@@ -18,4 +18,37 @@
     </a>
     <%})%>
 
+
+    <table class="table">
+        <thead>
+
+        <tr>
+            <th>Table</th>
+            <th> Device</th>
+            <th> Orders</th>
+            <th> Generate bill</th>
+            <th> Generate bill for table</th>
+            <th> Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td rowspan="3"> table 1 </td> <td> Device name</td><td> <a data-id="96628819-3b01-43d1-8e0d-d80d58328568" class="editOrder">order1 </a></td>
+            <td> <button class='btn-success'>generate bill</button></td><td rowspan="3"><button class='btn-success'>generate bill</button> </td>     <td rowspan='3' class='alert-danger'>waiting for bill </td>
+        </tr>
+        <tr>
+            <td rowspan="2"> Device name</td><td> order2 </td><td rowspan="2">  </td>
+        </tr>
+        <tr>
+            <td> order3 </td>
+        </tr>
+
+        <tr>
+            <td> table 1 </td> <td> Device name</td><td> order1 </td><td>  </td><td></td>     <td class='alert-info'> ordered</td>
+        </tr>
+
+
+        </tbody>
+    </table>
+
 </div>

@@ -39,7 +39,7 @@ var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments
 with(obj||{}){
 __p+='<div id="boxedWrapper">\n\n    <section id="content">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n\n                    <section id="menucard">\n\n                        <div class="tab-content">\n\n                            <div>\n                                <br>\n                                <header class="text-center">\n                                    ';
  if(isAllBillGenerated) { 
-__p+='\n                                    <strong> The bill si coming soon !</strong>\n                                    ';
+__p+='\n                                    <strong> The bill is coming soon !</strong>\n                                    ';
 }else{
 __p+='\n                                    <button class=\'btn btn-large btn-success generateBill\'>Generate Bill</button>\n                                    <br>\n                                    <button class=\'btn btn-large btn-default goToMenu\'>Order more stuff</button>\n                                    ';
 }
@@ -122,6 +122,13 @@ __p+='<div class="navbar navbar-inverse navbar-fixed-top menuBasedOnName">\n    
 }
 return __p;
 };
+restau.tmpl.cockpit.orderEdit = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='hello';
+}
+return __p;
+};
 restau.tmpl.cockpit.orders = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
@@ -133,7 +140,7 @@ __p+='\n    <a href="#" class="list-group-item '+
 ((__t=( order.get('status') ))==null?'':__t)+
 '</span>\n\n        <p class="list-group-item-text"></p>\n    </a>\n    ';
 })
-__p+='\n\n</div>\n';
+__p+='\n\n\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th>Table</th>\n            <th> Device</th>\n            <th> Orders</th>\n            <th> Generate bill</th>\n            <th> Generate bill for table</th>\n            <th> Status</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr>\n            <td rowspan="3"> table 1 </td> <td> Device name</td><td> <a data-id="96628819-3b01-43d1-8e0d-d80d58328568" class="editOrder">order1 </a></td>\n            <td> <button class=\'btn-success\'>generate bill</button></td><td rowspan="3"><button class=\'btn-success\'>generate bill</button> </td>     <td rowspan=\'3\' class=\'alert-danger\'>waiting for bill </td>\n        </tr>\n        <tr>\n            <td rowspan="2"> Device name</td><td> order2 </td><td rowspan="2">  </td>\n        </tr>\n        <tr>\n            <td> order3 </td>\n        </tr>\n\n        <tr>\n            <td> table 1 </td> <td> Device name</td><td> order1 </td><td>  </td><td></td>     <td class=\'alert-info\'> ordered</td>\n        </tr>\n\n\n        </tbody>\n    </table>\n\n</div>\n';
 }
 return __p;
 };

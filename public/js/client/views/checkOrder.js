@@ -1,4 +1,4 @@
-define(['namespace', './base-view', '../../shared/models/order'], function (App, BaseView, Order, undefined) {
+define(['namespace', './base-view', '../../shared/models/order', '../../shared/collections/items'], function (App, BaseView, Order, Items, undefined) {
 
     App.client.views.checkOrder = BaseView.extend({
 
@@ -33,18 +33,14 @@ define(['namespace', './base-view', '../../shared/models/order'], function (App,
             this.$el.html(this.template({order: this.order}));
         },
 
-
-
         sendOrder: function () {
-            this.order.save({},{
+            this.order.save({}, {
                 success: function (e) {
-                    delete order;
-                    Backbone.history.navigate("client/generateBill",{trigger:true});
+                    order = new Order({orderItems: new Items()});
+                    Backbone.history.navigate("client/generateBill", {trigger: true});
                 }
             })
         }
-
-
 
     });
     return  App.client.views.checkOrder;

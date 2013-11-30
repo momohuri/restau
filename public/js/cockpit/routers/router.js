@@ -1,11 +1,12 @@
-define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sections-manage', '../views/section-edit','../views/orders'],
-    function (App, Backbonefilter, Menu, manageSections, SectionEdit,Orders, undefined) {
+define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sections-manage', '../views/section-edit','../views/orders','../views/orderEdit'],
+    function (App, Backbonefilter, Menu, manageSections, SectionEdit,Orders,OrderEdit, undefined) {
         App.cockpit.routers.Router = Backbone.Router.extend({
 
             routes: {
                 'cockpit/section/manageSections': 'manageSections',
                 'cockpit/section/:id': 'section',
                 'cockpit/orders/*action':'orders',
+                'cockpit/orderEdit/:id':'orderEdit',
                 'cockpit/*actions': 'index'
             },
 
@@ -51,7 +52,13 @@ define(['namespace', 'backboneRouteFilter', '../views/navigation', '../views/sec
             orders: function(action){
                 new Menu();
                 new Orders({action:action});
+            },
+
+            orderEdit:function(id){
+                new Menu();
+                new OrderEdit({orderId:id});
             }
+
 
         });
         return App.cockpit.routers.Router;

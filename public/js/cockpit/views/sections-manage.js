@@ -53,6 +53,7 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             }
 
             this.section.set(result);
+            this.section.set('enabled',this.section.get('enabled')=="true");
             this.section.save({}, {
                     success: function () {
                         that.sections.add(that.section.clone(),{at:index});
@@ -79,7 +80,6 @@ define(['namespace', './base-view', '../../shared/collections/sections', '../../
             this.section = this.sections.get(e.currentTarget.parentNode.parentNode.dataset.id);
             this.sections.remove(this.section);
             this.section.destroy();
-
         }
 
 

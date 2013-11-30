@@ -61,6 +61,7 @@ define(['namespace', './base-view', '../../shared/collections/items', '../../sha
             }
 
             this.item.set(result);
+            this.item.set('enabled',this.item.get('enabled')=="true");
             this.item.save({}, {
                     success: function () {
                         that.items.add(that.item.clone(),{at:index});

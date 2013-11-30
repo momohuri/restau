@@ -131,8 +131,8 @@ public class SectionController extends BaseController {
         try {
             section.setDeleted(false);
 
-            JsonNode sectionJson = JsonUtils.getJson(section);
-            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            ObjectNode sectionJson = (ObjectNode) JsonUtils.getJson(section);
+            Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
             compositeColumn.put(section.getId(), sectionJson);
             sb.putValue(ColFamily_Section, restaurantId, compositeColumn);
 
@@ -184,7 +184,7 @@ public class SectionController extends BaseController {
         
         StorageBackend sb = StorageBackendImpl.getInstance();
 
-        Map<String,JsonNode> compositeColumns = new HashMap<String, JsonNode>();
+        Map<String,ObjectNode> compositeColumns = new HashMap<String, ObjectNode>();
         Date currentDate = new Date();
         
         for (Section section : sections) {
@@ -200,7 +200,7 @@ public class SectionController extends BaseController {
              */
             section.setDeleted(false);
             
-            JsonNode sectionJson = JsonUtils.getJson(section);
+            ObjectNode sectionJson = (ObjectNode) JsonUtils.getJson(section);
             compositeColumns.put(section.getId(), sectionJson);
             
         }
@@ -302,8 +302,8 @@ public class SectionController extends BaseController {
         
         try {
 
-            JsonNode sectionJson = JsonUtils.getJson(section);
-            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            ObjectNode sectionJson = (ObjectNode) JsonUtils.getJson(section);
+            Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
             compositeColumn.put(section.getId(), sectionJson);
             sb.putValue(ColFamily_Section, restaurantId, compositeColumn);
             

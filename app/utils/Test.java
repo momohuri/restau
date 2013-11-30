@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+
 import models.entities.Item;
 import models.entities.Order;
 import models.entities.OrderItem;
@@ -75,6 +77,8 @@ public class Test {
         
         Order o = new Order();
         o.setOrderItems(items);
+        
+        JsonNode j = JsonUtils.getJson(item2);
         
         System.out.println(JsonUtils.getJson(o));
         

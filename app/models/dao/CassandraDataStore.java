@@ -179,6 +179,45 @@ public class CassandraDataStore extends DataStore {
         return null;
     }
     
+    @Override
+    public Map<String, String> getCompositeValuesStr(String table,
+            String rowKey, String compositeName) {
+        Map<String, String> resultMap = new HashMap<String, String>();
+        
+        SliceQuery<String, Composite, String> sliceQuery = HFactory
+                .createSliceQuery(storageKeyspace,
+                        stringSerializer, new CompositeSerializer(),
+                        stringSerializer);
+        sliceQuery.setColumnFamily(table);
+        sliceQuery.setKey(rowKey);
+
+        
+        Composite startRange = new Composite();
+        startRange.addComponent(0, compositeName, ComponentEquality.EQUAL);
+
+        Composite endRange = new Composite();
+        endRange.addComponent(0, compositeName, ComponentEquality.GREATER_THAN_EQUAL);
+
+        sliceQuery.setRange(startRange, endRange, false, Integer.MAX_VALUE);
+
+        QueryResult<ColumnSlice<Composite, String>> result = sliceQuery
+                .execute();
+        ColumnSlice<Composite, String> cs = result.get();
+        for (HColumn<Composite, String> col : cs.getColumns()) {
+            /*
+             * Note : String key1 is same as compositeName given to this method.
+             */
+            String key2 = col.getName().get(1, stringSerializer);
+
+            String value = col.getValue();
+            resultMap.put(key2, value);
+            
+        }
+
+        return resultMap;
+    }
+
+    
     public ObjectNode getCompositeValues(String columnFamily, String rowKey, String compositeName) {
         ObjectNode json = JsonNodeFactory.instance.objectNode();
         
@@ -371,12 +410,22 @@ public class CassandraDataStore extends DataStore {
     }
 
     @Override
+    public boolean putCompositeValue(String table, String rowKey,
+            String colName1, String colName2, String value) {
+        Mutator<String> mutator = HFactory.createMutator(storageKeyspace, stringSerializer);
+        HColumn<Composite,String>  insertCol = getCompositeColumn(colName1, colName2 , value);
+        mutator.addInsertion(rowKey, table, insertCol);
+        mutator.execute();
+        return true;
+    }
+    
+    @Override
     public boolean putValue(String table, String rowKey,
-            Map<String, JsonNode> compositeColumn) {
+            Map<String, ObjectNode> compositeColumn) {
         // TODO Auto-generated method stub
         Mutator<String> mutator = HFactory.createMutator(storageKeyspace, stringSerializer);
 
-        for (Map.Entry<String, JsonNode> col : compositeColumn.entrySet()) {
+        for (Map.Entry<String, ObjectNode> col : compositeColumn.entrySet()) {
             String key1 = col.getKey();
             JsonNode jnode = col.getValue();
             
@@ -460,6 +509,7 @@ public class CassandraDataStore extends DataStore {
         System.out.println(result);
 
     }
+
 
 
 }

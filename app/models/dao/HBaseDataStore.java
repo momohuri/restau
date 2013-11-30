@@ -35,7 +35,7 @@ public class HBaseDataStore extends DataStore {
 
     @Override
     public boolean putValue(String table, String rowKey,
-            Map<String, JsonNode> compositeColumn) {
+            Map<String, ObjectNode> compositeColumn) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -57,6 +57,20 @@ public class HBaseDataStore extends DataStore {
     @Override
     public String getCompositeValue(String table, String rowKey,
             String colName1, String colName2) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public boolean putCompositeValue(String table, String rowKey,
+            String colName1, String colName2, String value) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Map<String, String> getCompositeValuesStr(String table,
+            String rowKey, String compositeName) {
         // TODO Auto-generated method stub
         return null;
     }

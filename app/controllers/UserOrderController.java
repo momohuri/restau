@@ -1,7 +1,9 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,10 +13,13 @@ import models.dao.StorageBackend;
 import models.dao.StorageBackendImpl;
 import models.entities.Order;
 import models.entities.OrderItem;
+import models.entities.Status;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
+import org.codehaus.jackson.node.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +27,7 @@ import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.JsonUtils;
+import exceptions.InternalException;
 import exceptions.StorageBackendException;
 
 
@@ -30,6 +36,7 @@ public class UserOrderController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(UserOrderController.class);
 
     private static final String ColFamily_ORDER = "Order";
+    private static final String CF_USER_ORDER_INDEX = "UserOrderIndex";
 
     private static Boolean isDeviceAuthorized(String deviceId, String orderId) {
         StorageBackend sb = StorageBackendImpl.getInstance();
@@ -79,6 +86,129 @@ public class UserOrderController extends BaseController {
 
     }
     
+    private static Map<String,String> getDeviceOrders(String deviceId, String restaurantId) throws StorageBackendException {
+
+
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        return sb.getCompositeValuesStr(CF_USER_ORDER_INDEX, deviceId, restaurantId);
+
+    }
+    
+    
+    public static Result generateBill() {
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION .. Ensure not null;
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        try {
+            
+            Map<String,String> orders = getDeviceOrders(deviceId, restaurantId);
+            for (String orderId : orders.keySet()) {
+                sb.putCompositeValue(CF_USER_ORDER_INDEX, deviceId, restaurantId, orderId, models.entities.Status.BILL_GENERATED.toString());
+                sb.putCompositeValue(ColFamily_ORDER, orderId, orderId, "status", models.entities.Status.BILL_GENERATED.toString());
+            }
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+        
+        return ok();
+    }
+    
+    /*
+     * Returns /client/orders?isAllBillGenerated 
+     * true : if all the bills are generated
+     */
+    public static Result getBulkOrderStatus() {
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION .. Ensure not null;
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+        
+        Boolean result = true;
+
+        try {
+            
+            Map<String,String> orders = getDeviceOrders(deviceId, restaurantId);
+            for (String status : orders.values()) {
+                if (!models.entities.Status.BILL_GENERATED.toString().equals(status)) {
+                    result = false;
+                    break;
+                }
+                
+            }
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        } 
+        
+        return ok(result.toString());
+    }
+
+    public static Result getBulkOrders() {
+        
+        String deviceId = "ABCDEFGHI"; // GET THIS FROM USER SESSION .. Ensure not null;
+        String restaurantId = "1"; // GET THIS FROM USER SESSION
+
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+        try {
+            
+            Map<String,String> orders = getDeviceOrders(deviceId, restaurantId);
+            
+            for (String orderId : orders.keySet()) {
+                ObjectNode orderJson = getInternalOrder(orderId);
+                if (orderJson == null) {
+                    log.error("ERROR : getting bulkorders. OrderID present in Index but not in Order. DeviceId=" + deviceId + " ; OrderId=" + orderId);
+                    continue;
+                }
+                result.add(orderJson);
+            }
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
+                    "Internal Error: talking to StorageBackend", e);
+        }  catch (InternalException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, e.getReason(), e);
+        }
+        
+        setCORS();
+        return ok(result);
+
+    }
+    
+    private static ObjectNode getInternalOrder(String orderId) throws StorageBackendException, InternalException {
+        StorageBackend sb = StorageBackendImpl.getInstance();
+
+        Map<String, ObjectNode> resultJson = null;
+
+        try {
+
+            resultJson = sb.getAllCompositeValues(ColFamily_ORDER, orderId);
+
+        } catch (StorageBackendException e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
+
+        if (resultJson == null) {
+            return null;
+        }
+
+        try {
+            ObjectNode orderJson = resultJson.get(orderId);
+            ArrayNode itemsJson = orderJson.putArray("orderItems");
+            for (Entry<String, ObjectNode> entry : resultJson.entrySet()) {
+                String key = entry.getKey();
+                if (!orderId.equals(key)) {
+                    itemsJson.add(entry.getValue());
+                }
+            }
+            return orderJson;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new InternalException("Internal Error- Malformed Json");
+        }
+    }
+    
     /*
      * Example : 
      * sgandh1-mac:MapTracker sgandh1$ curl localhost:9000/client/order/288d7baa-cd03-4c9b-b939-33c53067ce01
@@ -99,38 +229,17 @@ public class UserOrderController extends BaseController {
             return customStatus(UNAUTHORIZED, "Not Authorized", null);
         }
            
-        StorageBackend sb = StorageBackendImpl.getInstance();
-
-        Map<String, ObjectNode> resultJson = null;
-        
         try {
-
-            resultJson = sb.getAllCompositeValues(ColFamily_ORDER, orderId);
-
-        } catch (StorageBackendException e) {
-            return customStatus(HTTP_INTERNAL_SERVER_ERROR,
-                    "Internal Error: talking to StorageBackend", e);
-        } 
-
-        if (resultJson == null) {
-            return customStatus(HTTP_NOT_FOUND, "No data found in Storage",
-                    null);
-        }
-
-        try {
-            ObjectNode orderJson = resultJson.get(orderId);
-            ArrayNode itemsJson = orderJson.putArray("orderItems");
-            for ( Entry<String, ObjectNode> entry : resultJson.entrySet()) {
-                String key = entry.getKey();
-                if ( !orderId.equals(key) ) {
-                    itemsJson.add(entry.getValue());
-                }                
+            ObjectNode orderJson = getInternalOrder(orderId);
+            if (orderJson == null) {
+                return customStatus(HTTP_NOT_FOUND, "No data found in Storage", null);
             }
             setCORS();
             return ok(orderJson);
-        } catch (Exception e) {
-            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error- Malformed Json", e);
-
+        } catch (StorageBackendException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, "Internal Error: talking to StorageBackend", e);
+        } catch (InternalException e) {
+            return customStatus(HTTP_INTERNAL_SERVER_ERROR, e.getReason(), e);
         }
 
     }
@@ -200,9 +309,9 @@ public class UserOrderController extends BaseController {
             List<OrderItem> items = order.getOrderItems();
             order.setOrderItems(null);
 
-            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
 
-            JsonNode orderJson = JsonUtils.getJson(order);
+            ObjectNode orderJson = JsonUtils.getJson(order);
             compositeColumn.put(order.getId(), orderJson);
             
             for (OrderItem item : items) {
@@ -210,6 +319,13 @@ public class UserOrderController extends BaseController {
             }
             
             sb.putValue(ColFamily_ORDER, order.getId(), compositeColumn);
+            
+//            Map<String,ObjectNode> userOrderIndex = new HashMap<String, ObjectNode>();
+//            ObjectNode oNode = JsonNodeFactory.instance.objectNode();
+//            oNode.put(order.getId(), new TextNode(order.getStatus().toString()));
+//            userOrderIndex.put(restaurantId, oNode);
+//            sb.putValue(CF_USER_ORDER_INDEX, deviceId, userOrderIndex);
+            sb.putCompositeValue(CF_USER_ORDER_INDEX, deviceId, restaurantId, order.getId(), order.getStatus().toString());
 
         } catch (StorageBackendException e) {
             // TODO Auto-generated catch block

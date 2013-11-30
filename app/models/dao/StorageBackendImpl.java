@@ -116,6 +116,31 @@ public class StorageBackendImpl implements StorageBackend {
         
         return response;
     }
+    
+    @Override
+    public boolean putCompositeValue(String table, String rowKey,
+            String colName1, String colName2, String value)
+            throws StorageBackendException {
+        
+        String input = "putCompositeValue() input: table=" + table + " ; rowKey=" +rowKey + " ; colName1=" + colName1 + " ; colName2=" + colName2 + " ; colValue=" + value;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey) || StringUtils.isEmpty(colName1) || StringUtils.isEmpty(colName2)) {
+            log.error("Null i/p arguments to putCompositeValue(). " + input);
+            throw new StorageBackendException("Null i/p arguments to putValue(). " + input);
+        }
+        
+        boolean response = false;
+        try {
+            log.info("Writing data for " + input);
+            response = dataStore.putCompositeValue(table, rowKey, colName1, colName2, value);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }   
+        
+        return response;
+    }   
 
     @Override
     public String getProperty(String key) {
@@ -157,7 +182,7 @@ public class StorageBackendImpl implements StorageBackend {
 
     @Override
     public boolean putValue(String table, String rowKey,
-            Map<String, JsonNode> compositeColumn)
+            Map<String, ObjectNode> compositeColumn)
             throws StorageBackendException {
         
         String input = "putValue compositeColumn() input: table=" + table + " ; rowKey=" +rowKey + " ; compositeColumn=" + compositeColumn.toString();
@@ -211,10 +236,40 @@ public class StorageBackendImpl implements StorageBackend {
     } 
 
     @Override
+    public Map<String,String> getCompositeValuesStr(String table, String rowKey,
+            String compositeName) throws StorageBackendException {
+        String input = "getCompositeValuesStr() input: table=" + table + " ; rowKey=" +rowKey;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey) || StringUtils.isEmpty(compositeName)) {
+            log.error("Null i/p arguments to getCompositeValuesStr(). " + input);
+            throw new StorageBackendException("Null i/p arguments to getCompositeValuesStr(). " + input);
+        }
+        
+        Map<String, String> response = null;
+        try {
+            log.info("Reading data for " + input);
+            response = dataStore.getCompositeValuesStr(table, rowKey, compositeName);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }
+
+        if (response == null) {
+            // No data found in cassandra
+            log.info("Response is NULL: No data for " + input);
+            return null;
+        }
+
+        log.info("Response = " + response + " for " + input);
+        return response;
+    }
+    
+    @Override
     public ObjectNode getCompositeValues(String table, String rowKey,
             String compositeName) throws StorageBackendException {
         String input = "getCompositeValues() input: table=" + table + " ; rowKey=" +rowKey;
-        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey) || StringUtils.isEmpty(compositeName)) {
             log.error("Null i/p arguments to getCompositeValues(). " + input);
             throw new StorageBackendException("Null i/p arguments to getCompositeValues(). " + input);
         }
@@ -238,7 +293,9 @@ public class StorageBackendImpl implements StorageBackend {
 
         log.info("Response = " + response + " for " + input);
         return response;
-    }   
+    }
+
+
     
 
 //    @Override

@@ -99,8 +99,8 @@ public class MenuController extends BaseController {
             item.setUpdatedAt(currentDate);
             item.setDeleted(false);
             
-            JsonNode itemJson = JsonUtils.getJson(item);
-            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            ObjectNode itemJson = (ObjectNode) JsonUtils.getJson(item);
+            Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
             compositeColumn.put(item.getId(), itemJson);
             sb.putValue(ColFamily_Menu, sectionId, compositeColumn);
 
@@ -164,7 +164,7 @@ public class MenuController extends BaseController {
         
         StorageBackend sb = StorageBackendImpl.getInstance();
 
-        Map<String,JsonNode> compositeColumns = new HashMap<String, JsonNode>();
+        Map<String,ObjectNode> compositeColumns = new HashMap<String, ObjectNode>();
         Date currentDate = new Date();
         
         for (Item item : items) {
@@ -180,7 +180,7 @@ public class MenuController extends BaseController {
              */
             item.setDeleted(false);
             
-            JsonNode itemJson = JsonUtils.getJson(item);
+            ObjectNode itemJson = (ObjectNode) JsonUtils.getJson(item);
             compositeColumns.put(item.getId(), itemJson);
             
         }
@@ -227,8 +227,8 @@ public class MenuController extends BaseController {
         
         try {
 
-            JsonNode itemJson = JsonUtils.getJson(item);
-            Map<String,JsonNode> compositeColumn = new HashMap<String, JsonNode>();
+            ObjectNode itemJson = (ObjectNode) JsonUtils.getJson(item);
+            Map<String,ObjectNode> compositeColumn = new HashMap<String, ObjectNode>();
             compositeColumn.put(item.getId(), itemJson);
             sb.putValue(ColFamily_Menu, sectionId, compositeColumn);
             

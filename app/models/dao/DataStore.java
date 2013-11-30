@@ -12,7 +12,7 @@ public abstract class DataStore {
     
     public abstract boolean putValue(String table, String rowKey, String colName, String value); // colName, rowKey, colName, colValue
 
-    public abstract boolean putValue(String table, String rowKey, Map<String,JsonNode> compositeColumn); // colName, rowKey, Map<composite_Key, JsonNode>
+    public abstract boolean putValue(String table, String rowKey, Map<String,ObjectNode> compositeColumn); // colName, rowKey, Map<composite_Key, JsonNode>
 
     public abstract Map<String,String> getAllColumnNameValue(String table, String rowKey);
 
@@ -25,6 +25,12 @@ public abstract class DataStore {
     public abstract String getProperty(String key);
 
     public abstract String getCompositeValue(String table, String rowKey, String colName1, String colName2);
+
+    public abstract boolean putCompositeValue(String table, String rowKey,
+            String colName1, String colName2, String value);
+
+    public abstract Map<String, String> getCompositeValuesStr(String table,
+            String rowKey, String compositeName);
 
 }
 

@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
+import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,8 +103,8 @@ import org.slf4j.LoggerFactory;
         }
 
         
-        public static <T> JsonNode getJson(T pgdf) {
-            JsonNode jsonResponse = null;
+        public static <T> ObjectNode getJson(T pgdf) {
+            ObjectNode jsonResponse = null;
             try {
                 
                 jsonResponse = getJsonWithException(pgdf);
@@ -114,10 +115,10 @@ import org.slf4j.LoggerFactory;
             return jsonResponse;
         }
 
-        public static <T> JsonNode getJsonWithException(T obj)
+        public static <T> ObjectNode getJsonWithException(T obj)
                 throws IllegalArgumentException {
             // TODO Auto-generated method stub
-            JsonNode jsonResponse = mapper.valueToTree(obj);
+            ObjectNode jsonResponse = mapper.valueToTree(obj);
             return jsonResponse;
         }
         

@@ -1,4 +1,4 @@
-//drop keyspace RestauLocal;
+    //drop keyspace RestauLocal;
 create keyspace RestauLocal
     with strategy_options = [{replication_factor:3}]
     and placement_strategy = 'org.apache.cassandra.locator.SimpleStrategy';
@@ -25,6 +25,11 @@ create column family Order
     with comparator = 'CompositeType(UTF8Type,UTF8Type)'
     and default_validation_class = 'UTF8Type'
     and key_validation_class = 'UTF8Type';
+    
+create column family UserOrderIndex
+    with comparator = 'CompositeType(UTF8Type,UTF8Type)'
+    and default_validation_class = 'UTF8Type'
+    and key_validation_class = 'UTF8Type';    
         
 //////////////////////////   
 create column family Node

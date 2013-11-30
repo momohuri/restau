@@ -1,10 +1,11 @@
-define(['namespace', 'backboneRouteFilter', '../views/menu','../views/qrcode'],
-    function (App, Backbonefilter, Menu, QRCode,undefined) {
+define(['namespace', 'backboneRouteFilter', '../views/menu', '../views/qrcode','../views/checkOrder','../views/generateBill','../views/header'],
+    function (App, Backbonefilter, Menu, QRCode, checkOrder,generateBill,Header,undefined) {
         App.client.routers.Router = Backbone.Router.extend({
 
             routes: {
                 'client/': 'qrcode',
                 'client/checkOrder': 'checkOrder',
+                'client/generateBill':'generateBill',
                 'client/*actions': 'menu'
             },
 
@@ -49,23 +50,29 @@ define(['namespace', 'backboneRouteFilter', '../views/menu','../views/qrcode'],
                             }
                         });
                     }
-                }
+                };
                 activeNav('.menuBasedOnName');
                 activeNav('.menuBasedOnId')
             },
 
             menu: function () {
-
-
+                new Header();
                 new Menu();
             },
 
             qrcode: function () {
+                new Header();
                 new QRCode();
             },
 
             checkOrder: function () {
+                new Header();
+               new checkOrder();
+            },
 
+            generateBill:function(){
+                new Header();
+                new generateBill();
             }
 
         });

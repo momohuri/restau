@@ -5,7 +5,7 @@ define(['namespace', './base-model'],
             urlRoot: '/item',
 
             defaults: {
-                created_at: new Date()
+
 
             },
             initialize: function () {
@@ -45,7 +45,16 @@ define(['namespace', './base-model'],
                         console.log('error : ', e);
                     }
                 });
+            },
+
+            getAttrForOrder:function(){
+                this.unset('displayRank', { silent: true });
+                this.unset('createdAt', { silent: true });
+                this.unset('created_at', { silent: true });
+                this.set('pricePerUnit',this.get('price'));
+                return this;
             }
+
         });
 
         return  App.cockpit.models.item;

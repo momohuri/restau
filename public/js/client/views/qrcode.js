@@ -2,7 +2,7 @@ define(['namespace', './base-view'], function (App, BaseView, undefined) {
 
     App.client.views.qrcode = BaseView.extend({
 
-        el: 'body',
+        el: '#main',
 
         template: App.tmpl.client.qrcode,
 

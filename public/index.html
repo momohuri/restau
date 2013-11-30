@@ -15,6 +15,7 @@
         <script>
 
         require.onError = function ( err ) {
+            console.log(err);
         if ( err.requireModules[ 0 ] === 'main' ) {
             require ([ 'js/main' ] ) ;
         }
@@ -26,6 +27,11 @@
         } ) ;
         require ([ "main" ] ) ;
         </script>
+
+    <div id="header">
+        </div>
+    <div id="main">
+        </div>
 
     </body>
 </html>

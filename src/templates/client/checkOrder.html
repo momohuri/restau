@@ -1,0 +1,110 @@
+<div id="boxedWrapper">
+
+    <section id="content">
+
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+
+                    <section id="menucard">
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab-breakfast">
+
+                                <div class="row-fluid"> <!-- menucards -->
+
+
+                                    <div class="span6">
+                                        <article class="menucard">
+                                            <header>
+                                                Check your order :
+                                            </header>
+                                            <section class="dishes">
+                                                <ul>
+                                                    <% order.get('orderItems').forEach(function(item,i){ %>
+                                                    <li>
+                                                        <div class="image">
+
+                                                        </div>
+                                                        <div class="data">
+                                                            <h4><%= item.get('item').get('name') %></h4>
+
+                                                            <p>
+                                                                <%= item.get('item').get('desc') %>
+                                                            </p>
+                                                            <span class="price"><%= item.get('item').get('price') + '$' %></span>
+                                                        </div>
+                                                        <div class="quantity">
+                                                            <select class='quantityDropdown'
+                                                                    data-itemId="<%= item.id %>"
+                                                                    data-sectionId="<%= item.get('sectionId') %>">
+                                                                <% for(var i = 0; i<20; i++){ %>
+                                                                <option <%= item.get('quantity')==i?'selected':true %> value=<%=i%>><%= i%></option>
+                                                                <%}%>
+                                                            </select>
+                                                        </div>
+                                                    </li>
+                                                    <%})%>
+                                                </ul>
+                                            </section>
+                                        </article>
+                                    </div>
+
+                                    <!-- //menucards -->
+                                </div>
+
+
+                            </div>
+                            <div>
+                                <br>
+                                <header class="text-center">
+                                    <h3> Price <span id="price"><%= order.get('price') %></span> $</h3>
+                                    <label>Any comment for your order?</label><textarea id='comment'> </textarea>
+                                    <button class="sendOrder btn btn-success">Send order to the cook !</button>
+                                    <button class="goToMenu btn btn-default "> Go back to the menu</button>
+                                </header>
+
+                            </div>
+
+                        </div>
+                    </section>
+                    <!-- //span -->
+                </div>
+                <!-- //row -->
+            </div>
+            <!-- //container -->
+        </div>
+
+    </section>
+
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span3">
+                    <p>
+                        &copy; Copyright 2013 by Gandhi && Maurin</span>
+                    </p>
+
+                </div>
+                <div class="span9">
+                    <nav class="short-menu">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Pages</a></li>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Gallerie</a></li>
+                            <li><a href="#">Shortcodes</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+</div>
+

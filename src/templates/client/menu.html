@@ -1,24 +1,6 @@
 <div id="boxedWrapper">
 
-    <header id="top">
 
-        <div class="container">
-            <div class="row-fluid">
-                <div class="span12">
-                    <h4>Restau !</h4>
-                    <nav class="short-contact pull-right">
-                        <ul class="wheel-group">
-                            <li><p>Some info about the restaurant</p></li>
-                        </ul>
-                        <div class="line"></div>
-                    </nav>
-
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
-
-    </header>
 
     <section id="content">
 
@@ -67,11 +49,12 @@
                                                             <select class='quantityDropdown'
                                                                     data-itemId="<%= item.id %>"
                                                                     data-sectionId="<%= section.id %>">
-                                                                <option value=0>0</option>
-                                                                <option value=1>1</option>
-                                                                <option value=2>2</option>
-                                                                <option value=3>3</option>
-                                                                <option value=4>4</option>
+                                                                <%  var q = 0;
+                                                                order.get('orderItems').forEach(function(orderItem,i){ if(orderItem.id===item.id){q=orderItem.get('quantity')} });
+
+                                                                for(var i = 0; i<20; i++){ %>
+                                                                <option <%= q==i?'selected':true %> value=<%=i%>><%= i%></option>
+                                                                <%}%>
                                                             </select>
                                                         </div>
                                                     </li>

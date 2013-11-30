@@ -1,25 +1,28 @@
 define(['namespace', './base-view', '../../shared/collections/sections' , '../../shared/collections/items' , '../../shared/models/order'
-], function (App, BaseView, Sections, Items, Order, undefined) {
+], function (App, BaseView, Sections, Items, Order,undefined) {
+
     App.client.views.menu = BaseView.extend({
 
-        el: 'body',
+        el: '#main',
 
         template: App.tmpl.client.menu,
 
         sections: new Sections(),
 
-        order: new Order({items: new Items()}),
+        order: new Order({orderItems: new Items()}),
 
-        sentOrder: new Order({items: new Items()}),
 
         events: {
             'change .quantityDropdown': 'addToOrder',
-            'click .sendOrder': 'sendOrder',
-            'touchstart .sectionTitle': 'showSection',
-            'click .toSection': 'toSection',
 
+            //smartphone
+            'touchstart .sendOrder': 'goToCheckOrder',
+            'touchstart .toSection': 'toSection',
+            'touchstart .sectionTitle': 'showSection',
 
             //computer
+            'click .sendOrder': 'goToCheckOrder',
+            'click .toSection': 'toSection',
             'click .sectionTitle': 'showSection'
         },
 
@@ -27,38 +30,24 @@ define(['namespace', './base-view', '../../shared/collections/sections' , '../..
 
             var that = this;
             _.bindAll(this, 'render');
+            order = this.order;
             this.sections.fetch({
                 data: {items: true },
                 success: function () {
                     that.sections.forEach(function (section, i) {
                         section.set('items', new Items(section.get('items')));
                     });
+                    if (typeof order !== 'undefined') {
+                        that.order = order;
+                    }
                     that.render();
                 }
             });
         },
 
-        render: function (e) {
+        render: function () {
             this.$el.html(this.template({ sections: this.sections, order: this.order, sentOrder: this.sentOrder}));
             $('.dishes').hide();
-        },
-
-        addToOrder: function (e) {
-            var target = e.currentTarget;
-            var item = this.sections.get(target.dataset.sectionid).get('items').get(target.dataset.itemid);
-            if (target.value != 0) {
-                item.set('quantity', target.value);
-                this.order.get('items').add(item);
-            } else if (target.value == 0) {
-                this.order.get('items').remove(target.dataset.itemid)
-            }
-            this.order.setPrice();
-            $('#price').text(this.order.get('price'));
-        },
-
-        sendOrder: function () {
-            order = this.order;
-            Backbone.route.navigate('client/cart', true)
         },
 
         toSection: function (e) {

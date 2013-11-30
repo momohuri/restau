@@ -1,10 +1,63 @@
 define([], function () {window.restau = window.restau || {apps: {},cockpit:{  views: {  },  models: {  },  collections: {  },  routers: {  }},client:{  views: {  },  models: {  },  collections: {  },  routers: {  }}};
             window.restau.tmpl = window.restau.tmpl || {};
 restau.tmpl.client = restau.tmpl.client || {};
+restau.tmpl.client.checkOrder = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div id="boxedWrapper">\n\n    <section id="content">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n\n                    <section id="menucard">\n\n                        <div class="tab-content">\n                            <div class="tab-pane active" id="tab-breakfast">\n\n                                <div class="row-fluid"> <!-- menucards -->\n\n\n                                    <div class="span6">\n                                        <article class="menucard">\n                                            <header>\n                                                Check your order :\n                                            </header>\n                                            <section class="dishes">\n                                                <ul>\n                                                    ';
+ order.get('orderItems').forEach(function(item,i){ 
+__p+='\n                                                    <li>\n                                                        <div class="image">\n\n                                                        </div>\n                                                        <div class="data">\n                                                            <h4>'+
+((__t=( item.get('item').get('name') ))==null?'':__t)+
+'</h4>\n\n                                                            <p>\n                                                                '+
+((__t=( item.get('item').get('desc') ))==null?'':__t)+
+'\n                                                            </p>\n                                                            <span class="price">'+
+((__t=( item.get('item').get('price') + '$' ))==null?'':__t)+
+'</span>\n                                                        </div>\n                                                        <div class="quantity">\n                                                            <select class=\'quantityDropdown\'\n                                                                    data-itemId="'+
+((__t=( item.id ))==null?'':__t)+
+'"\n                                                                    data-sectionId="'+
+((__t=( item.get('sectionId') ))==null?'':__t)+
+'">\n                                                                ';
+ for(var i = 0; i<20; i++){ 
+__p+='\n                                                                <option '+
+((__t=( item.get('quantity')==i?'selected':true ))==null?'':__t)+
+' value='+
+((__t=(i))==null?'':__t)+
+'>'+
+((__t=( i))==null?'':__t)+
+'</option>\n                                                                ';
+}
+__p+='\n                                                            </select>\n                                                        </div>\n                                                    </li>\n                                                    ';
+})
+__p+='\n                                                </ul>\n                                            </section>\n                                        </article>\n                                    </div>\n\n                                    <!-- //menucards -->\n                                </div>\n\n\n                            </div>\n                            <div>\n                                <br>\n                                <header class="text-center">\n                                    <h3> Price <span id="price">'+
+((__t=( order.get('price') ))==null?'':__t)+
+'</span> $</h3>\n                                    <label>Any comment for your order?</label><textarea id=\'comment\'> </textarea>\n                                    <button class="sendOrder btn btn-success">Send order to the cook !</button>\n                                    <button class="goToMenu btn btn-default "> Go back to the menu</button>\n                                </header>\n\n                            </div>\n\n                        </div>\n                    </section>\n                    <!-- //span -->\n                </div>\n                <!-- //row -->\n            </div>\n            <!-- //container -->\n        </div>\n\n    </section>\n\n\n    <footer id="footer">\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span3">\n                    <p>\n                        &copy; Copyright 2013 by Gandhi && Maurin</span>\n                    </p>\n\n                </div>\n                <div class="span9">\n                    <nav class="short-menu">\n                        <ul>\n                            <li><a href="#">Home</a></li>\n                            <li><a href="#">Pages</a></li>\n                            <li><a href="#">Features</a></li>\n                            <li><a href="#">Blog</a></li>\n                            <li><a href="#">Gallerie</a></li>\n                            <li><a href="#">Shortcodes</a></li>\n                            <li><a href="#">Contact</a></li>\n                        </ul>\n                    </nav>\n                </div>\n            </div>\n        </div>\n    </footer>\n\n</div>\n\n</div>\n\n';
+}
+return __p;
+};
+restau.tmpl.client.generateBill = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div id="boxedWrapper">\n\n    <section id="content">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n\n                    <section id="menucard">\n\n                        <div class="tab-content">\n\n                            <div>\n                                <br>\n                                <header class="text-center">\n                                    ';
+ if(isAllBillGenerated) { 
+__p+='\n                                    <strong> The bill si coming soon !</strong>\n                                    ';
+}else{
+__p+='\n                                    <button class=\'btn btn-large btn-success generateBill\'>Generate Bill</button>\n                                    <br>\n                                    <button class=\'btn btn-large btn-default goToMenu\'>Order more stuff</button>\n                                    ';
+}
+__p+='\n                                </header>\n\n                            </div>\n\n                        </div>\n                    </section>\n                    <!-- //span -->\n                </div>\n                <!-- //row -->\n            </div>\n            <!-- //container -->\n        </div>\n\n    </section>\n\n\n    <footer id="footer">\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span3">\n                    <p>\n                        &copy; Copyright 2013 by Gandhi && Maurin</span>\n                    </p>\n\n                </div>\n                <div class="span9">\n                    <nav class="short-menu">\n                        <ul>\n                            <li><a href="#">Home</a></li>\n                            <li><a href="#">Pages</a></li>\n                            <li><a href="#">Features</a></li>\n                            <li><a href="#">Blog</a></li>\n                            <li><a href="#">Gallerie</a></li>\n                            <li><a href="#">Shortcodes</a></li>\n                            <li><a href="#">Contact</a></li>\n                        </ul>\n                    </nav>\n                </div>\n            </div>\n        </div>\n    </footer>\n\n</div>\n\n</div>\n\n';
+}
+return __p;
+};
+restau.tmpl.client.header = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<header id="top">\n\n    <div class="container">\n        <div class="row-fluid">\n            <div class="span12">\n                <h4>Restau !</h4>\n                <nav class="pull-right">\n                    <ul class="wheel-group">\n                        <li><p><button class=\'btn btn-default goToMenu\'>See Menu</button></p></li>\n                        <li><p><button class=\'btn btn-default goToCheckOrder\'>Check my order</button></p></li>\n                        <li><p><button class=\'btn btn-info callWaiter\'>Call waiter</button></p></li>\n                    </ul>\n                    <div class="line"></div>\n                </nav>\n\n                <div class="clearfix"></div>\n            </div>\n        </div>\n    </div>\n\n</header>';
+}
+return __p;
+};
 restau.tmpl.client.menu = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<div id="boxedWrapper">\n\n    <header id="top">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n                    <h4>Restau !</h4>\n                    <nav class="short-contact pull-right">\n                        <ul class="wheel-group">\n                            <li><p>Some info about the restaurant</p></li>\n                        </ul>\n                        <div class="line"></div>\n                    </nav>\n\n                    <div class="clearfix"></div>\n                </div>\n            </div>\n        </div>\n\n    </header>\n\n    <section id="content">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n\n                    <section id="menucard">\n\n                        <div class="filter">\n                            <ul id="menucard-tabs">\n                                ';
+__p+='<div id="boxedWrapper">\n\n\n\n    <section id="content">\n\n        <div class="container">\n            <div class="row-fluid">\n                <div class="span12">\n\n                    <section id="menucard">\n\n                        <div class="filter">\n                            <ul id="menucard-tabs">\n                                ';
  sections.forEach(function(section,i){
 __p+='\n                                <li><a class=\'toSection\' data-name="'+
 ((__t=( section.get('name') ))==null?'':__t)+
@@ -31,7 +84,20 @@ __p+='\n                                                    <li>\n              
 ((__t=( item.id ))==null?'':__t)+
 '"\n                                                                    data-sectionId="'+
 ((__t=( section.id ))==null?'':__t)+
-'">\n                                                                <option value=0>0</option>\n                                                                <option value=1>1</option>\n                                                                <option value=2>2</option>\n                                                                <option value=3>3</option>\n                                                                <option value=4>4</option>\n                                                            </select>\n                                                        </div>\n                                                    </li>\n                                                    ';
+'">\n                                                                ';
+  var q = 0;
+                                                                order.get('orderItems').forEach(function(orderItem,i){ if(orderItem.id===item.id){q=orderItem.get('quantity')} });
+
+                                                                for(var i = 0; i<20; i++){ 
+__p+='\n                                                                <option '+
+((__t=( q==i?'selected':true ))==null?'':__t)+
+' value='+
+((__t=(i))==null?'':__t)+
+'>'+
+((__t=( i))==null?'':__t)+
+'</option>\n                                                                ';
+}
+__p+='\n                                                            </select>\n                                                        </div>\n                                                    </li>\n                                                    ';
 })
 __p+='\n                                                </ul>\n                                            </section>\n                                        </article>\n                                    </div>\n                                    ';
 });

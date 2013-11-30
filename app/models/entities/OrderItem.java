@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OrderItem {
 
-    @JsonProperty("itemId")
+    @JsonProperty("id")
     String itemId;
     
     @JsonProperty("sectionId")

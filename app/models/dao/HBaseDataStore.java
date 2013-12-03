@@ -75,4 +75,10 @@ public class HBaseDataStore extends DataStore {
         return null;
     }
 
+    @Override
+    public boolean deleteRow(String table, String rowKey) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

@@ -9,6 +9,8 @@ import exceptions.StorageBackendException;
 
 public interface StorageBackend {
     
+    public boolean deleteRow(String table, String rowKey)  throws StorageBackendException; // colName, rowKey, colName, colValue
+
     public boolean putValue(String table, String rowKey, String colName, String value)  throws StorageBackendException; // colName, rowKey, colName, colValue
     public String getValue(String table, String rowKey, String colName) throws StorageBackendException; // colName, rowKey, colName.
     public Map<String,String> getAllColumnNameValue(String columnFamily, String rowKey) throws StorageBackendException; 

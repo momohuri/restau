@@ -21,6 +21,10 @@ public class Test {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
 
+        Double d = null;
+        double ad = d;
+        System.out.println(ad);
+        
         OrderItem item1 = new OrderItem();
         item1.setItemId("123");
         item1.setName("Orange Juice");

@@ -26,8 +26,11 @@ POST    /client/order                        controllers.UserOrderController.cre
 GET     /client/order/:oid                   controllers.UserOrderController.getOrder(oid: String)
 GET     /client/order/:oid/status            controllers.UserOrderController.getOrderStatus(oid: String)
 GET     /client/generateBill.do              controllers.UserOrderController.generateBill()
-GET     /client/isAllBillGenerated    controllers.UserOrderController.getBulkOrderStatus()
+GET     /client/isAllBillGenerated           controllers.UserOrderController.getBulkOrderStatus()
 GET     /client/orders                       controllers.UserOrderController.getBulkOrders()
+
+PUT     /cockpit/order/:oid         controllers.CockpitOrderController.updateOrder(oid: String)
+GET     /cockpit/order/:oid         controllers.CockpitOrderController.getOrder(oid: String)
 
 
 # Home page

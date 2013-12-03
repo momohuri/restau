@@ -295,6 +295,31 @@ public class StorageBackendImpl implements StorageBackend {
         return response;
     }
 
+    @Override
+    public boolean deleteRow(String table, String rowKey)
+            throws StorageBackendException {
+        
+        String input = "deleteRow() input: table=" + table + " ; rowKey=" +rowKey;
+        if (StringUtils.isEmpty(table) || StringUtils.isEmpty(rowKey)) {
+            log.error("Null i/p arguments to deleteRow(). " + input);
+            throw new StorageBackendException("Null i/p arguments to deleteRow(). " + input);
+        }
+        
+        boolean response = false;
+        try {
+            log.info("Deleting data for " + input);
+            response = dataStore.deleteRow(table, rowKey);
+            // TODO : Cleanup need to handle more specific exceptions. or make
+            // dataStore directly throw an exception.
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new StorageBackendException(e);
+        }   
+        
+        return response;
+    }
+    
+
 
     
 

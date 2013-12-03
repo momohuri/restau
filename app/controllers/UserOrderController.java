@@ -1,9 +1,7 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,13 +11,12 @@ import models.dao.StorageBackend;
 import models.dao.StorageBackendImpl;
 import models.entities.Order;
 import models.entities.OrderItem;
-import models.entities.Status;
+import models.entities.OrderStatus;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.node.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,8 +103,8 @@ public class UserOrderController extends BaseController {
             
             Map<String,String> orders = getDeviceOrders(deviceId, restaurantId);
             for (String orderId : orders.keySet()) {
-                sb.putCompositeValue(CF_USER_ORDER_INDEX, deviceId, restaurantId, orderId, models.entities.Status.BILL_GENERATED.toString());
-                sb.putCompositeValue(ColFamily_ORDER, orderId, orderId, "status", models.entities.Status.BILL_GENERATED.toString());
+                sb.putCompositeValue(CF_USER_ORDER_INDEX, deviceId, restaurantId, orderId, OrderStatus.BILL_GENERATED.toString());
+                sb.putCompositeValue(ColFamily_ORDER, orderId, orderId, "status", OrderStatus.BILL_GENERATED.toString());
             }
         } catch (StorageBackendException e) {
             return customStatus(HTTP_INTERNAL_SERVER_ERROR,
@@ -131,7 +128,7 @@ public class UserOrderController extends BaseController {
             
             Map<String,String> orders = getDeviceOrders(deviceId, restaurantId);
             for (String status : orders.values()) {
-                if (!models.entities.Status.BILL_GENERATED.toString().equals(status)) {
+                if (!OrderStatus.BILL_GENERATED.toString().equals(status)) {
                     result = false;
                     break;
                 }
@@ -175,7 +172,10 @@ public class UserOrderController extends BaseController {
 
     }
     
-    private static ObjectNode getInternalOrder(String orderId) throws StorageBackendException, InternalException {
+    /*
+     * TODO : Move this to COMMON CLASS. THIS IS USED BY COCKPIT_ORDER_CONTROLLER
+     */
+    public static ObjectNode getInternalOrder(String orderId) throws StorageBackendException, InternalException {
         StorageBackend sb = StorageBackendImpl.getInstance();
 
         Map<String, ObjectNode> resultJson = null;
@@ -302,7 +302,7 @@ public class UserOrderController extends BaseController {
         
         order.setId(UUID.randomUUID().toString());
 
-        order.setStatus(models.entities.Status.RECEIVED);
+        order.setStatus(OrderStatus.RECEIVED);
         StorageBackend sb = StorageBackendImpl.getInstance();
         
         try {

@@ -510,6 +510,13 @@ public class CassandraDataStore extends DataStore {
 
     }
 
+    @Override
+    public boolean deleteRow(String table, String rowKey) {
+        Mutator<String> mutator = HFactory.createMutator(storageKeyspace, stringSerializer);
+        mutator.addDeletion(rowKey, table);
+        return true;
+    }
+
 
 
 }

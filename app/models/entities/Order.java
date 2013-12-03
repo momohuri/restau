@@ -42,6 +42,9 @@ public class Order {
     @JsonProperty("price")
     Double price;
     
+    @JsonProperty("discount")
+    Double discount;
+    
     @JsonProperty("togo")
     Boolean togo;
     
@@ -64,15 +67,15 @@ public class Order {
     List<OrderItem> orderItems;
     
     @JsonProperty("status")
-    Status status;
+    OrderStatus status;
     
     public Order() {}
 
-    public Status getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -122,6 +125,14 @@ public class Order {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public Boolean getTogo() {

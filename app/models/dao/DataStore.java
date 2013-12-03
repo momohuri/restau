@@ -32,5 +32,7 @@ public abstract class DataStore {
     public abstract Map<String, String> getCompositeValuesStr(String table,
             String rowKey, String compositeName);
 
+    public abstract boolean deleteRow(String table, String rowKey);
+
 }
 

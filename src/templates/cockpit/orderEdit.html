@@ -1,1 +1,40 @@
-hello
+<div>
+    <h3>Created by: <%= order.get('deviceId') %> on table: <%= order.get('tableId')%>, total Price: <span class="price"><%= order.get('price') - order.get('discount')%></span>$
+    </h3>
+
+    <table class="table">
+        <thead>
+
+        <tr>
+            <th> Name</th>
+            <th> Price per Unit</th>
+            <th> Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% order.get('orderItems').forEach(function(item){ %>
+        <tr data-id="<%= item.id %>">
+            <td><%= item.get('name') %>
+            </td>
+            <td>
+                <%= item.get('pricePerUnit')%>
+            </td>
+            <td>
+                <select class="quantity" data-itemId="<%= item.id %>">
+                    <% for(var i = 0 ;i<=20;i++){%>
+                    <option  <%= item.get('quantity')==i?'selected':true%> value="<%= i%>">  <%= i%></option>
+                    <% } %>
+                </select>
+
+            </td>
+
+            <td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <form>
+        <label for="discount">Discount</label> <input id="discount" type="number" value="0"/> <br>
+        <input type="submit" class="save btn btn-success" value="Update Order">
+    </form>
+</div>

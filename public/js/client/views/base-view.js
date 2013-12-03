@@ -32,7 +32,11 @@ define(['namespace', '../../shared/models/item'], function (App, Item, undefined
                 }
                 this.order.get('orderItems').add(toInsert);
             } else if (target.value == 0) {
-                this.order.get('orderItems').remove(target.dataset.itemid)
+                if (this.sections !== undefined) {         //if we are in menu
+                    this.order.get('orderItems').remove(target.dataset.itemid)
+                } else {
+                    this.order.get('orderItems').get(target.dataset.itemid).set('quantity', target.value);
+                }
             }
             this.order.setPrice();
             $('#price').text(this.order.get('price'));

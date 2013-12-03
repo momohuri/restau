@@ -6,7 +6,6 @@ define(['namespace', './base-model'],
 
             defaults: {
                 price: 0,
-                created_at: new Date(),
                 type: "client"
             },
             initialize: function () {
@@ -16,7 +15,7 @@ define(['namespace', './base-model'],
                 var price = 0;
                 //to get price we assume that theire is a collection of items
                 this.get('orderItems').forEach(function (item) {
-                    price += item.get('item').get('price') * item.get('quantity');
+                    price += item.get('pricePerUnit') * item.get('quantity');
                 });
                 this.set('price', price);
             },
@@ -29,6 +28,9 @@ define(['namespace', './base-model'],
             beforeSave: function (key, val, options) {
               this.get('orderItems').forEach(function(item){
                  item.unset('item');
+                  if(item.get('quantity')===0){
+                      this.get('orderItems').remove(item)
+                  }
               });
             }
 

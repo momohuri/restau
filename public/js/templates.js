@@ -130,7 +130,7 @@ __p+='<div>\n    <h3>Created by: '+
 ' on table: '+
 ((__t=( order.get('tableId')))==null?'':__t)+
 ', total Price: <span class="price">'+
-((__t=( order.get('price') - order.get('discount')))==null?'':__t)+
+((__t=( order.get('price')))==null?'':__t)+
 '</span>$\n    </h3>\n\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th> Name</th>\n            <th> Price per Unit</th>\n            <th> Quantity</th>\n        </tr>\n        </thead>\n        <tbody>\n        ';
  order.get('orderItems').forEach(function(item){ 
 __p+='\n        <tr data-id="'+
@@ -153,7 +153,9 @@ __p+='\n                    <option  '+
  } 
 __p+='\n                </select>\n\n            </td>\n\n            <td>\n        </tr>\n        ';
  }); 
-__p+='\n        </tbody>\n    </table>\n    <form>\n        <label for="discount">Discount</label> <input id="discount" type="number" value="0"/> <br>\n        <input type="submit" class="save btn btn-success" value="Update Order">\n    </form>\n</div>';
+__p+='\n        </tbody>\n    </table>\n    <form>\n        <label for="discount">Discount</label> <input id="discount" type="number" value="'+
+((__t=( order.get('discount')))==null?'':__t)+
+'"/> <br>\n        <input type="submit" class="save btn btn-success" value="Update Order">\n    </form>\n</div>';
 }
 return __p;
 };
@@ -168,7 +170,7 @@ __p+='\n    <a href="#" class="list-group-item '+
 ((__t=( order.get('status') ))==null?'':__t)+
 '</span>\n\n        <p class="list-group-item-text"></p>\n    </a>\n    ';
 })
-__p+='\n\n\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th>Table</th>\n            <th> Device</th>\n            <th> Orders</th>\n            <th> Generate bill</th>\n            <th> Generate bill for table</th>\n            <th> Status</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr>\n            <td rowspan="3"> table 1</td>\n            <td> Device name</td>\n            <td><a data-id="96628819-3b01-43d1-8e0d-d80d58328568" class="editOrder">order1 </a></td>\n            <td>\n                <button class=\'btn-success\'>generate bill</button>\n            </td>\n            <td rowspan="3">\n                <button class=\'btn-success\'>generate bill</button>\n            </td>\n            <td rowspan=\'3\' class=\'alert-danger\'>waiting for bill</td>\n        </tr>\n        <tr>\n            <td rowspan="2"> Device name</td>\n            <td> order2</td>\n            <td rowspan="2"></td>\n        </tr>\n        <tr>\n            <td> order3</td>\n        </tr>\n\n        <tr>\n            <td> table 1</td>\n            <td> Device name</td>\n            <td> order1</td>\n            <td></td>\n            <td></td>\n            <td class=\'alert-info\'> ordered</td>\n        </tr>\n\n\n        </tbody>\n    </table>\n\n</div>\n';
+__p+='\n\n\n    <table class="table">\n        <thead>\n\n        <tr>\n            <th>Table</th>\n            <th> Device</th>\n            <th> Orders</th>\n            <th> Generate bill</th>\n            <th> Generate bill for table</th>\n            <th> Status</th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr>\n            <td rowspan="3"> table 1</td>\n            <td> Device name</td>\n            <td><a data-id="0bf69e3e-0ca8-4210-a2d2-21775f4a1c67" class="editOrder">order1 </a></td>\n            <td>\n                <button class=\'btn-success\'>generate bill</button>\n            </td>\n            <td rowspan="3">\n                <button class=\'btn-success\'>generate bill</button>\n            </td>\n            <td rowspan=\'3\' class=\'alert-danger\'>waiting for bill</td>\n        </tr>\n        <tr>\n            <td rowspan="2"> Device name</td>\n            <td> order2</td>\n            <td rowspan="2"></td>\n        </tr>\n        <tr>\n            <td> order3</td>\n        </tr>\n\n        <tr>\n            <td> table 1</td>\n            <td> Device name</td>\n            <td> order1</td>\n            <td></td>\n            <td></td>\n            <td class=\'alert-info\'> ordered</td>\n        </tr>\n\n\n        </tbody>\n    </table>\n\n</div>\n';
 }
 return __p;
 };

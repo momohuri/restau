@@ -1,5 +1,5 @@
 <div>
-    <h3>Created by: <%= order.get('deviceId') %> on table: <%= order.get('tableId')%>, total Price: <span class="price"><%= order.get('price') - order.get('discount')%></span>$
+    <h3>Created by: <%= order.get('deviceId') %> on table: <%= order.get('tableId')%>, total Price: <span class="price"><%= order.get('price')%></span>$
     </h3>
 
     <table class="table">
@@ -34,7 +34,7 @@
         </tbody>
     </table>
     <form>
-        <label for="discount">Discount</label> <input id="discount" type="number" value="0"/> <br>
+        <label for="discount">Discount</label> <input id="discount" type="number" value="<%= order.get('discount')%>"/> <br>
         <input type="submit" class="save btn btn-success" value="Update Order">
     </form>
 </div>

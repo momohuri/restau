@@ -14,7 +14,7 @@ define(['namespace', './base-view', '../../shared/models/order', '../../shared/c
             'click .save': 'saveOrder'
         },
         //todo type=cockpit
-        order: new Order({type: 'client'}),
+        order: new Order({type: 'cockpit'}),
 
         initialize: function (param) {
             var that = this;
